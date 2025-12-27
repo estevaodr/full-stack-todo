@@ -1,9 +1,11 @@
+import { ServerFeatureTodoModule } from '@full-stack-todo/server/feature-todo';
 import { Module } from '@nestjs/common';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 @Module({
-  imports: [],
+  imports: [ServerFeatureTodoModule],
   controllers: [AppController],
   providers: [AppService],
 })

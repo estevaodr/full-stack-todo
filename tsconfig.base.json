@@ -14,7 +14,10 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@full-stack-todo/shared/domain": ["libs/shared/domain/src/index.ts"],
+      "@full-stack-todo/server/feature-todo": ["libs/server/feature-todo/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
