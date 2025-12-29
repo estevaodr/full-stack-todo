@@ -23,11 +23,26 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   /* Run your local dev server before starting the tests */
+  /* 
+   * IMPORTANT: For E2E tests to work, both server and client must be running.
+   * 
+   * Option 1 (Recommended): Start servers manually before running tests:
+   *   make run
+   *   # Then in another terminal:
+   *   make e2e-client
+   * 
+   * Option 2: Let Playwright start the client (server must be running separately):
+   *   make server  # In one terminal
+   *   make e2e-client  # In another terminal (Playwright will start client)
+   */
   webServer: {
-    command: 'npx nx run client:serve',
+    // Start only the client (assumes server is already running on port 3000)
+    // For full automation, start both with: make run
+    command: 'npx nx serve client',
     url: 'http://localhost:4200',
-    reuseExistingServer: true,
+    reuseExistingServer: !process.env.CI, // Reuse in local dev, don't reuse in CI
     cwd: workspaceRoot,
+    timeout: 120000, // Give server time to start
   },
   projects: [
     {

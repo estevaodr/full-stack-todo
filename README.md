@@ -52,7 +52,21 @@ make test-server     # Run server tests only
 make test-client     # Run client tests only
 make e2e             # Run all e2e tests
 make e2e-server      # Run server e2e tests
-make e2e-client      # Run client e2e tests
+make e2e-client       # Run client e2e tests (BDD scenarios with Playwright)
+```
+
+**BDD Testing:**
+The application uses Behavior-Driven Development (BDD) with Playwright for E2E testing. See [docs/BDD.md](./docs/BDD.md) for detailed scenarios.
+
+```sh
+# Run BDD E2E tests
+make e2e-client
+
+# Run with UI mode (interactive)
+npx nx e2e client-e2e --ui
+
+# Run specific test
+npx nx e2e client-e2e --grep "should create a new todo"
 ```
 
 ### Building

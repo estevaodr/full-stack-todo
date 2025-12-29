@@ -1,0 +1,86 @@
+<!--
+  Todo List Component Template
+  
+  This template displays a list of todos with the following features:
+  - Shows loading state while fetching data
+  - Displays error messages if API calls fail
+  - Shows empty state when no todos exist
+  - Lists all todos with ability to toggle completion and delete
+  
+  Angular Template Syntax:
+  - *ngIf: Conditionally shows/hides elements (structural directive)
+  - *ngFor: Loops through array to create multiple elements
+  - {{ }}: Interpolation - displays component property values
+  - [property]: Property binding - sets HTML element properties
+  - (event): Event binding - calls component methods on events
+  - [class.className]: Conditionally applies CSS class
+  - | pipe: Transforms data (e.g., date formatting)
+-->
+<div class="todo-list-container">
+  <h1>Todo List</h1>
+
+  <!-- *ngIf: Only show this div if 'loading' is true -->
+  <!-- Structural directive - adds/removes element from DOM -->
+  <div *ngIf="loading" class="loading">Loading todos...</div>
+  
+  <!-- Show error message if error exists -->
+  <div *ngIf="error" class="error">{{ error }}</div>
+
+  <!-- Only show content when not loading and no errors -->
+  <div *ngIf="!loading && !error">
+    <!-- Empty state: Show message when todos array is empty -->
+    <div *ngIf="todos.length === 0" class="empty-state">
+      <p>No todos yet. Create your first todo!</p>
+    </div>
+
+    <!-- *ngFor: Loop through todos array, create one <li> for each todo -->
+    <!-- 'let todo of todos' means: for each item in todos array, call it 'todo' -->
+    <!-- [class.completed]: Conditionally add 'completed' CSS class if todo.completed is true -->
+    <ul class="todo-list" *ngIf="todos.length > 0">
+      <li 
+        *ngFor="let todo of todos" 
+        class="todo-item" 
+        [class.completed]="todo.completed"
+      >
+        <div class="todo-content">
+          <!-- 
+            Checkbox for toggling completion status
+            [checked]: Property binding - sets checkbox checked state from component
+            (change): Event binding - calls toggleComplete() when checkbox changes
+          -->
+          <input
+            type="checkbox"
+            [checked]="todo.completed"
+            (change)="toggleComplete(todo)"
+            class="todo-checkbox"
+          />
+          <div class="todo-details">
+            <!-- {{ }}: Interpolation - displays the value of todo.title -->
+            <!-- [class.completed-text]: Adds CSS class if todo is completed -->
+            <h3 [class.completed-text]="todo.completed">{{ todo.title }}</h3>
+            <p [class.completed-text]="todo.completed">{{ todo.description }}</p>
+            <small class="todo-meta">
+              <!-- | date: 'short': Angular date pipe - formats Date object as readable string -->
+              Created: {{ todo.createdAt | date: 'short' }} |
+              Updated: {{ todo.updatedAt | date: 'short' }}
+            </small>
+          </div>
+        </div>
+        <!-- 
+          Delete button
+          (click): Event binding - calls deleteTodo() when button is clicked
+          Passes todo.id as parameter
+        -->
+        <button
+          type="button"
+          (click)="deleteTodo(todo.id)"
+          class="delete-btn"
+          aria-label="Delete todo"
+        >
+          Delete
+        </button>
+      </li>
+    </ul>
+  </div>
+</div>
+
