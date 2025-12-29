@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@full-stack-todo/shared": ["libs/shared/src/index.ts"],
       "@full-stack-todo/shared/domain": ["libs/shared/domain/src/index.ts"],
       "@full-stack-todo/server/feature-todo": ["libs/server/feature-todo/src/index.ts"]
     }

@@ -11,7 +11,7 @@ export class TodoService {
       id: (this.nextId++).toString(),
       title: createTodoDto.title,
       description: createTodoDto.description,
-      completed: createTodoDto.completed ?? false,
+      completed: false,
       createdAt: new Date(),
       updatedAt: new Date(),
     };

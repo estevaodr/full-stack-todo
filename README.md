@@ -30,6 +30,64 @@ These targets are either [inferred automatically](https://nx.dev/concepts/inferr
 
 [More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
 
+## Makefile Commands
+
+This project includes a Makefile with convenient shortcuts for common development tasks. You can use `make help` to see all available commands.
+
+### Running Applications
+
+```sh
+make server          # Run the server in development mode
+make client          # Run the client in development mode
+make run             # Run both server and client in parallel (uses nx run-many)
+make all             # Alias for 'make run'
+make run-many TARGET=serve PROJECTS=server,client  # Alternative: use run-many directly
+```
+
+### Testing
+
+```sh
+make test            # Run all tests
+make test-server     # Run server tests only
+make test-client     # Run client tests only
+make e2e             # Run all e2e tests
+make e2e-server      # Run server e2e tests
+make e2e-client      # Run client e2e tests
+```
+
+### Building
+
+```sh
+make build           # Build all projects
+make build-server    # Build server only
+make build-client    # Build client only
+```
+
+### Linting
+
+```sh
+make lint            # Lint all projects
+make lint-server     # Lint server only
+make lint-client     # Lint client only
+```
+
+### Running Tasks on Multiple Projects
+
+```sh
+make run-many TARGET=test                    # Run test target on all projects
+make run-many TARGET=build                   # Run build target on all projects
+make run-many TARGET=lint PROJECTS=server,client  # Run lint on specific projects
+```
+
+### Utilities
+
+```sh
+make install        # Install dependencies
+make clean          # Clean build artifacts and cache
+make kill           # Stop all running server and client processes
+make help           # Show all available commands
+```
+
 ## Add new projects
 
 While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
