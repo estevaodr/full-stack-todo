@@ -154,9 +154,9 @@ Generating the data-access library
 Delete all `data-access.component.*` files under `libs/client/data-access/src/lib/data-access` and update `index.ts` to remove exports.
 
 ```
-> nx generate @schematics/angular:service Api \
---project=client-data-access \
---path=libs/client/data-access/src/lib
+> npx nx generate @nx/angular:service Api \
+  --project=DataAccess \
+  --skipTests
 ```
 
 
