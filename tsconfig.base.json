@@ -17,7 +17,12 @@
     "paths": {
       "@full-stack-todo/shared": ["libs/shared/src/index.ts"],
       "@full-stack-todo/shared/domain": ["libs/shared/domain/src/index.ts"],
-      "@full-stack-todo/server/feature-todo": ["libs/server/feature-todo/src/index.ts"]
+      "@full-stack-todo/server/feature-todo": [
+        "libs/server/feature-todo/src/index.ts"
+      ],
+      "@fst/client/feature-dashboard": [
+        "libs/client/feature-dashboard/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
