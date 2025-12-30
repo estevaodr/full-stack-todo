@@ -137,13 +137,15 @@ bootstrapApplication(AppComponent, {
 apps/client/src/main.ts
 
 ```
-> nx generate @nrwl/angular:library DataAccess \
---style=scss \
---directory=client \
---importPath=@fst/client/data-access \
---skipModule \
---standalone \
---standaloneConfig
+> npx nx generate @nx/angular:library \
+  --name=DataAccess \
+  --style=scss \
+  --directory=libs/client/data-access \
+  --importPath=@fst/client/data-access \
+  --skipModule \
+  --standalone \
+  --tags=type:data-access,scope:client \
+  --unitTestRunner=none
 ```
 
 
