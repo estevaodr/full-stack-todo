@@ -1,4 +1,4 @@
 import { Route } from '@angular/router';
-import { featureDashboardRoutes } from '@fst/client/feature-dashboard';
+import { featureDashboardRoutes } from '@full-stack-todo/client/feature-dashboard';
 
 export const appRoutes: Route[] = [...featureDashboardRoutes];

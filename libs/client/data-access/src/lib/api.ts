@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ICreateTodo } from '@full-stack-todo/shared/domain';
+import { ICreateTodo, ITodo, IUpdateTodo, IUpsertTodo } from '@full-stack-todo/shared/domain';
 
 /**
  * API Service for Todo Items
@@ -29,11 +29,11 @@ export class Api {
    * HTTP Method: GET
    * Endpoint: /api/todos
    * 
-   * @returns Observable<unknown[]> - An array of all todo items wrapped in an Observable.
+   * @returns Observable<ITodo[]> - An array of all todo items wrapped in an Observable.
    *          Components subscribe to this to get the data when it arrives.
    */
-  getAllToDoItems(): Observable<unknown[]> {
-    return this.http.get<unknown[]>(`/api/todos`);
+  getAllToDoItems(): Observable<ITodo[]> {
+    return this.http.get<ITodo[]>(`/api/todos`);
   }
 
   /**
@@ -43,10 +43,10 @@ export class Api {
    * Endpoint: /api/todos/:id
    * 
    * @param todoId - The unique identifier of the todo item to retrieve
-   * @returns Observable<unknown> - The requested todo item wrapped in an Observable
+   * @returns Observable<ITodo> - The requested todo item wrapped in an Observable
    */
-  getToDoById(todoId: string): Observable<unknown> {
-    return this.http.get<unknown>(`/api/todos/${todoId}`);
+  getToDoById(todoId: string): Observable<ITodo> {
+    return this.http.get<ITodo>(`/api/todos/${todoId}`);
   }
 
   /**
@@ -60,10 +60,10 @@ export class Api {
    * and return the complete todo object including the new ID.
    * 
    * @param todoData - Object containing title and description for the new todo
-   * @returns Observable<unknown> - The newly created todo item with server-generated ID
+   * @returns Observable<ITodo> - The newly created todo item with server-generated ID
    */
-  createToDo(todoData: ICreateTodo): Observable<unknown> {
-    return this.http.post<unknown>(`/api/todos`, todoData);
+  createToDo(todoData: ICreateTodo): Observable<ITodo> {
+    return this.http.post<ITodo>(`/api/todos`, todoData);
   }
 
   /**
@@ -79,10 +79,10 @@ export class Api {
    * 
    * @param todoId - The ID of the todo item to update
    * @param todoData - Partial object with only the fields to update
-   * @returns Observable<unknown> - The updated todo item
+   * @returns Observable<ITodo> - The updated todo item
    */
-  updateToDo(todoId: string, todoData: unknown): Observable<unknown> {
-    return this.http.patch<unknown>(`/api/todos/${todoId}`, todoData);
+  updateToDo(todoId: string, todoData: IUpdateTodo): Observable<ITodo> {
+    return this.http.patch<ITodo>(`/api/todos/${todoId}`, todoData);
   }
 
   /**
@@ -98,10 +98,10 @@ export class Api {
    * 
    * @param todoId - The ID of the todo item to upsert
    * @param todoData - Complete todo object with all fields
-   * @returns Observable<unknown> - The created or updated todo item
+   * @returns Observable<ITodo> - The created or updated todo item
    */
-  createOrUpdateToDo(todoId: string, todoData: unknown): Observable<unknown> {
-    return this.http.put<unknown>(`/api/todos/${todoId}`, todoData);
+  createOrUpdateToDo(todoId: string, todoData: IUpsertTodo): Observable<ITodo> {
+    return this.http.put<ITodo>(`/api/todos/${todoId}`, todoData);
   }
 
   /**
@@ -113,9 +113,9 @@ export class Api {
    * Permanently removes the todo item with the specified ID from the database.
    * 
    * @param todoId - The ID of the todo item to delete
-   * @returns Observable<unknown> - Empty response confirming deletion
+   * @returns Observable<void> - Empty response confirming deletion
    */
-  deleteToDo(todoId: string): Observable<unknown> {
-    return this.http.delete<unknown>(`/api/todos/${todoId}`);
+  deleteToDo(todoId: string): Observable<void> {
+    return this.http.delete<void>(`/api/todos/${todoId}`);
   }
 }

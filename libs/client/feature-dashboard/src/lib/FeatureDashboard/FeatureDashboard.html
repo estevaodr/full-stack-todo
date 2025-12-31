@@ -1,1 +1,7 @@
-<p>FeatureDashboard works!</p>
+<p>feature-dashboard works!</p>
+
+<ul>
+    @for (todo of (todoItems$ | async); track $index; let i = $index) {
+      <li>{{i}}. {{ todo.title }}</li>
+    }
+</ul>
