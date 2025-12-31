@@ -1,0 +1,44 @@
+// container element for the (vertical) list
+.todo-list {
+  display: flex;
+  flex-direction: column;
+  
+  // "owl" pattern used for spacing between list items
+  > * + * {
+    margin-block-start: 1em;
+  }
+}
+
+// block-level class name
+.todo {
+  width: 30rem;
+  padding: 8px;
+  box-shadow: 4px 4px 8px 0px;
+  border: 1px solid #000000;
+  font-family: Arial, Helvetica, sans-serif;
+
+  // element-level class name
+  &__title {
+    margin-block-start: 0;
+  }
+
+  // element-level class name
+  &__id {
+    color: #a5a5a5;
+  }
+
+  // element-level class name
+  &__completed-value {
+  
+    // modifier-level class name
+    &--false {
+      color: red;
+    }
+    
+    // modifier-level class name
+    &--true {
+      color: green;
+    }
+  }
+}
+

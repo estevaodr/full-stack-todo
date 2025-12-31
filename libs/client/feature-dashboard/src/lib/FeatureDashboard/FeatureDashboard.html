@@ -1,7 +1,18 @@
 <p>feature-dashboard works!</p>
 
-<ul>
-    @for (todo of (todoItems$ | async); track $index; let i = $index) {
-      <li>{{i}}. {{ todo.title }}</li>
-    }
-</ul>
+<div class="todo-list">
+  @for (todo of (todoItems$ | async); track todo.id; let i = $index) {
+    <div class="todo">
+      <h2 class="todo__title">#{{ i + 1 }} {{ todo.title }}</h2>
+      <p class="todo__description">{{ todo.description }}</p>
+      <small class="todo__id">ID: {{ todo.id }}</small>
+      <br />
+      <small class="todo__completed-label"
+        >Completed:
+        <span class="todo__completed-value--{{ todo.completed }}">{{
+          todo.completed
+        }}</span></small
+      >
+    </div>
+  }
+</div>
