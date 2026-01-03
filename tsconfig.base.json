@@ -23,7 +23,12 @@
       "@full-stack-todo/client/feature-dashboard": [
         "libs/client/feature-dashboard/src/index.ts"
       ],
-      "@full-stack-todo/client/data-access": ["libs/client/data-access/src/index.ts"]
+      "@full-stack-todo/client/data-access": [
+        "libs/client/data-access/src/index.ts"
+      ],
+      "@full-stack-todo/server/data-access-todo": [
+        "libs/server/data-access-todo/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
