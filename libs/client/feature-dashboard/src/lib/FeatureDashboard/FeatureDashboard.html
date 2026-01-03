@@ -68,3 +68,11 @@
     </div>
   </section>
 </section>
+
+<!-- Edit Todo Dialog -->
+<fst-edit-todo-dialog
+  [todo]="editingTodo"
+  [visible]="isEditDialogVisible"
+  (save)="onSaveEdit($event)"
+  (cancel)="onCancelEdit()"
+></fst-edit-todo-dialog>

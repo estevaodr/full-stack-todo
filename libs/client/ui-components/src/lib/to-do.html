@@ -46,12 +46,14 @@
   <div class="todo__footer">
     <small class="todo__id">ID: {{ todo.id }}</small>
     <div class="todo__actions">
-      <!-- Edit button - emits editTodo event -->
+      <!-- Edit button - emits editTodo event (disabled for completed todos) -->
       <button 
         class="btn btn--primary btn--icon-only" 
         (click)="triggerEdit()"
         type="button"
-        aria-label="Edit todo"
+        [disabled]="todo.completed"
+        [attr.aria-label]="todo.completed ? 'Cannot edit completed todo' : 'Edit todo'"
+        [title]="todo.completed ? 'Completed tasks cannot be edited' : 'Edit todo'"
       >
         ✏️
       </button>

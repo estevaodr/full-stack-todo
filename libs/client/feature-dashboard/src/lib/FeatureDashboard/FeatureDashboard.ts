@@ -26,7 +26,7 @@ import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Api } from '@full-stack-todo/client/data-access';
 import { ITodo } from '@full-stack-todo/shared/domain';
-import { ToDoComponent, ThemeToggleComponent } from '@full-stack-todo/client/ui-components';
+import { ToDoComponent, ThemeToggleComponent, EditTodoDialogComponent } from '@full-stack-todo/client/ui-components';
 
 @Component({
   selector: 'lib-feature-dashboard',
@@ -36,7 +36,9 @@ import { ToDoComponent, ThemeToggleComponent } from '@full-stack-todo/client/ui-
     // Import the standalone ToDoComponent
     ToDoComponent,
     // Import theme toggle component
-    ThemeToggleComponent
+    ThemeToggleComponent,
+    // Import edit dialog component
+    EditTodoDialogComponent
   ],
   templateUrl: './FeatureDashboard.html',
   styleUrl: './FeatureDashboard.scss',
@@ -62,6 +64,16 @@ export class FeatureDashboardComponent implements OnInit {
    * when the component loads and after each user action.
    */
   todos$ = new BehaviorSubject<ITodo[]>([]);
+
+  /**
+   * Currently selected todo for editing
+   */
+  editingTodo: ITodo | null = null;
+
+  /**
+   * Whether the edit dialog is visible
+   */
+  isEditDialogVisible = false;
 
   /**
    * TrackBy function for *ngFor optimization.
@@ -156,18 +168,86 @@ export class FeatureDashboardComponent implements OnInit {
    * Handles the edit action from ToDoComponent.
    * 
    * When a user clicks the edit button on a todo item,
-   * this method can be extended to:
-   * - Open an edit dialog/modal
-   * - Navigate to an edit page
-   * - Show an inline edit form
+   * this method opens the edit dialog modal.
    * 
-   * Currently, this is a placeholder for future implementation.
+   * Note: Completed todos cannot be edited. This method
+   * prevents editing if the todo is already completed.
    * 
    * @param {ITodo} todo - The todo item to edit
    */
   editTodo(todo: ITodo): void {
-    // TODO: Implement edit functionality
-    // This could open a dialog, navigate to edit page, or show inline editing
-    console.log('Edit todo:', todo);
+    // Prevent editing completed todos
+    if (todo.completed) {
+      return;
+    }
+    
+    this.editingTodo = todo;
+    this.isEditDialogVisible = true;
+  }
+
+  /**
+   * Handles saving the edited todo from the dialog.
+   * 
+   * Called when the user clicks "Save" in the edit dialog.
+   * Updates the todo via the API and refreshes the list.
+   * 
+   * @param {Object} data - The updated todo data (title and description)
+   */
+  onSaveEdit(data: { title: string; description: string }): void {
+    if (!this.editingTodo) {
+      return;
+    }
+
+    // Only update if values have changed
+    if (
+      data.title !== this.editingTodo.title ||
+      data.description !== (this.editingTodo.description || '')
+    ) {
+      // Prepare update payload
+      const updateData: { title: string; description?: string } = {
+        title: data.title,
+      };
+
+      // Only include description if it's different (allows clearing description)
+      if (data.description !== (this.editingTodo.description || '')) {
+        updateData.description = data.description;
+      }
+
+      this.apiService
+        .updateToDo(this.editingTodo.id, updateData)
+        .pipe(take(1))
+        .subscribe({
+          next: () => {
+            // Close dialog and refresh the list after successful update
+            this.closeEditDialog();
+            this.refreshItems();
+          },
+          error: (error) => {
+            console.error('Error updating todo:', error);
+            // Show user-friendly error message
+            window.alert('Failed to update todo. Please try again.');
+          },
+        });
+    } else {
+      // No changes, just close the dialog
+      this.closeEditDialog();
+    }
+  }
+
+  /**
+   * Handles canceling the edit dialog.
+   * 
+   * Called when the user clicks "Cancel" or clicks outside the dialog.
+   */
+  onCancelEdit(): void {
+    this.closeEditDialog();
+  }
+
+  /**
+   * Closes the edit dialog and clears the editing todo.
+   */
+  private closeEditDialog(): void {
+    this.isEditDialogVisible = false;
+    this.editingTodo = null;
   }
 }
