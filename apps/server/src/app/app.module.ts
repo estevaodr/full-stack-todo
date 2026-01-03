@@ -97,7 +97,7 @@ import { TodoModule } from './todo/todo.module';
        * NestJS automatically provides this because we listed it in 'inject' array below.
        */
       useFactory: (config: ConfigService) => ({
-        type: 'sqlite', // Database type: SQLite (file-based, no server needed)
+        type: 'better-sqlite3', // Database type: SQLite (file-based, no server needed)
         database: config.get('DATABASE_PATH'), // Path to the SQLite database file
         
         /**
