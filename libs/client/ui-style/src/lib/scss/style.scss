@@ -1,0 +1,35 @@
+/**
+ * Main Style Entry Point
+ * 
+ * This is the primary stylesheet that imports all other style modules
+ * in the correct order. The import order is important:
+ * 
+ * 1. vendors: Third-party styles (normalize, Nord colors) - loaded first
+ * 2. abstracts: Variables, mixins, functions - no output, just definitions
+ * 3. base: Base element styles (typography, resets) - foundation styles
+ * 4. components: Component-specific styles - reusable UI components
+ * 5. layout: Layout and page structure styles - page-level organization
+ * 
+ * Usage:
+ * This file is imported in apps/client/src/styles.scss, which makes
+ * all design system styles available throughout the application.
+ * 
+ * The @use directive (instead of @import) is the modern Sass syntax
+ * that provides better namespacing and performance.
+ */
+
+// Import vendors first (includes Nord colors)
+@use 'vendors';
+
+// Import abstracts (variables) - must come before base and components
+@use 'abstracts';
+
+// Import base styles (uses variables from abstracts)
+@use 'base';
+
+// Import component styles (uses variables from abstracts)
+@use 'components';
+
+// Import layout styles
+@use 'layout';
+

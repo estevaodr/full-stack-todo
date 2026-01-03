@@ -1,0 +1,60 @@
+{
+  "name": "ui-components",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/ui-components/src",
+  "prefix": "fst",
+  "projectType": "library",
+  "tags": ["type:ui", "scope:client"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": [
+        "{options.outputDir}"
+      ],
+      "options": {
+        "outputDir": "dist/storybook/ui-components",
+        "configDir": "libs/client/ui-components/.storybook",
+        "browserTarget": "ui-components:build-storybook",
+        "compodoc": false,
+        "styles": [
+          "apps/client/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/client/ui-style/src/lib/scss"
+          ]
+        }
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "libs/client/ui-components/.storybook",
+        "browserTarget": "ui-components:build-storybook",
+        "compodoc": false,
+        "styles": [
+          "apps/client/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/client/ui-style/src/lib/scss"
+          ]
+        }
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    }
+  }
+}

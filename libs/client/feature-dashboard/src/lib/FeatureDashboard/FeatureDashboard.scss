@@ -1,44 +1,80 @@
-// container element for the (vertical) list
-.todo-list {
+/**
+ * Feature Dashboard Component Styles
+ * 
+ * This file contains styles specific to the FeatureDashboard component.
+ * The dashboard uses a two-column layout to separate incomplete and completed todos.
+ * 
+ * Layout Structure:
+ * - .page: Main container with two-column grid layout
+ * - .incomplete-column: Left column for incomplete todos
+ * - .complete-column: Right column for completed todos
+ * 
+ * Note: Individual todo item styles are defined in the design system
+ * at libs/client/ui-style/src/lib/scss/components/_todo.scss
+ */
+
+// Import design system variables
+// The stylePreprocessorOptions in project.json includes the path to the scss directory
+@use 'abstracts/variables' as *;
+
+/**
+ * Main page container.
+ * 
+ * Uses CSS Grid to create a two-column layout.
+ * The columns are equal width and have spacing between them.
+ */
+.page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/**
+ * Incomplete todos column.
+ * 
+ * Contains todos that have not been completed.
+ * Uses flexbox for vertical stacking of todo items.
+ */
+.incomplete-column {
   display: flex;
   flex-direction: column;
-  
-  // "owl" pattern used for spacing between list items
-  > * + * {
-    margin-block-start: 1em;
+  gap: 1rem;
+
+  h1 {
+    margin-bottom: 1rem;
+    color: $color-text-default;
   }
 }
 
-// block-level class name
-.todo {
-  width: 30rem;
-  padding: 8px;
-  box-shadow: 4px 4px 8px 0px;
-  border: 1px solid #000000;
-  font-family: Arial, Helvetica, sans-serif;
+/**
+ * Completed todos column.
+ * 
+ * Contains todos that have been marked as complete.
+ * Uses flexbox for vertical stacking of todo items.
+ */
+.complete-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 
-  // element-level class name
-  &__title {
-    margin-block-start: 0;
-  }
-
-  // element-level class name
-  &__id {
-    color: #a5a5a5;
-  }
-
-  // element-level class name
-  &__completed-value {
-  
-    // modifier-level class name
-    &--false {
-      color: red;
-    }
-    
-    // modifier-level class name
-    &--true {
-      color: green;
-    }
+  h1 {
+    margin-bottom: 1rem;
+    color: $color-text-default;
   }
 }
 
+/**
+ * Responsive design: Stack columns vertically on smaller screens.
+ * 
+ * When the viewport is narrower than 768px, the two-column layout
+ * switches to a single column layout for better mobile experience.
+ */
+@media (max-width: 768px) {
+  .page {
+    grid-template-columns: 1fr;
+    padding: 1rem;
+  }
+}

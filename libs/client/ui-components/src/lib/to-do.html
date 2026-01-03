@@ -1,0 +1,67 @@
+<!--
+  ToDo Component Template
+  
+  This template displays a single todo item with:
+  - Header: Title and completion status indicator
+  - Body: Description text
+  - Footer: Todo ID and action buttons (edit, delete)
+  
+  The component uses Angular's structural directives:
+  - *ngIf: Conditionally renders content based on todo existence
+  - [class.binding]: Dynamically applies CSS classes based on component state
+  
+  BEM (Block Element Modifier) naming convention is used for CSS classes:
+  - Block: .todo
+  - Elements: .todo__header, .todo__title, .todo__body, etc.
+  - Modifiers: .todo__completed--true
+-->
+
+<div class="todo" *ngIf="todo">
+  <!-- Header section containing title and completion indicator -->
+  <div class="todo__header">
+    <h2 class="todo__title">{{ todo.title }}</h2>
+    <div 
+      class="todo__completed" 
+      [class.todo__completed--true]="todo.completed"
+      (click)="triggerToggleComplete()"
+      role="button"
+      [attr.aria-label]="todo.completed ? 'Mark as incomplete' : 'Mark as complete'"
+      tabindex="0"
+    >
+      <!-- Completion status indicator -->
+      <!-- Note: FontAwesome icons would be used here in a full implementation -->
+      <span *ngIf="todo.completed">✓</span>
+      <span *ngIf="!todo.completed">○</span>
+    </div>
+  </div>
+
+  <!-- Body section containing the todo description -->
+  <div class="todo__body">
+    <p class="todo__description">{{ todo.description }}</p>
+  </div>
+
+  <!-- Footer section containing ID and action buttons -->
+  <div class="todo__footer">
+    <small class="todo__id">ID: {{ todo.id }}</small>
+    <div class="todo__actions">
+      <!-- Edit button - emits editTodo event -->
+      <button 
+        class="btn btn--primary" 
+        (click)="triggerEdit()"
+        type="button"
+        aria-label="Edit todo"
+      >
+        ✏️
+      </button>
+      <!-- Delete button - emits deleteTodo event -->
+      <button 
+        class="btn btn--danger" 
+        (click)="triggerDelete()"
+        type="button"
+        aria-label="Delete todo"
+      >
+        🗑️
+      </button>
+    </div>
+  </div>
+</div>

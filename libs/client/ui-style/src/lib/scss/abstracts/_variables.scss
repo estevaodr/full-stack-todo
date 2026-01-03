@@ -1,0 +1,152 @@
+/**
+ * Variables - Design System Tokens
+ * 
+ * This file contains SCSS variables that define the design system's
+ * foundational values. These variables are used throughout all other
+ * stylesheets to ensure consistency.
+ * 
+ * Design Tokens Defined:
+ * - Typography: Font sizes, line heights, font families
+ * - Spacing: Consistent spacing scale based on a base value
+ * - Colors: Semantic color mappings from the Nord palette
+ * 
+ * Usage:
+ * These variables are imported via the abstracts/_index.scss file
+ * and can be used in any component or layout stylesheet.
+ * 
+ * Note: Nord color variables ($nord0, $nord3, etc.) are imported
+ * from the vendors/_index.scss file which imports nord/src/sass/nord
+ */
+
+// Import Nord colors first so we can use them below
+@use '../vendors' as *;
+
+// ============================================================================
+// Typography Variables
+// ============================================================================
+
+/**
+ * Base font size for the application.
+ * Used as the root font size, with other sizes calculated relative to this.
+ */
+$font-size-base: 20px;
+
+/**
+ * Base line height for body text.
+ * Provides comfortable reading spacing for paragraphs and body content.
+ */
+$line-height-base: 1.2rem;
+
+/**
+ * Line height for headings.
+ * Tighter spacing for headings to create visual hierarchy.
+ */
+$line-height-heading: 1rem;
+
+/**
+ * Letter spacing for text.
+ * Normal spacing is used by default, but can be adjusted for specific cases.
+ */
+$letter-spacing: normal;
+
+/**
+ * Primary font family stack.
+ * Uses system fonts for optimal performance and native look.
+ * Falls back to generic sans-serif if system fonts aren't available.
+ */
+$font-family-sans-serif: 'Helvetica Neue', helvetica, arial, sans-serif;
+
+// ============================================================================
+// Spacing Scale
+// ============================================================================
+
+/**
+ * Base spacing unit.
+ * All spacing values are calculated as multiples or fractions of this value.
+ * This creates a consistent, harmonious spacing system throughout the design.
+ */
+$space-default: 24px;
+
+/**
+ * Extra small spacing (25% of base).
+ * Used for tight spacing between closely related elements.
+ */
+$space-x-sm: calc($space-default * 0.25);
+
+/**
+ * Small spacing (50% of base).
+ * Used for spacing between related elements within a component.
+ */
+$space-sm: calc($space-default * 0.5);
+
+/**
+ * Medium spacing (100% of base = default).
+ * The standard spacing unit used throughout the application.
+ */
+$space-md: $space-default;
+
+/**
+ * Large spacing (150% of base).
+ * Used for spacing between major sections or components.
+ */
+$space-lg: calc($space-default * 1.5);
+
+/**
+ * Extra large spacing (200% of base).
+ * Used for significant separation between major page sections.
+ */
+$space-x-lg: calc($space-default * 2);
+
+// ============================================================================
+// Color Variables (from Nord Palette)
+// ============================================================================
+
+/**
+ * Default text color.
+ * Primary color for body text and content.
+ * Maps to Nord's $nord4 (brightest text color).
+ */
+$color-text-default: $nord4;
+
+/**
+ * Label/secondary text color.
+ * Used for less prominent text like labels, captions, and metadata.
+ * Maps to Nord's $nord3 (medium brightness).
+ */
+$color-text-label: $nord3;
+
+/**
+ * Inverse text color.
+ * Used for text on dark backgrounds.
+ * Maps to Nord's $nord6 (darkest, for contrast).
+ */
+$color-text-inverse: $nord6;
+
+/**
+ * Light UI background color.
+ * Primary background color for the application.
+ * Maps to Nord's $nord0 (darkest background).
+ */
+$color-ui-light: $nord0;
+
+/**
+ * Border color.
+ * Used for borders, dividers, and separators.
+ * Maps to Nord's $nord3 (medium brightness for subtle borders).
+ */
+$color-ui-border: $nord3;
+
+/**
+ * Danger/error status color.
+ * Used for error states, destructive actions, and warnings.
+ * Maps to Nord's $nord11 (red).
+ */
+$color-status-danger: $nord11;
+
+/**
+ * Success status color.
+ * Used for success states, completed items, and positive feedback.
+ * Maps to Nord's $nord14 (green).
+ */
+$color-status-success: $nord14;
+

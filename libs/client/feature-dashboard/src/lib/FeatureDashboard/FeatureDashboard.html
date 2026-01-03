@@ -1,18 +1,51 @@
-<p>feature-dashboard works!</p>
+<!--
+  Feature Dashboard Template
+  
+  This template displays todo items in a two-column layout:
+  - Left column: Incomplete todos
+  - Right column: Completed todos
+  
+  Template Features:
+  - Uses async pipe to handle Observable subscription automatically
+  - Separates todos by completion status using *ngIf
+  - Uses trackBy function for performance optimization
+  - Binds component outputs to event handlers
+  
+  Angular Template Syntax:
+  - *ngIf with async pipe: Waits for data and assigns to local variable
+  - *ngFor: Iterates over the todos array
+  - trackBy: Optimizes rendering by tracking items by ID
+  - [todo]: Property binding to pass data to child component
+  - (toggleComplete): Event binding to handle component output
+  - $event: Special variable containing the emitted value
+-->
 
-<div class="todo-list">
-  @for (todo of (todoItems$ | async); track todo.id; let i = $index) {
-    <div class="todo">
-      <h2 class="todo__title">#{{ i + 1 }} {{ todo.title }}</h2>
-      <p class="todo__description">{{ todo.description }}</p>
-      <small class="todo__id">ID: {{ todo.id }}</small>
-      <br />
-      <small class="todo__completed-label"
-        >Completed:
-        <span class="todo__completed-value--{{ todo.completed }}">{{
-          todo.completed
-        }}</span></small
-      >
-    </div>
-  }
+<div class="page" *ngIf="todos$ | async as todos">
+  <!-- Incomplete Todos Column -->
+  <div class="incomplete-column">
+    <h1>Incomplete</h1>
+    <ng-container *ngFor="let todo of todos; trackBy: trackTodo">
+      <fst-todo
+        [todo]="todo"
+        *ngIf="!todo.completed"
+        (toggleComplete)="toggleComplete($event)"
+        (deleteTodo)="deleteTodo($event)"
+        (editTodo)="editTodo($event)"
+      ></fst-todo>
+    </ng-container>
+  </div>
+
+  <!-- Completed Todos Column -->
+  <div class="complete-column">
+    <h1>Completed</h1>
+    <ng-container *ngFor="let todo of todos; trackBy: trackTodo">
+      <fst-todo
+        [todo]="todo"
+        *ngIf="todo.completed"
+        (toggleComplete)="toggleComplete($event)"
+        (deleteTodo)="deleteTodo($event)"
+        (editTodo)="editTodo($event)"
+      ></fst-todo>
+    </ng-container>
+  </div>
 </div>

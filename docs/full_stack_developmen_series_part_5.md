@@ -27,15 +27,18 @@ There are many well-established design systems available in the open source worl
 
 ### Create A Shared Style Library
 
-Time to add another library to our repository! Instead of using an Angular or Nest-based generator, we'll use Nrwl's `workspace` generator to create a framework-agnostic library. Since this library will only contain SCSS files we don't need to include tests, modules, or components.
+Time to add another library to our repository! Instead of using an Angular or Nest-based generator, we'll use Nx's `@nx/js:library` generator to create a framework-agnostic library. Since this library will only contain SCSS files we don't need to include tests, modules, or components.
 
 ```
-$ npx nx generate @nrwl/workspace:library ui-style \
---directory=libs/client \
---skipBabelrc \
---tags=type:ui,scope:client \
---unitTestRunner=none
+$ npx nx generate @nx/js:library --name=ui-style \
+--directory=libs/client/ui-style \
+--bundler=none \
+--unitTestRunner=none \
+--linter=none \
+--tags=type:ui,scope:client
 ```
+
+**Note:** The `@nrwl/workspace:library` generator has been deprecated in favor of `@nx/js:library`. The `--bundler=none` option creates a library that doesn't need to be built, perfect for SCSS-only libraries.
 
 
 Creating the client-ui-style library
@@ -128,9 +131,11 @@ apps/client/project.json
 libs/client/ui-style/src/lib/scss directory 
 thanks to the includePaths option specified 
 above 👇  */
-@import 'style';
+@use 'style';
 
 ```
+
+**Note:** Modern Sass recommends using `@use` instead of `@import` for better performance and namespacing. The `@import` syntax is deprecated and will be removed in Dart Sass 3.0.0.
 
 
 apps/client/src/styles.scss
@@ -142,9 +147,11 @@ apps/client/src/styles.scss
 The first file that gets updated is our vendor directory's index file:
 
 ```
-@import '~normalize.css';
+@import 'normalize.css/normalize.css';
 @import 'nord/src/sass/nord';
 ```
+
+**Note:** The `~` prefix syntax for node_modules may not work in all build configurations. Use the direct path `normalize.css/normalize.css` instead.
 
 
 libs/client/ui-style/src/lib/scss/vendors/\_index.scss
@@ -199,8 +206,10 @@ Integrating Storybook
 An indispensable tool for me when working on web UIs is [Storybook](https://storybook.js.org/?ref=thefullstack.engineer). It is a standalone application that provides an isolated, visual representation of components. This allows you to design components without having to run your full application, which greatly speeds up development.
 
 ```
-$ npm install -D @nrwl/storybook
+$ npm install -D @nx/storybook
 ```
+
+**Note:** The package name has been updated from `@nrwl/storybook` to `@nx/storybook` in newer versions of Nx.
 
 
 💡
@@ -221,12 +230,11 @@ $ npx nx generate @nrwl/angular:library \
 --style=scss \
 --tags=type:ui,scope:client
 
-$ npx nx generate @nrwl/angular:component ToDo \
---project=client-ui-components \
+$ npx nx generate @nx/angular:component libs/client/ui-components/src/lib/to-do \
 --standalone \
 --changeDetection=OnPush \
---path=libs/client/ui-components/src/lib \
---selector=fst-todo
+--selector=fst-todo \
+--style=scss
 ```
 
 
@@ -241,14 +249,16 @@ $ npx nx generate @nrwl/angular:component ToDo \
 Just like we added Stylelint integration to our `ui-styles` library, we need to add Storybook integration to our `ui-components` library.
 
 ```
-$ npx nx g @nrwl/storybook:configuration client-ui-components \
---storybook7betaConfiguration \
---storybook7UiFramework=@storybook/angular \
---configureCypress \
---tsConfiguration \
---configureTestRunner \
---cypressDirectory=./
+$ npx nx generate @nx/storybook:configuration ui-components \
+--uiFramework=@storybook/angular \
+--interactionTests=true \
+--tsConfiguration=true
 ```
+
+**Note:** 
+- Use the project name `ui-components` (not `client-ui-components`) as shown by `nx show projects`
+- The Storybook 7 beta configuration flags are no longer needed in current versions
+- The generator automatically sets up interaction tests and TypeScript configuration
 
 
 As you can see here, we're using a beta version of the next Storybook release - I hope this command still works when you read this!
@@ -261,8 +271,10 @@ Storybook reads files that it refers to as "stories". These stories usually foll
 The beta generator for Storybook 7 didn't appear to create stories for my components automatically, so I had to manually run:
 
 ```
-$ npx nx generate @nrwl/angular:stories client-ui-components
+$ npx nx generate @nx/angular:stories ui-components
 ```
+
+**Note:** Use the project name `ui-components` (not `client-ui-components`).
 
 
 After that, update `build-storybook` target just like the application's `project.json` so Storybook is aware of our SCSS:
@@ -525,10 +537,12 @@ So far the component just displays the current state - there's no way to alter t
 `@Output()` properties are added for the 3 buttons on the component. This decorator is attached to `EventEmitter` objects - a type of RxJs Subject that allows parent components to listen for actions.
 
 ```
-  @Output() toggleComplete = new EventEmitter<boolean>();
+  @Output() toggleComplete = new EventEmitter<ITodo>();
   @Output() editTodo = new EventEmitter<ITodo>();
   @Output() deleteTodo = new EventEmitter<ITodo>();
 ```
+
+**Note:** The `toggleComplete` output has been updated to emit the full `ITodo` object instead of just a boolean, providing better context to parent components. This matches the pattern used by the other output emitters.
 
 
 libs/client/ui-components/src/lib/to-do/to-do.component.ts

@@ -1,1 +1,5 @@
-/* You can add global styles to this file, and also import other style files */
+/** References the style.scss file in the
+libs/client/ui-style/src/lib/scss directory 
+thanks to the includePaths option specified 
+above 👇  */
+@use 'style';

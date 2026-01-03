@@ -1,0 +1,9 @@
+{
+  "name": "ui-style",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/ui-style/src",
+  "projectType": "library",
+  "tags": ["type:ui", "scope:client"],
+  "// targets": "to see all targets run: nx show project ui-style --web",
+  "targets": {}
+}

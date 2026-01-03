@@ -1,0 +1,11 @@
+/**
+ * Abstracts Index
+ * 
+ * This file forwards all abstract partials (variables, mixins, functions).
+ * Using @forward allows other files to import these without polluting
+ * the global namespace.
+ * 
+ * Abstracts contain no CSS output - only definitions that other files use.
+ */
+
+@forward 'variables';

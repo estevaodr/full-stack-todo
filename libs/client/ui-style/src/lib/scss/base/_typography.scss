@@ -1,0 +1,53 @@
+/**
+ * Typography Base Styles
+ * 
+ * This file contains base typography styles that apply to the root HTML element
+ * and establish the foundation for all text rendering in the application.
+ * 
+ * These styles:
+ * - Set the default font family, size, and line height
+ * - Define text and background colors
+ * - Establish responsive typography rules
+ * 
+ * All other typography styles inherit from these base values.
+ */
+
+// Import variables so we can use them
+@use '../abstracts' as *;
+
+/**
+ * Root HTML element styles.
+ * 
+ * These styles cascade down to all elements unless overridden.
+ * The root element sets the foundation for the entire typography system.
+ */
+html {
+  // Text color using design system variable
+  color: $color-text-default;
+  
+  // Line height for comfortable reading
+  line-height: $line-height-base;
+  
+  // Base font size - all other sizes are relative to this
+  font-size: $font-size-base;
+  
+  // Background color from design system
+  background-color: $color-ui-light;
+  
+  // Letter spacing for optimal readability
+  letter-spacing: $letter-spacing;
+  
+  // Font family stack from design system
+  font-family: $font-family-sans-serif;
+
+  /**
+   * Responsive typography adjustments.
+   * 
+   * For larger screens (1280px and above), maintain the base font size.
+   * This ensures text remains readable and appropriately sized across devices.
+   */
+  @media only screen and (min-width: 1280px) {
+    font-size: $font-size-base;
+  }
+}
+

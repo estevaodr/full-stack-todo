@@ -1,0 +1,9 @@
+/**
+ * Base Index
+ * 
+ * This file forwards all base styles (typography, resets, etc.).
+ * Base styles apply to HTML elements and provide the foundation
+ * for all other styles in the application.
+ */
+
+@forward 'typography';

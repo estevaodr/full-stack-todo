@@ -1,0 +1,24 @@
+/**
+ * Vendors Directory - Third-Party Styles
+ * 
+ * This file imports external stylesheets and third-party CSS/SCSS libraries.
+ * These are typically frameworks, resets, or utility libraries that provide
+ * base styles before our custom styles are applied.
+ * 
+ * Imports:
+ * - normalize.css: A modern CSS reset that makes browsers render elements
+ *   more consistently and in line with modern standards. It's included first
+ *   so our custom styles can override it as needed.
+ * 
+ * - nord: An open-source color palette providing muted, cool colors suitable
+ *   for both light and dark modes. The Nord palette is well-regarded for its
+ *   visual appeal and accessibility.
+ * 
+ * Note: The '~' prefix tells the bundler to resolve from node_modules
+ */
+
+// Import normalize.css - using @import for CSS files
+@import 'normalize.css/normalize.css';
+// Import Nord color palette
+@import 'nord/src/sass/nord';
+
