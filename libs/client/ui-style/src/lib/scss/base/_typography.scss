@@ -22,23 +22,34 @@
  * The root element sets the foundation for the entire typography system.
  */
 html {
-  // Text color using design system variable
-  color: $color-text-default;
+  // Use CSS custom properties for runtime theme switching
+  color: var(--color-text-default, $color-text-default);
   
   // Line height for comfortable reading
   line-height: $line-height-base;
   
   // Base font size - all other sizes are relative to this
-  font-size: $font-size-base;
+  font-size: var(--font-size-base, $font-size-base);
   
-  // Background color from design system
-  background-color: $color-ui-light;
+  // Background color from design system (supports theme switching)
+  background-color: var(--color-bg-primary, $color-ui-light);
   
   // Letter spacing for optimal readability
   letter-spacing: $letter-spacing;
   
   // Font family stack from design system
-  font-family: $font-family-sans-serif;
+  font-family: var(--font-family-base, $font-family-sans-serif);
+  
+  // Smooth theme transitions
+  &.theme-transition,
+  &.theme-transition *,
+  &.theme-transition *::before,
+  &.theme-transition *::after {
+    transition: background-color var(--transition-base),
+                color var(--transition-base),
+                border-color var(--transition-base),
+                box-shadow var(--transition-base);
+  }
 
   /**
    * Responsive typography adjustments.
@@ -47,7 +58,7 @@ html {
    * This ensures text remains readable and appropriately sized across devices.
    */
   @media only screen and (min-width: 1280px) {
-    font-size: $font-size-base;
+    font-size: var(--font-size-base, $font-size-base);
   }
 }
 

@@ -26,7 +26,7 @@ import { BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Api } from '@full-stack-todo/client/data-access';
 import { ITodo } from '@full-stack-todo/shared/domain';
-import { ToDoComponent } from '@full-stack-todo/client/ui-components';
+import { ToDoComponent, ThemeToggleComponent } from '@full-stack-todo/client/ui-components';
 
 @Component({
   selector: 'lib-feature-dashboard',
@@ -34,7 +34,9 @@ import { ToDoComponent } from '@full-stack-todo/client/ui-components';
   imports: [
     CommonModule,
     // Import the standalone ToDoComponent
-    ToDoComponent
+    ToDoComponent,
+    // Import theme toggle component
+    ThemeToggleComponent
   ],
   templateUrl: './FeatureDashboard.html',
   styleUrl: './FeatureDashboard.scss',

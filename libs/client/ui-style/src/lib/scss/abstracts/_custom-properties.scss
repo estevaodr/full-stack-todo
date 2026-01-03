@@ -1,0 +1,144 @@
+/**
+ * CSS Custom Properties (CSS Variables) for Theming
+ * 
+ * This file defines CSS custom properties that enable runtime theme switching.
+ * Unlike SCSS variables which are compiled, CSS custom properties can be changed
+ * dynamically via JavaScript, enabling features like dark mode.
+ * 
+ * Usage:
+ * - Use var(--color-text-default) instead of $color-text-default in component styles
+ * - Toggle themes by setting [data-theme="dark"] on <html> element
+ * - Access via JavaScript: document.documentElement.style.setProperty('--color-primary', '#fff')
+ */
+
+@use '../vendors' as *;
+
+/**
+ * Light Theme (Default)
+ * 
+ * These are the default values that apply when no theme is specified.
+ * They map to the Nord color palette for consistency.
+ */
+:root {
+  // Text Colors
+  --color-text-default: #{$nord4};
+  --color-text-label: #{$nord3};
+  --color-text-inverse: #{$nord6};
+  --color-text-muted: #{$nord3};
+  
+  // Background Colors
+  --color-bg-primary: #{$nord0};
+  --color-bg-secondary: #{$nord1};
+  --color-bg-tertiary: #{$nord2};
+  --color-bg-card: #{$nord1};
+  --color-bg-hover: #{$nord2};
+  
+  // Border Colors
+  --color-border-default: #{$nord3};
+  --color-border-hover: #{$nord10};
+  --color-border-focus: #{$nord10};
+  
+  // Status Colors
+  --color-status-danger: #{$nord11};
+  --color-status-success: #{$nord14};
+  --color-status-warning: #{$nord13};
+  --color-status-info: #{$nord10};
+  
+  // Primary Action Colors
+  --color-primary: #{$nord10};
+  --color-primary-hover: #{$nord9};
+  --color-primary-active: #{$nord8};
+  
+  // Spacing (using rem for better scalability)
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --spacing-2xl: 3rem;
+  
+  // Typography
+  --font-family-base: 'Helvetica Neue', helvetica, arial, sans-serif;
+  --font-size-base: 1rem;
+  --font-size-sm: 0.875rem;
+  --font-size-lg: 1.125rem;
+  --font-size-xl: 1.25rem;
+  --font-size-2xl: 1.5rem;
+  
+  // Shadows
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.15);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.25);
+  
+  // Border Radius
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  
+  // Transitions
+  --transition-fast: 0.15s ease-in-out;
+  --transition-base: 0.2s ease-in-out;
+  --transition-slow: 0.3s ease-in-out;
+}
+
+/**
+ * Dark Theme
+ * 
+ * Dark theme variant. Activated by setting [data-theme="dark"] on <html>.
+ * Uses Nord's darker palette values for better contrast in dark mode.
+ */
+[data-theme="dark"] {
+  // Text Colors (lighter for dark backgrounds)
+  --color-text-default: #{$nord4};
+  --color-text-label: #{$nord5};
+  --color-text-inverse: #{$nord0};
+  --color-text-muted: #{$nord3};
+  
+  // Background Colors (darker)
+  --color-bg-primary: #{$nord0};
+  --color-bg-secondary: #{$nord1};
+  --color-bg-tertiary: #{$nord2};
+  --color-bg-card: #{$nord1};
+  --color-bg-hover: #{$nord2};
+  
+  // Border Colors (slightly brighter for visibility)
+  --color-border-default: #{$nord3};
+  --color-border-hover: #{$nord9};
+  --color-border-focus: #{$nord9};
+  
+  // Status Colors (same, but can be adjusted)
+  --color-status-danger: #{$nord11};
+  --color-status-success: #{$nord14};
+  --color-status-warning: #{$nord13};
+  --color-status-info: #{$nord10};
+  
+  // Primary Action Colors
+  --color-primary: #{$nord9};
+  --color-primary-hover: #{$nord8};
+  --color-primary-active: #{$nord7};
+  
+  // Shadows (more pronounced in dark mode)
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
+  --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
+}
+
+/**
+ * Light Theme (Explicit)
+ * 
+ * Explicit light theme for when user prefers light mode.
+ * Can be used to override system preferences.
+ */
+[data-theme="light"] {
+  // Same as :root defaults, but explicit
+  --color-text-default: #{$nord4};
+  --color-text-label: #{$nord3};
+  --color-text-inverse: #{$nord6};
+  --color-bg-primary: #{$nord0};
+  --color-bg-secondary: #{$nord1};
+  --color-bg-card: #{$nord1};
+}
+

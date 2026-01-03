@@ -8,4 +8,6 @@
  * Abstracts contain no CSS output - only definitions that other files use.
  */
 
+@forward 'custom-properties';
 @forward 'variables';
+@forward 'mixins';

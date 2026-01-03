@@ -10,6 +10,8 @@
   - Separates todos by completion status using *ngIf
   - Uses trackBy function for performance optimization
   - Binds component outputs to event handlers
+  - Semantic HTML with proper ARIA landmarks
+  - Theme toggle for user preference
   
   Angular Template Syntax:
   - *ngIf with async pipe: Waits for data and assigns to local variable
@@ -20,32 +22,49 @@
   - $event: Special variable containing the emitted value
 -->
 
-<div class="page" *ngIf="todos$ | async as todos">
+<header class="dashboard-header" role="banner">
+  <h1 class="dashboard-header__title">Todo Dashboard</h1>
+  <fst-theme-toggle></fst-theme-toggle>
+</header>
+
+<section class="page" *ngIf="todos$ | async as todos" role="main" aria-label="Todo items">
   <!-- Incomplete Todos Column -->
-  <div class="incomplete-column">
-    <h1>Incomplete</h1>
-    <ng-container *ngFor="let todo of todos; trackBy: trackTodo">
-      <fst-todo
-        [todo]="todo"
-        *ngIf="!todo.completed"
-        (toggleComplete)="toggleComplete($event)"
-        (deleteTodo)="deleteTodo($event)"
-        (editTodo)="editTodo($event)"
-      ></fst-todo>
-    </ng-container>
-  </div>
+  <section class="incomplete-column" aria-labelledby="incomplete-heading">
+    <h2 id="incomplete-heading" class="column-heading">Incomplete</h2>
+    <div class="todo-list" role="list">
+      <ng-container *ngFor="let todo of todos; trackBy: trackTodo">
+        <article 
+          *ngIf="!todo.completed"
+          role="listitem"
+          [attr.aria-labelledby]="'todo-title-' + todo.id">
+          <fst-todo
+            [todo]="todo"
+            (toggleComplete)="toggleComplete($event)"
+            (deleteTodo)="deleteTodo($event)"
+            (editTodo)="editTodo($event)"
+          ></fst-todo>
+        </article>
+      </ng-container>
+    </div>
+  </section>
 
   <!-- Completed Todos Column -->
-  <div class="complete-column">
-    <h1>Completed</h1>
-    <ng-container *ngFor="let todo of todos; trackBy: trackTodo">
-      <fst-todo
-        [todo]="todo"
-        *ngIf="todo.completed"
-        (toggleComplete)="toggleComplete($event)"
-        (deleteTodo)="deleteTodo($event)"
-        (editTodo)="editTodo($event)"
-      ></fst-todo>
-    </ng-container>
-  </div>
-</div>
+  <section class="complete-column" aria-labelledby="completed-heading">
+    <h2 id="completed-heading" class="column-heading">Completed</h2>
+    <div class="todo-list" role="list">
+      <ng-container *ngFor="let todo of todos; trackBy: trackTodo">
+        <article 
+          *ngIf="todo.completed"
+          role="listitem"
+          [attr.aria-labelledby]="'todo-title-' + todo.id">
+          <fst-todo
+            [todo]="todo"
+            (toggleComplete)="toggleComplete($event)"
+            (deleteTodo)="deleteTodo($event)"
+            (editTodo)="editTodo($event)"
+          ></fst-todo>
+        </article>
+      </ng-container>
+    </div>
+  </section>
+</section>

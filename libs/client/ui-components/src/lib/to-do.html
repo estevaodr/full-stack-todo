@@ -20,19 +20,21 @@
   <!-- Header section containing title and completion indicator -->
   <div class="todo__header">
     <h2 class="todo__title">{{ todo.title }}</h2>
-    <div 
+    <button 
       class="todo__completed" 
       [class.todo__completed--true]="todo.completed"
       (click)="triggerToggleComplete()"
-      role="button"
+      (keydown.enter)="triggerToggleComplete()"
+      (keydown.space)="triggerToggleComplete(); $event.preventDefault()"
+      type="button"
       [attr.aria-label]="todo.completed ? 'Mark as incomplete' : 'Mark as complete'"
-      tabindex="0"
+      [attr.aria-pressed]="todo.completed"
     >
       <!-- Completion status indicator -->
       <!-- Note: FontAwesome icons would be used here in a full implementation -->
       <span *ngIf="todo.completed">✓</span>
       <span *ngIf="!todo.completed">○</span>
-    </div>
+    </button>
   </div>
 
   <!-- Body section containing the todo description -->
@@ -46,7 +48,7 @@
     <div class="todo__actions">
       <!-- Edit button - emits editTodo event -->
       <button 
-        class="btn btn--primary" 
+        class="btn btn--primary btn--icon-only" 
         (click)="triggerEdit()"
         type="button"
         aria-label="Edit todo"
@@ -55,7 +57,7 @@
       </button>
       <!-- Delete button - emits deleteTodo event -->
       <button 
-        class="btn btn--danger" 
+        class="btn btn--danger btn--icon-only" 
         (click)="triggerDelete()"
         type="button"
         aria-label="Delete todo"
