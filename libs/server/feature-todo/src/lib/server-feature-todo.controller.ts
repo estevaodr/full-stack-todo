@@ -23,72 +23,72 @@ export class ServerFeatureTodoController {
 
   /**
    * GET /api/todos
-   * Retrieves all todo items
-   * @returns Array of all todo items
+   * Retrieves all todo items from the database
+   * @returns Promise that resolves to an array of all todo items
    */
   @Get('')
-  getAll(): ITodo[] {
-    return this.serverFeatureTodoService.getAll();
+  async getAll(): Promise<ITodo[]> {
+    return await this.serverFeatureTodoService.getAll();
   }
 
   /**
    * GET /api/todos/:id
-   * Retrieves a single todo item by its ID
+   * Retrieves a single todo item by its ID from the database
    * @param id - The unique identifier of the todo item
-   * @returns The todo item with the specified ID
+   * @returns Promise that resolves to the todo item with the specified ID
    * @throws NotFoundException if the todo item is not found
    */
   @Get(':id')
-  getOne(@Param('id') id: string): ITodo {
-    return this.serverFeatureTodoService.getOne(id);
+  async getOne(@Param('id') id: string): Promise<ITodo> {
+    return await this.serverFeatureTodoService.getOne(id);
   }
 
   /**
    * POST /api/todos
-   * Creates a new todo item
+   * Creates a new todo item in the database
    * @param data - The todo data (title and description) from the request body
-   * @returns The newly created todo item with generated ID
+   * @returns Promise that resolves to the newly created todo item with generated UUID
    */
   @Post('')
-  create(@Body() data: CreateTodoDto): ITodo {
-    return this.serverFeatureTodoService.create(data);
+  async create(@Body() data: CreateTodoDto): Promise<ITodo> {
+    return await this.serverFeatureTodoService.create(data);
   }
 
   /**
    * PUT /api/todos/:id
-   * Creates or updates a todo item (upsert operation)
+   * Creates or updates a todo item (upsert operation) in the database
    * If a todo with the given ID exists, it updates it; otherwise, it creates a new one
    * @param data - The complete todo data including ID from the request body
-   * @returns The created or updated todo item
+   * @returns Promise that resolves to the created or updated todo item
    */
   @Put(':id')
-  upsertOne(@Body() data: UpsertTodoDto): ITodo {
-    return this.serverFeatureTodoService.upsert(data);
+  async upsertOne(@Body() data: UpsertTodoDto): Promise<ITodo> {
+    return await this.serverFeatureTodoService.upsert(data);
   }
 
   /**
    * PATCH /api/todos/:id
-   * Partially updates an existing todo item
+   * Partially updates an existing todo item in the database
    * Only the provided fields will be updated
    * @param id - The unique identifier of the todo item to update
    * @param data - Partial todo data from the request body (only fields to update)
-   * @returns The updated todo item
+   * @returns Promise that resolves to the updated todo item
    * @throws NotFoundException if the todo item is not found
    */
   @Patch(':id')
-  update(@Param('id') id: string, @Body() data: UpdateTodoDto): ITodo {
-    return this.serverFeatureTodoService.update(id, data);
+  async update(@Param('id') id: string, @Body() data: UpdateTodoDto): Promise<ITodo> {
+    return await this.serverFeatureTodoService.update(id, data);
   }
 
   /**
    * DELETE /api/todos/:id
-   * Deletes a todo item by its ID
+   * Deletes a todo item by its ID from the database
    * @param id - The unique identifier of the todo item to delete
    * @throws NotFoundException if the todo item is not found
    */
   @Delete(':id')
-  delete(@Param('id') id: string): void {
-    return this.serverFeatureTodoService.delete(id);
+  async delete(@Param('id') id: string): Promise<void> {
+    return await this.serverFeatureTodoService.delete(id);
   }
 }
 

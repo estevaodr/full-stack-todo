@@ -9,5 +9,7 @@
  * 
  * Currently exports:
  * - DataAccessTodoModule: The main module to import in feature modules
+ * - ToDoEntitySchema: The TypeORM entity schema for the todo table
  */
 export * from './lib/data-access-todo.module';
+export * from './lib/database/schemas/to-do.entity-schema';
