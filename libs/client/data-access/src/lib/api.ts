@@ -27,33 +27,35 @@ export class Api {
    * Retrieves all todo items from the server
    * 
    * HTTP Method: GET
-   * Endpoint: /api/todos
+   * Endpoint: /api/v1/todos
+   * 
+   * Note: The server uses API versioning, so all endpoints are prefixed with /v1
    * 
    * @returns Observable<ITodo[]> - An array of all todo items wrapped in an Observable.
    *          Components subscribe to this to get the data when it arrives.
    */
   getAllToDoItems(): Observable<ITodo[]> {
-    return this.http.get<ITodo[]>(`/api/todos`);
+    return this.http.get<ITodo[]>(`/api/v1/todos`);
   }
 
   /**
    * Retrieves a single todo item by its unique ID
    * 
    * HTTP Method: GET
-   * Endpoint: /api/todos/:id
+   * Endpoint: /api/v1/todos/:id
    * 
    * @param todoId - The unique identifier of the todo item to retrieve
    * @returns Observable<ITodo> - The requested todo item wrapped in an Observable
    */
   getToDoById(todoId: string): Observable<ITodo> {
-    return this.http.get<ITodo>(`/api/todos/${todoId}`);
+    return this.http.get<ITodo>(`/api/v1/todos/${todoId}`);
   }
 
   /**
    * Creates a new todo item on the server
    * 
    * HTTP Method: POST
-   * Endpoint: /api/todos
+   * Endpoint: /api/v1/todos
    * Body: todoData (title and description)
    * 
    * POST is used for creating new resources. The server will generate an ID
@@ -63,14 +65,14 @@ export class Api {
    * @returns Observable<ITodo> - The newly created todo item with server-generated ID
    */
   createToDo(todoData: ICreateTodo): Observable<ITodo> {
-    return this.http.post<ITodo>(`/api/todos`, todoData);
+    return this.http.post<ITodo>(`/api/v1/todos`, todoData);
   }
 
   /**
    * Partially updates an existing todo item
    * 
    * HTTP Method: PATCH
-   * Endpoint: /api/todos/:id
+   * Endpoint: /api/v1/todos/:id
    * Body: todoData (only the fields you want to update)
    * 
    * PATCH is for partial updates - you only send the fields that changed.
@@ -82,14 +84,14 @@ export class Api {
    * @returns Observable<ITodo> - The updated todo item
    */
   updateToDo(todoId: string, todoData: IUpdateTodo): Observable<ITodo> {
-    return this.http.patch<ITodo>(`/api/todos/${todoId}`, todoData);
+    return this.http.patch<ITodo>(`/api/v1/todos/${todoId}`, todoData);
   }
 
   /**
    * Creates a new todo or replaces an existing one (upsert = update or insert)
    * 
    * HTTP Method: PUT
-   * Endpoint: /api/todos/:id
+   * Endpoint: /api/v1/todos/:id
    * Body: todoData (complete todo object)
    * 
    * PUT is for full replacement. If a todo with this ID exists, it replaces it entirely.
@@ -101,14 +103,14 @@ export class Api {
    * @returns Observable<ITodo> - The created or updated todo item
    */
   createOrUpdateToDo(todoId: string, todoData: IUpsertTodo): Observable<ITodo> {
-    return this.http.put<ITodo>(`/api/todos/${todoId}`, todoData);
+    return this.http.put<ITodo>(`/api/v1/todos/${todoId}`, todoData);
   }
 
   /**
    * Deletes a todo item from the server
    * 
    * HTTP Method: DELETE
-   * Endpoint: /api/todos/:id
+   * Endpoint: /api/v1/todos/:id
    * 
    * Permanently removes the todo item with the specified ID from the database.
    * 
@@ -116,6 +118,6 @@ export class Api {
    * @returns Observable<void> - Empty response confirming deletion
    */
   deleteToDo(todoId: string): Observable<void> {
-    return this.http.delete<void>(`/api/todos/${todoId}`);
+    return this.http.delete<void>(`/api/v1/todos/${todoId}`);
   }
 }

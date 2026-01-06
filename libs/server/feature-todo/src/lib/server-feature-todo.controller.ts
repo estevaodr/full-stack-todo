@@ -9,6 +9,7 @@ import {
   Post,
   Put,
   UseFilters,
+  Version,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateTodoDto, UpdateTodoDto, UpsertTodoDto, TodoDto } from '@full-stack-todo/shared';
@@ -45,6 +46,7 @@ export class ServerFeatureTodoController {
    * @returns Promise that resolves to an array of all todo items
    */
   @Get('')
+  @Version('1')
   @ApiOkResponse({
     type: TodoDto,
     isArray: true,
@@ -66,6 +68,7 @@ export class ServerFeatureTodoController {
    * @throws NotFoundException if the todo item is not found
    */
   @Get(':id')
+  @Version('1')
   @ApiOkResponse({
     type: TodoDto,
     description: 'Returns a single to-do item',
@@ -85,6 +88,7 @@ export class ServerFeatureTodoController {
    * @returns Promise that resolves to the newly created todo item with generated UUID
    */
   @Post('')
+  @Version('1')
   @ApiOkResponse({
     type: TodoDto,
     description: 'Returns the newly created to-do item',
@@ -105,6 +109,7 @@ export class ServerFeatureTodoController {
    * @returns Promise that resolves to the created or updated todo item
    */
   @Put(':id')
+  @Version('1')
   @ApiOkResponse({
     type: TodoDto,
     description: 'Returns the created or updated to-do item',
@@ -127,6 +132,7 @@ export class ServerFeatureTodoController {
    * @throws NotFoundException if the todo item is not found
    */
   @Patch(':id')
+  @Version('1')
   @ApiOkResponse({
     type: TodoDto,
     description: 'Returns the updated to-do item',
@@ -146,6 +152,7 @@ export class ServerFeatureTodoController {
    * @throws NotFoundException if the todo item is not found
    */
   @Delete(':id')
+  @Version('1')
   @ApiOkResponse({
     description: 'Successfully deleted the to-do item',
   })

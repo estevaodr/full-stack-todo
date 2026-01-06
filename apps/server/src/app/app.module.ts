@@ -36,7 +36,6 @@ import * as Joi from 'joi';
 // Import local modules, controllers, and services from the same app
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TodoModule } from './todo/todo.module';
 
 /**
  * @Module decorator marks this class as a NestJS module
@@ -151,10 +150,9 @@ import { TodoModule } from './todo/todo.module';
      * available to the application.
      * 
      * - ServerFeatureTodoModule: Shared todo feature module (from monorepo structure)
-     * - TodoModule: Local todo module (app-specific implementation)
+     *   This module provides versioned todo endpoints at /api/v1/todos
      */
     ServerFeatureTodoModule,
-    TodoModule,
   ],
 
   /**

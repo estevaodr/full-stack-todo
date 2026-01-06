@@ -18,7 +18,8 @@ async function bootstrap() {
   // now use /api/v1 as the prefix instead of just /api
   app.enableVersioning({
     type: VersioningType.URI,
-    prefix: 'v1',
+    prefix: 'v',
+    defaultVersion: '1',
   });
 
   // Set up Swagger/OpenAPI documentation
