@@ -6,10 +6,12 @@ This guide explains how to run tests in the Full Stack Todo project, covering di
 
 - [Quick Start](#quick-start)
 - [Running Tests with Nx](#running-tests-with-nx)
+- [Running Integration Tests (E2E)](#running-integration-tests-e2e)
 - [Running Specific Test Suites](#running-specific-test-suites)
 - [Running Individual Tests](#running-individual-tests)
 - [Test Coverage](#test-coverage)
 - [Understanding Test Output](#understanding-test-output)
+- [Test Types](#test-types)
 - [Troubleshooting](#troubleshooting)
 - [Best Practices](#best-practices)
 
@@ -72,6 +74,68 @@ Get more detailed information about what's happening:
 npx nx test server-feature-todo --verbose
 ```
 
+## Running Integration Tests (E2E)
+
+Integration tests verify that multiple components work together correctly, testing the full HTTP request/response cycle.
+
+### Run Server Integration Tests
+
+Run all server integration tests:
+
+```bash
+npx nx e2e server-e2e
+```
+
+Or using the Makefile:
+
+```bash
+make e2e-server
+```
+
+### Run Client Integration Tests
+
+Run all client integration tests:
+
+```bash
+npx nx e2e client-e2e
+```
+
+Or using the Makefile:
+
+```bash
+make e2e-client
+```
+
+### Run All Integration Tests
+
+Run both server and client integration tests:
+
+```bash
+npx nx run-many --target=e2e --all
+```
+
+Or using the Makefile:
+
+```bash
+make e2e
+```
+
+### What Integration Tests Cover
+
+The server integration tests (`apps/server-e2e/src/server/todo-controller.spec.ts`) verify:
+
+- **GET /api/v1/todos** - Retrieving all todos
+- **POST /api/v1/todos** - Creating new todos with validation
+- **GET /api/v1/todos/:id** - Retrieving a specific todo
+- **PUT /api/v1/todos/:id** - Full update of a todo
+- **PATCH /api/v1/todos/:id** - Partial update of a todo
+- **DELETE /api/v1/todos/:id** - Deleting a todo
+- **Validation** - Request validation using ValidationPipe
+- **Error Handling** - Proper HTTP status codes and error messages
+- **API Contract** - Endpoints match expected client behavior
+
+Integration tests use `supertest` to make actual HTTP requests and verify the complete request/response cycle, including middleware, validation pipes, and error handling.
+
 ## Running Specific Test Suites
 
 ### Run Only Controller Tests
@@ -90,6 +154,18 @@ To run only the service tests:
 npx nx test server-feature-todo --testPathPattern=service
 ```
 
+### Run Only Integration Tests
+
+To run only integration tests:
+
+```bash
+# Server integration tests
+npx nx e2e server-e2e
+
+# Client integration tests
+npx nx e2e client-e2e
+```
+
 ### Run Tests Matching a Pattern
 
 Run tests that match a specific pattern in their name:
@@ -100,6 +176,9 @@ npx nx test server-feature-todo --testNamePattern="getAll"
 
 # Run tests with "update" in the name
 npx nx test server-feature-todo --testNamePattern="update"
+
+# Run integration tests matching a pattern
+npx nx e2e server-e2e --testNamePattern="should return"
 ```
 
 ## Running Individual Tests
@@ -171,6 +250,32 @@ coverageThreshold: {
   }
 }
 ```
+
+## Test Types
+
+The project includes three types of tests:
+
+### Unit Tests
+
+Test individual components in isolation:
+- **Controller Tests**: `libs/server/feature-todo/src/lib/*.controller.spec.ts`
+- **Service Tests**: `libs/server/feature-todo/src/lib/*.service.spec.ts`
+- **Component Tests**: `libs/client/**/*.spec.ts`
+
+Unit tests use mocks to isolate components and test them independently.
+
+### Integration Tests (E2E)
+
+Test multiple components working together:
+- **Server Integration Tests**: `apps/server-e2e/src/server/todo-controller.spec.ts`
+  - Tests the full HTTP request/response cycle
+  - Includes validation pipes and middleware
+  - Verifies API endpoints work correctly end-to-end
+  - Uses `supertest` for HTTP testing
+- **Client Integration Tests**: `apps/client-e2e/src/**/*.spec.ts`
+  - Tests the full application flow from the user's perspective
+
+Integration tests verify that components work together correctly and that the API contract matches client expectations.
 
 ## Understanding Test Output
 
@@ -390,11 +495,20 @@ const service = { getAll: jest.fn() };
 ## Common Commands Reference
 
 ```bash
-# Run all tests
+# Run all unit tests
 npx nx run-many --target=test --all
+
+# Run all integration tests (E2E)
+npx nx run-many --target=e2e --all
 
 # Run tests for specific project
 npx nx test server-feature-todo
+
+# Run server integration tests
+npx nx e2e server-e2e
+
+# Run client integration tests
+npx nx e2e client-e2e
 
 # Run tests in watch mode
 npx nx test server-feature-todo --watch
