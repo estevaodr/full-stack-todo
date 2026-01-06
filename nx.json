@@ -43,12 +43,6 @@
       "exclude": ["apps/server-e2e/**/*"]
     },
     {
-      "plugin": "@nx/playwright/plugin",
-      "options": {
-        "targetName": "e2e"
-      }
-    },
-    {
       "plugin": "@nx/storybook/plugin",
       "options": {
         "serveStorybookTargetName": "storybook",
@@ -73,7 +67,6 @@
   },
   "generators": {
     "@nx/angular:application": {
-      "e2eTestRunner": "playwright",
       "linter": "eslint",
       "style": "scss",
       "unitTestRunner": "vitest-angular"
