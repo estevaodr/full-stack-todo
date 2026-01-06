@@ -44,10 +44,12 @@ export const ToDoEntitySchema = new EntitySchema<ITodo>({
      * Title column - The main text of the todo item
      * - type: String - Stores text data
      * - nullable: false - This field is required and cannot be null/empty
+     * - unique: true - Ensures no two todos can have the same title (prevents duplicates)
      */
     title: {
       type: String,
       nullable: false,
+      unique: true,
     },
     
     /**

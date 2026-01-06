@@ -8,9 +8,11 @@ import {
   Patch,
   Post,
   Put,
+  UseFilters,
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CreateTodoDto, UpdateTodoDto, UpsertTodoDto, TodoDto } from '@full-stack-todo/shared';
+import { QueryErrorFilter } from '@full-stack-todo/server/util';
 import { ServerFeatureTodoService } from './server-feature-todo.service';
 
 /**
@@ -23,11 +25,17 @@ import { ServerFeatureTodoService } from './server-feature-todo.service';
  * - @ApiOkResponse - Documents successful responses with their types
  * - @ApiOperation - Provides summary and description for each endpoint
  * 
+ * Exception Filters:
+ * - @UseFilters(QueryErrorFilter) - Handles database query errors, especially unique
+ *   constraint violations. When a duplicate todo is created, this filter catches the
+ *   error and returns a user-friendly error response.
+ * 
  * There are many decorators available for different HTTP status codes, but error
  * handling decorators (like @ApiBadRequestResponse) will be covered in a future post.
  */
 @ApiTags('todos')
 @Controller('todos')
+@UseFilters(QueryErrorFilter)
 export class ServerFeatureTodoController {
   constructor(private serverFeatureTodoService: ServerFeatureTodoService) {}
 
