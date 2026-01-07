@@ -1,0 +1,509 @@
+---
+alwaysApply: true
+---
+## Angular-Specific Guidelines
+
+### Component Architecture
+- **Use Standalone Components**: Prefer standalone components over NgModules
+- **Signals for State**: Use Angular signals (`signal()`, `computed()`, `effect()`) for reactive state management
+- **Component Composition**: Favor component composition over inheritance
+- **Single Responsibility**: Each component should have one clear purpose
+- **File Naming**: Use kebab-case (`user-profile.component.ts`, `todo-list.component.ts`)
+
+### Type Safety
+- **Interfaces for Models**: Define data models using interfaces for explicit types
+- **Strict Typing**: Avoid `any` - use TypeScript's type system fully
+- **Template Type Safety**: Use typed templates and avoid `any` in component templates
+
+### Code Organization
+- **Import Order**:
+  1. Angular core and common modules
+  2. RxJS modules
+  3. Angular-specific modules (FormsModule, RouterModule, etc.)
+  4. Core application imports
+  5. Shared module imports
+  6. Environment-specific imports
+  7. Relative path imports
+- **File Structure**: Imports at top, class definition, properties, methods, exports
+
+### Reactive Programming
+- **Async Pipe**: Use `async` pipe for observables in templates to simplify subscription management
+- **Signals**: Prefer signals over observables for component-local state
+- **RxJS**: Use RxJS operators appropriately (map, filter, switchMap, catchError)
+- **Unsubscribe**: Use `async` pipe or `takeUntilDestroyed()` to avoid memory leaks
+
+### Performance Optimization
+- **TrackBy Functions**: Use `trackBy` functions with `*ngFor` to optimize list rendering
+- **Pure Pipes**: Apply pure pipes for computationally heavy operations
+- **OnPush Change Detection**: Use `ChangeDetectionStrategy.OnPush` when appropriate
+- **Deferrable Views**: Implement deferrable views to delay rendering of non-essential components
+- **NgOptimizedImage**: Use `NgOptimizedImage` for faster, more efficient image loading
+- **Lazy Loading**: Enable lazy loading for feature modules, optimizing initial load times
+
+### Template Best Practices
+- **Semantic HTML**: Use semantic HTML and relevant ARIA attributes for accessibility
+- **Template Syntax**: Prefer property binding `[property]` over interpolation when appropriate
+- **Event Binding**: Use `(event)` syntax for event handlers
+- **Two-Way Binding**: Use `[(ngModel)]` sparingly, prefer reactive forms for complex forms
+
+### Dependency Injection
+- **Inject Function**: Use the `inject()` function to inject services directly within component logic
+- **Constructor Injection**: Use constructor injection for required dependencies
+- **Optional Injection**: Use `inject(Service, { optional: true })` for optional dependencies
+
+### Forms
+- **Reactive Forms**: Prefer reactive forms over template-driven forms for complex forms
+- **Validation**: Use Angular's form validation system or custom validators
+- **Form Controls**: Use typed form controls (`FormControl<T>`, `FormGroup<T>`)
+
+### Styling
+- **SCSS**: Use SCSS for component styles
+- **Component Styles**: Use component-scoped styles (default)
+- **Global Styles**: Place global styles in `styles.scss`
+- **CSS Variables**: Use CSS custom properties for theming
+
+### Security
+- **XSS Prevention**: Rely on Angular's built-in sanitization, avoid `innerHTML`
+- **Sanitization**: Sanitize dynamic content using Angular's trusted sanitization methods
+- **Content Security Policy**: Follow CSP guidelines
+
+### Coding Standards
+- Use single quotes (`'`) for string literals
+- Use 2-space indentation
+- Avoid trailing whitespace and unused variables
+- Prefer `const` for constants and immutable variables
+- Use template literals for string interpolation and multi-line strings
+- Use optional chaining (`?.`) and nullish coalescing (`??`) to prevent null/undefined errors
+
+---
+
+## NestJS-Specific Guidelines
+
+### Modular Architecture
+- **One Module per Domain**: Encapsulate API in modules - one module per main domain/route
+- **One Controller per Route**: One controller for its route, and other controllers for secondary routes
+- **Feature Modules**: Organize by feature, not by technical layer
+- **Shared Module**: Create a shared module for services shared between modules
+
+### Project Structure
+```
+apps/server/src/app/
+  ├── {feature}/
+  │   ├── dto/
+  │   │   ├── create-{feature}.dto.ts
+  │   │   └── update-{feature}.dto.ts
+  │   ├── entities/
+  │   │   └── {feature}.entity.ts
+  │   ├── {feature}.controller.ts
+  │   ├── {feature}.module.ts
+  │   └── {feature}.service.ts
+  └── core/
+      ├── filters/
+      ├── guards/
+      ├── interceptors/
+      └── middlewares/
+```
+
+### Data Transfer Objects (DTOs)
+- **Input Validation**: Use `class-validator` for DTOs (inputs)
+- **Output Types**: Declare simple types/interfaces for outputs
+- **Naming**: Use descriptive names (`CreateTodoDto`, `UpdateTodoDto`, `TodoResponse`)
+- **Validation Decorators**: Use `@IsString()`, `@IsNumber()`, `@IsOptional()`, etc.
+
+### Entities
+- **TypeORM Entities**: Use TypeORM entities for data persistence
+- **Entity Naming**: Use PascalCase (`Todo`, `User`, `TodoItem`)
+- **Decorators**: Use `@Entity()`, `@Column()`, `@PrimaryGeneratedColumn()`, etc.
+- **Relations**: Define relations explicitly (`@ManyToOne`, `@OneToMany`, `@ManyToMany`)
+
+### Services
+- **One Service per Entity**: One service per entity for business logic and persistence
+- **Business Logic**: Keep business logic in services, not controllers
+- **Dependency Injection**: Use constructor injection or `inject()` function
+- **Error Handling**: Handle errors appropriately, throw custom exceptions when needed
+
+### Controllers
+- **HTTP Methods**: Use appropriate decorators (`@Get()`, `@Post()`, `@Put()`, `@Delete()`, `@Patch()`)
+- **Route Prefixes**: Use `@Controller('prefix')` for route organization
+- **Status Codes**: Return appropriate HTTP status codes
+- **Response Types**: Use DTOs or interfaces for response types
+- **Swagger Documentation**: Use `@ApiTags()`, `@ApiOperation()`, `@ApiResponse()` for OpenAPI docs
+
+### Dependency Injection
+- **Constructor Injection**: Prefer constructor injection
+- **Inject Function**: Use `inject()` function in functional contexts
+- **Provider Registration**: Register providers in module `providers` array
+- **Global Providers**: Use `@Global()` decorator for modules that should be available everywhere
+
+### Error Handling
+- **Exception Filters**: Use global exception filters for consistent error handling
+- **Custom Exceptions**: Create custom exception classes extending `HttpException`
+- **Validation Errors**: Return appropriate validation error responses
+- **Error Logging**: Log errors appropriately (use logger service)
+
+### Configuration
+- **ConfigModule**: Use `@nestjs/config` for environment variable management
+- **Validation**: Validate environment variables with Joi schemas
+- **Type Safety**: Use typed configuration with `ConfigService`
+- **Environment Files**: Use `.env` files for different environments
+
+### Database
+- **TypeORM**: Use TypeORM for database operations
+- **Migrations**: Use migrations in production (never `synchronize: true` in production)
+- **Repositories**: Use TypeORM repositories for data access
+- **Transactions**: Use transactions for multi-step operations
+- **Query Builder**: Use query builder for complex queries
+
+### Testing
+- **Unit Tests**: Write unit tests for services and controllers
+- **E2E Tests**: Write end-to-end tests for API modules
+- **Test Doubles**: Use mocks and test doubles for dependencies
+- **Test Database**: Use test database for E2E tests
+- **Test Utilities**: Create test utilities and factories
+
+---
+
+## Nx Monorepo Guidelines
+
+### Project Structure
+- **Apps**: Application entry points in `apps/` directory
+- **Libraries**: Shared libraries in `libs/` directory
+- **Feature Libraries**: Organize by feature (`libs/client/feature-*`, `libs/server/feature-*`)
+- **Shared Libraries**: Cross-cutting concerns in `libs/shared/`
+- **Domain Libraries**: Domain models in `libs/shared/domain/`
+
+### Path Mappings
+- **TypeScript Paths**: Define path mappings in `tsconfig.base.json`
+- **Naming Convention**: Use `@full-stack-todo/{scope}/{name}` format
+- **Barrel Exports**: Use `index.ts` files for public API exports
+- **Internal Imports**: Use path mappings, not relative paths across libraries
+
+### Project Configuration
+- **project.json**: Define targets (build, test, lint, serve) in `project.json`
+- **Target Dependencies**: Use `dependsOn` for target dependencies
+- **Inputs/Outputs**: Define inputs and outputs for caching
+- **Tags**: Use tags for project organization and constraints
+
+### Code Generation
+- **Nx Generators**: Use Nx generators for creating new projects and libraries
+- **Schematic Naming**: Follow Nx naming conventions
+- **Generator Options**: Use appropriate generator options (linter, test runner, style)
+
+### Build Optimization
+- **Task Caching**: Leverage Nx task caching for faster builds
+- **Affected Commands**: Use `nx affected` to run tasks only for affected projects
+- **Parallel Execution**: Use parallel execution for independent tasks
+- **Build Dependencies**: Define proper build dependencies
+
+### Testing Strategy
+- **Unit Tests**: Write unit tests for libraries and components
+- **E2E Tests**: Write E2E tests for applications
+- **Test Coverage**: Maintain good test coverage
+- **Test Execution**: Use Nx to run tests efficiently
+
+### Dependency Management
+- **Shared Dependencies**: Place shared dependencies in root `package.json`
+- **Project Dependencies**: Place project-specific dependencies in project `package.json`
+- **Peer Dependencies**: Use peer dependencies appropriately
+- **Version Alignment**: Keep versions aligned across the monorepo
+
+---
+
+## AWS EKS Deployment Guidelines
+
+### Containerization
+- **Dockerfile**: Create optimized, multi-stage Dockerfiles
+- **Layer Caching**: Order Dockerfile instructions to maximize layer caching
+- **Non-Root User**: Run containers as non-root user
+- **Health Checks**: Include health check endpoints
+- **Environment Variables**: Use environment variables for configuration
+- **Secrets Management**: Use Kubernetes secrets or AWS Secrets Manager
+
+### Kubernetes Manifests
+- **Deployments**: Use Deployments for stateless applications
+- **Services**: Use Services for internal and external access
+- **ConfigMaps**: Use ConfigMaps for non-sensitive configuration
+- **Secrets**: Use Secrets for sensitive data (or AWS Secrets Manager)
+- **Resource Limits**: Define resource requests and limits
+- **Readiness/Liveness Probes**: Configure health check probes
+
+### Helm Charts
+- **Chart Structure**: Organize Helm charts with proper structure
+- **Values Files**: Use values files for different environments
+- **Templating**: Use Helm templating for configuration
+- **Dependencies**: Manage chart dependencies appropriately
+
+### Infrastructure as Code
+- **Terraform**: Use Terraform for infrastructure provisioning
+- **Module Structure**: Organize Terraform code in modules
+- **State Management**: Use remote state (S3 + DynamoDB)
+- **Variables**: Use variables and outputs appropriately
+- **Workspaces**: Use workspaces for different environments
+
+### CI/CD Pipeline
+- **GitHub Actions**: Use GitHub Actions for CI/CD
+- **Workflow Structure**: Organize workflows by purpose (test, build, deploy)
+- **Matrix Strategy**: Use matrix strategy for multiple environments
+- **Caching**: Cache dependencies and build artifacts
+- **Secrets**: Use GitHub Secrets for sensitive data
+- **Deployment**: Deploy to EKS using kubectl, Helm, or ArgoCD
+
+### Observability
+- **Logging**: Implement structured logging (JSON format)
+- **Metrics**: Expose Prometheus metrics
+- **Tracing**: Use OpenTelemetry for distributed tracing
+- **Monitoring**: Set up Grafana dashboards
+- **Alerts**: Configure alerts for critical metrics
+
+### Security
+- **Image Scanning**: Scan container images for vulnerabilities
+- **Network Policies**: Use Kubernetes network policies
+- **RBAC**: Configure proper RBAC for service accounts
+- **Secrets Rotation**: Implement secrets rotation
+- **Pod Security**: Use pod security standards
+
+### Performance
+- **Resource Optimization**: Right-size resource requests and limits
+- **Horizontal Scaling**: Use HPA (Horizontal Pod Autoscaler) or Karpenter
+- **Vertical Scaling**: Use VPA (Vertical Pod Autoscaler) if needed
+- **Caching**: Implement caching strategies
+- **CDN**: Use CDN for static assets
+
+---
+
+## GitHub Actions Workflow Patterns
+
+### Workflow Structure
+```yaml
+name: Workflow Name
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  job-name:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+      - run: npm ci
+      - run: nx affected:test
+      - run: nx affected:lint
+      - run: nx affected:build
+```
+
+### Best Practices
+- **Reusable Workflows**: Create reusable workflows for common patterns
+- **Matrix Strategy**: Use matrix for multiple Node versions, projects, etc.
+- **Caching**: Cache node_modules, Nx cache, Docker layers
+- **Parallel Jobs**: Run independent jobs in parallel
+- **Conditional Steps**: Use conditions for environment-specific steps
+- **Artifacts**: Upload build artifacts for deployment
+- **Secrets**: Use GitHub Secrets for sensitive data
+- **Environment Protection**: Use environment protection rules
+
+### Common Workflows
+1. **CI Workflow**: Test, lint, build on PR and push
+2. **Release Workflow**: Build and publish on version tags
+3. **Deploy Workflow**: Deploy to environments (staging, production)
+4. **Security Workflow**: Dependency scanning, vulnerability checks
+
+---
+
+## Code Quality Standards
+
+### ESLint
+- **Configuration**: Use ESLint with TypeScript rules
+- **Angular ESLint**: Use `angular-eslint` for Angular-specific rules
+- **NestJS ESLint**: Use NestJS-specific ESLint rules
+- **Auto-fix**: Enable auto-fix where possible
+- **CI Integration**: Run ESLint in CI pipeline
+
+### Prettier
+- **Configuration**: Use Prettier for code formatting
+- **Integration**: Integrate with ESLint using `eslint-config-prettier`
+- **Format on Save**: Enable format on save in IDE
+- **CI Check**: Check formatting in CI pipeline
+
+### Type Checking
+- **Strict Mode**: Use TypeScript strict mode
+- **No Any**: Avoid `any` type
+- **Type Coverage**: Maintain high type coverage
+- **CI Check**: Run type checking in CI
+
+### Testing
+- **Test Coverage**: Maintain minimum 80% test coverage
+- **Unit Tests**: Write unit tests for all services and utilities
+- **Integration Tests**: Write integration tests for API endpoints
+- **E2E Tests**: Write E2E tests for critical user flows
+- **Test Naming**: Use descriptive test names
+
+---
+
+## Documentation Standards
+
+### Code Documentation
+- **JSDoc**: Use JSDoc for public APIs
+- **Comments**: Write comments for complex logic
+- **README**: Maintain README files for libraries and apps
+- **API Documentation**: Use Swagger/OpenAPI for API documentation
+
+### Architecture Documentation
+- **ADRs**: Write Architecture Decision Records for significant decisions
+- **Diagrams**: Create diagrams for complex architectures
+- **Runbooks**: Maintain runbooks for operations
+
+---
+
+## Common Patterns and Anti-Patterns
+
+### ✅ Good Practices
+- Use dependency injection
+- Use interfaces for contracts
+- Use immutable data structures
+- Use pure functions
+- Use early returns
+- Use async/await properly
+- Handle errors appropriately
+- Write tests
+- Use type safety
+- Follow single responsibility principle
+
+### ❌ Anti-Patterns
+- Don't use `any` type
+- Don't mutate function parameters
+- Don't ignore errors
+- Don't use magic numbers/strings
+- Don't create god classes/functions
+- Don't use deep nesting
+- Don't ignore TypeScript errors
+- Don't commit commented-out code
+- Don't use `console.log` in production code
+- Don't hardcode configuration values
+
+---
+
+## File Structure Examples
+
+### Angular Component
+```typescript
+// user-profile.component.ts
+import { Component, inject, signal } from '@angular/core';
+import { UserService } from '../services/user.service';
+
+@Component({
+  selector: 'app-user-profile',
+  standalone: true,
+  templateUrl: './user-profile.component.html',
+  styleUrl: './user-profile.component.scss',
+})
+export class UserProfileComponent {
+  private readonly userService = inject(UserService);
+  
+  protected readonly user = signal<User | null>(null);
+  protected readonly isLoading = signal(false);
+  
+  // Component logic
+}
+```
+
+### NestJS Service
+```typescript
+// todo.service.ts
+import { Injectable, Inject } from '@nestjs/common';
+import { Repository } from 'typeorm';
+import { Todo } from './entities/todo.entity';
+
+@Injectable()
+export class TodoService {
+  constructor(
+    @InjectRepository(Todo)
+    private readonly todoRepository: Repository<Todo>,
+  ) {}
+
+  async findAll(): Promise<Todo[]> {
+    return this.todoRepository.find();
+  }
+  
+  async create(createTodoDto: CreateTodoDto): Promise<Todo> {
+    const todo = this.todoRepository.create(createTodoDto);
+    return this.todoRepository.save(todo);
+  }
+}
+```
+
+### NestJS Controller
+```typescript
+// todo.controller.ts
+import { Controller, Get, Post, Body } from '@nestjs/common';
+import { ApiTags, ApiOperation } from '@nestjs/swagger';
+import { TodoService } from './todo.service';
+import { CreateTodoDto } from './dto/create-todo.dto';
+
+@ApiTags('todos')
+@Controller('todos')
+export class TodoController {
+  constructor(private readonly todoService: TodoService) {}
+
+  @Get()
+  @ApiOperation({ summary: 'Get all todos' })
+  async findAll(): Promise<Todo[]> {
+    return this.todoService.findAll();
+  }
+
+  @Post()
+  @ApiOperation({ summary: 'Create a new todo' })
+  async create(@Body() createTodoDto: CreateTodoDto): Promise<Todo> {
+    return this.todoService.create(createTodoDto);
+  }
+}
+```
+
+---
+
+## Quick Reference
+
+### Import Order (Angular)
+1. Angular core (`@angular/core`, `@angular/common`)
+2. RxJS (`rxjs`, `rxjs/operators`)
+3. Angular modules (`@angular/forms`, `@angular/router`)
+4. Application core imports
+5. Shared library imports
+6. Feature library imports
+7. Relative imports (`./`, `../`)
+
+### Import Order (NestJS)
+1. NestJS core (`@nestjs/common`, `@nestjs/core`)
+2. Third-party libraries
+3. Application modules
+4. Shared modules
+5. Feature modules
+6. Relative imports
+
+### File Naming
+- Components: `*.component.ts`
+- Services: `*.service.ts`
+- Modules: `*.module.ts`
+- Directives: `*.directive.ts`
+- Pipes: `*.pipe.ts`
+- Guards: `*.guard.ts`
+- Interceptors: `*.interceptor.ts`
+- Filters: `*.filter.ts`
+- DTOs: `*.dto.ts`
+- Entities: `*.entity.ts`
+- Tests: `*.spec.ts`
+
+---
+
+## References
+- [Angular Style Guide](https://angular.io/guide/styleguide)
+- [NestJS Documentation](https://docs.nestjs.com/)
+- [Nx Documentation](https://nx.dev/)
+- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
+- [AWS EKS Best Practices](https://aws.github.io/aws-eks-best-practices/)
+
