@@ -191,15 +191,16 @@ apps/server/src/app/
 
 ### Build Optimization
 - **Task Caching**: Leverage Nx task caching for faster builds
-- **Affected Commands**: Use `nx affected` to run tasks only for affected projects
+- **Affected Commands**: Use `npx nx affected` to run tasks only for affected projects
 - **Parallel Execution**: Use parallel execution for independent tasks
 - **Build Dependencies**: Define proper build dependencies
+- **Command Execution**: Always use `npx nx` instead of `nx` directly
 
 ### Testing Strategy
 - **Unit Tests**: Write unit tests for libraries and components
 - **E2E Tests**: Write E2E tests for applications
 - **Test Coverage**: Maintain good test coverage
-- **Test Execution**: Use Nx to run tests efficiently
+- **Test Execution**: Use `npx nx` to run tests efficiently
 
 ### Dependency Management
 - **Shared Dependencies**: Place shared dependencies in root `package.json`
@@ -292,9 +293,9 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
-      - run: nx affected:test
-      - run: nx affected:lint
-      - run: nx affected:build
+      - run: npx nx affected:test
+      - run: npx nx affected:lint
+      - run: npx nx affected:build
 ```
 
 ### Best Practices
