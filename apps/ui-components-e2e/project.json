@@ -1,0 +1,23 @@
+{
+  "name": "ui-components-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "sourceRoot": "apps/ui-components-e2e/src",
+  "implicitDependencies": ["ui-components"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/ui-components-e2e/cypress.config.ts",
+        "devServerTarget": "ui-components:storybook",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "ci": {
+          "devServerTarget": "ui-components:storybook:ci"
+        }
+      }
+    }
+  }
+}
+
