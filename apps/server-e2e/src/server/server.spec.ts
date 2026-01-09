@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-describe('GET /api', () => {
-  it('should return a message', async () => {
-    const res = await axios.get(`/api`);
+describe('GET /api/v1/todos', () => {
+  it('should return an array of todos', async () => {
+    const res = await axios.get(`/api/v1/todos`);
 
     expect(res.status).toBe(200);
-    expect(res.data).toEqual({ message: 'Hello API' });
+    expect(Array.isArray(res.data)).toBe(true);
   });
 });

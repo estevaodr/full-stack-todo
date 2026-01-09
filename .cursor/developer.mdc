@@ -1,6 +1,68 @@
 ---
 alwaysApply: true
 ---
+## Architecture Principles
+
+### Planning and Dependency Mapping
+- **Requirement Identification**: Before implementing any feature or automation, identify all requirements and map dependencies between components
+- **User-Centric Design**: Use "Users should be able to..." format to clearly define functionality
+- **Implementation Order**: Determine the implementation order based on dependencies (e.g., authentication before protected features, infrastructure before application deployment)
+- **Dependency Analysis**: Map dependencies between components, services, and modules before coding
+- **Feature Planning**: Break down features into smaller, manageable tasks with clear dependencies
+
+### D.R.Y (Don't Repeat Yourself)
+- **Reusable Components**: Create reusable components, utilities, and workflows
+- **Shared Modules**: Use shared modules and libraries for common functionality
+- **Code Reuse**: When coding assistants suggest duplicate implementations, direct them to reuse existing code through imports and shared modules
+- **Utility Functions**: Extract common logic into utility functions and services
+- **Template Reusability**: Create reusable templates and components instead of duplicating markup
+- **Configuration Sharing**: Share configuration across projects using Nx shared libraries
+
+### K.I.S.S (Keep It Simple, Stupid)
+- **Simple Solutions**: Prefer simple solutions over complex ones
+- **Avoid Overengineering**: Avoid unnecessary dependencies or premature refactoring
+- **Minimal Implementation**: The simplest implementation that achieves the goal is usually the best
+- **Progressive Enhancement**: Start simple and sophisticate only when needed
+- **Clear Code**: Simple code is easier for AI assistants to understand, easier for humans to maintain, easier to debug, and less likely to break
+- **Avoid Complexity**: Don't add abstractions or patterns unless they provide clear value
+
+### Y.A.G.N.I (You Aren't Gonna Need It)
+- **Current Needs Only**: Only build what is needed now for the system to function
+- **Avoid Premature Features**: Don't implement features or infrastructure "just in case"
+- **Reduce Complexity**: Avoid implementing future features prematurely, as they increase complexity and risk without providing current value
+- **Just-In-Time Implementation**: When you need a feature, implement it then
+- **Remove Unused Code**: Don't keep code "for later" - remove it and implement when needed
+
+### Feature-Based Organization
+- **Feature Grouping**: Organize code by feature/domain rather than by file type
+- **Co-location**: Group all files related to a feature (components, services, tests, DTOs, entities) together in feature-specific directories
+- **Shared Components**: For shared components used across features, create a `shared/` or `common/` directory
+- **Nx Feature Libraries**: Use Nx feature libraries (`libs/client/feature-*`, `libs/server/feature-*`) to organize by feature
+- **Domain Boundaries**: Keep feature boundaries clear and minimize cross-feature dependencies
+- **Benefits**: Feature-based organization makes it easier for coding assistants to find relevant code, reduces token usage, and improves maintainability
+
+### Separation of Concerns
+- **Single Responsibility**: Each file, module, or component should have a single, clear responsibility
+- **Template Separation**: Separate templates from integrations, configurations from business logic
+- **Service Isolation**: Separate triggers from service implementations
+- **Independent Components**: If changing one part doesn't affect another, they should be in separate files
+- **Layer Separation**: Separate presentation (components), business logic (services), and data access (repositories)
+- **Benefits**: Separation of concerns makes code easier to find, maintain, reuse, understand, and scale
+
+### Adapter Pattern
+- **Interface Bridging**: Use adapter layers to bridge incompatible interfaces between different services, APIs, or SDKs
+- **External Dependency Wrapping**: Create adapter modules that wrap external dependencies (e.g., AWS SDK v2 to v3 migrations, different API versions, third-party service integrations) to provide a consistent interface for your application code
+- **Dependency Isolation**: Adapters isolate external dependencies, making it easier to swap implementations
+- **Testing Benefits**: Adapters simplify testing with mocks by providing a consistent interface
+- **Breaking Change Protection**: Adapters protect your codebase from breaking changes in external libraries
+- **Thin Translation Layers**: Adapters should be thin translation layers that don't contain business logic
+- **Implementation Examples**:
+  - AWS SDK version migrations (v2 → v3)
+  - Third-party API integrations (Stripe, SendGrid, etc.)
+  - Database driver abstractions
+  - External service client wrappers
+- **Location**: Place adapters in `libs/shared/adapters/` or feature-specific adapter directories
+
 ## Angular-Specific Guidelines
 
 ### Component Architecture
