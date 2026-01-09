@@ -99,6 +99,7 @@ function createMockTodo(): ITodo {
 describe('Api', () => {
   let service: Api;
   let http: HttpClient;
+  let httpSpy: jest.SpyInstance | null;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -115,6 +116,14 @@ describe('Api', () => {
     // Get references to the service and HttpClient so we can use them in tests
     service = TestBed.inject(Api);
     http = TestBed.inject(HttpClient);
+  });
+
+  afterEach(() => {
+    // Clean up spies after each test to prevent interference between tests
+    if (httpSpy) {
+      httpSpy.mockRestore();
+      httpSpy = null;
+    }
   });
 
   /**
@@ -157,24 +166,29 @@ describe('Api', () => {
      * value we provide. Since HttpClient returns Observables, we
      * need to wrap our response payload with `of()`
      */
-    const httpSpy = jest.spyOn(http, 'get').mockReturnValue(of(todos));
+    httpSpy = jest.spyOn(http, 'get').mockReturnValue(of(todos));
     
     /**
      * Calling `subscribe()` on the service's method will cause it
      * to run, thus emitting the value we mocked above. As you can
      * see, we manually call the `done` callback once we've
      * completed our checks.
+     * 
+     * NOTE: Since `of()` emits synchronously, the next callback runs
+     * immediately. We check the spy inside the callback before calling
+     * done() to ensure all assertions complete before the test finishes.
+     * This prevents flakiness by ensuring proper assertion timing.
      */
     service.getAllToDoItems().subscribe({
       next: (val) => {
         expect(val).toStrictEqual(todos);
         expect(val.length).toEqual(todos.length);
+        // Check spy before calling done() to ensure assertions complete
+        expect(httpSpy).toHaveBeenCalledTimes(1);
         done();
       },
       error: done.fail,
     });
-    
-    expect(httpSpy).toHaveBeenCalledTimes(1);
   });
 
   /**
@@ -196,19 +210,19 @@ describe('Api', () => {
   it('should get a single to-do item by ID', (done) => {
     const todo = createMockTodo();
     
-    const httpSpy = jest.spyOn(http, 'get').mockReturnValue(of(todo));
+    httpSpy = jest.spyOn(http, 'get').mockReturnValue(of(todo));
     
     service.getToDoById(todo.id).subscribe({
       next: (val) => {
         expect(val).toStrictEqual(todo);
         expect(val.id).toBe(todo.id);
+        // Check spy before calling done() to ensure assertions complete
+        expect(httpSpy).toHaveBeenCalledTimes(1);
+        expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`);
         done();
       },
       error: done.fail,
     });
-    
-    expect(httpSpy).toHaveBeenCalledTimes(1);
-    expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`);
   });
 
   /**
@@ -241,20 +255,20 @@ describe('Api', () => {
       description: newTodo.description,
     };
     
-    const httpSpy = jest.spyOn(http, 'post').mockReturnValue(of(newTodo));
+    httpSpy = jest.spyOn(http, 'post').mockReturnValue(of(newTodo));
     
     service.createToDo(createData).subscribe({
       next: (val) => {
         expect(val).toStrictEqual(newTodo);
         expect(val.title).toBe(createData.title);
         expect(val.description).toBe(createData.description);
+        // Check spy before calling done() to ensure assertions complete
+        expect(httpSpy).toHaveBeenCalledTimes(1);
+        expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos`, createData);
         done();
       },
       error: done.fail,
     });
-    
-    expect(httpSpy).toHaveBeenCalledTimes(1);
-    expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos`, createData);
   });
 
   /**
@@ -294,20 +308,20 @@ describe('Api', () => {
     };
     const updatedTodo = { ...todo, ...updateData };
     
-    const httpSpy = jest.spyOn(http, 'patch').mockReturnValue(of(updatedTodo));
+    httpSpy = jest.spyOn(http, 'patch').mockReturnValue(of(updatedTodo));
     
     service.updateToDo(todo.id, updateData).subscribe({
       next: (val) => {
         expect(val).toStrictEqual(updatedTodo);
         expect(val.title).toBe(updateData.title);
         expect(val.completed).toBe(updateData.completed);
+        // Check spy before calling done() to ensure assertions complete
+        expect(httpSpy).toHaveBeenCalledTimes(1);
+        expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`, updateData);
         done();
       },
       error: done.fail,
     });
-    
-    expect(httpSpy).toHaveBeenCalledTimes(1);
-    expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`, updateData);
   });
 
   /**
@@ -349,19 +363,19 @@ describe('Api', () => {
     const todo = createMockTodo();
     const upsertData: IUpsertTodo = todo;
     
-    const httpSpy = jest.spyOn(http, 'put').mockReturnValue(of(todo));
+    httpSpy = jest.spyOn(http, 'put').mockReturnValue(of(todo));
     
     service.createOrUpdateToDo(todo.id, upsertData).subscribe({
       next: (val) => {
         expect(val).toStrictEqual(todo);
         expect(val.id).toBe(todo.id);
+        // Check spy before calling done() to ensure assertions complete
+        expect(httpSpy).toHaveBeenCalledTimes(1);
+        expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`, upsertData);
         done();
       },
       error: done.fail,
     });
-    
-    expect(httpSpy).toHaveBeenCalledTimes(1);
-    expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`, upsertData);
   });
 
   /**
@@ -393,18 +407,18 @@ describe('Api', () => {
   it('should delete a to-do item', (done) => {
     const todo = createMockTodo();
     
-    const httpSpy = jest.spyOn(http, 'delete').mockReturnValue(of(undefined));
+    httpSpy = jest.spyOn(http, 'delete').mockReturnValue(of(undefined));
     
     service.deleteToDo(todo.id).subscribe({
       next: (val) => {
         expect(val).toBeUndefined();
+        // Check spy before calling done() to ensure assertions complete
+        expect(httpSpy).toHaveBeenCalledTimes(1);
+        expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`);
         done();
       },
       error: done.fail,
     });
-    
-    expect(httpSpy).toHaveBeenCalledTimes(1);
-    expect(httpSpy).toHaveBeenCalledWith(`/api/v1/todos/${todo.id}`);
   });
 });
 
