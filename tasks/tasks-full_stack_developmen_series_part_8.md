@@ -72,7 +72,7 @@ Generated from: `docs/references/full_stack_developmen_series_part_8.md`
 
 ## Tasks
 
-- [ ] 1.0 Domain Models and Database Schema Setup
+- [x] 1.0 Domain Models and Database Schema Setup
   - [x] 1.1 Create `libs/shared/domain/src/lib/models/user.interface.ts` with IUser interface (id, email, password, todos), and types: ICreateUser, IUpdateUser, IUpsertUser, IPublicUserData
   - [x] 1.2 Create `libs/shared/domain/src/lib/models/token-response.interface.ts` with ITokenResponse interface (access_token: string)
   - [x] 1.3 Create `libs/shared/domain/src/lib/models/jwt-payload.interface.ts` with IAccessTokenPayload interface (email, sub)
