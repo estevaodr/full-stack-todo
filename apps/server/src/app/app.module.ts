@@ -13,10 +13,15 @@
 // Import feature modules - these are separate modules that contain related functionality
 // ServerFeatureTodoModule is a shared/feature module from the monorepo structure
 import { ServerFeatureTodoModule } from '@full-stack-todo/server/feature-todo';
+import { ServerFeatureUserModule } from '@full-stack-todo/server/feature-user';
+import { ServerFeatureAuthModule } from '@full-stack-todo/server/feature-auth';
 
 // @Module decorator is required to make this class a NestJS module
 // This is how NestJS knows this class should be treated as a module
 import { Module } from '@nestjs/common';
+// APP_GUARD is a special token that allows us to register a guard globally
+// This means the guard will be applied to all routes by default
+import { APP_GUARD } from '@nestjs/core';
 
 // ConfigModule and ConfigService are used for managing environment variables
 // - ConfigModule: Sets up the configuration system
@@ -32,6 +37,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 // Joi is a validation library used to validate and provide defaults for environment variables
 // This ensures your app has the required config values and prevents runtime errors
 import * as Joi from 'joi';
+
+// Import JWT authentication guard for protecting routes
+import { JwtAuthGuard } from '@full-stack-todo/server/util';
 
 // Import local modules, controllers, and services from the same app
 import { AppController } from './app.controller';
@@ -66,14 +74,17 @@ import { AppService } from './app.service';
       /**
        * Validation Schema
        * 
-       * This ensures DATABASE_PATH exists and has a valid value.
-       * If DATABASE_PATH is not set in .env file, it defaults to 'tmp/db.sqlite'
+       * This ensures required environment variables exist and have valid values.
+       * If variables are not set in .env file, defaults are provided where applicable.
        * 
        * Why validate? Prevents runtime errors from missing configuration.
-       * Better to fail at startup than crash later when trying to connect to DB.
+       * Better to fail at startup than crash later when trying to connect to DB or authenticate users.
        */
       validationSchema: Joi.object({
         DATABASE_PATH: Joi.string().default('tmp/db.sqlite'),
+        // JWT configuration
+        JWT_SECRET: Joi.string().required(), // Required: Secret key for signing JWT tokens
+        JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().default('600s'), // Optional: Token expiration time (defaults to 10 minutes)
         // You can add more environment variables here as your app grows
         // Example: PORT: Joi.number().default(3000),
       }),
@@ -151,8 +162,14 @@ import { AppService } from './app.service';
      * 
      * - ServerFeatureTodoModule: Shared todo feature module (from monorepo structure)
      *   This module provides versioned todo endpoints at /api/v1/todos
+     * - ServerFeatureUserModule: User management module
+     *   This module provides user endpoints at /api/v1/users
+     * - ServerFeatureAuthModule: Authentication module
+     *   This module provides authentication endpoints at /api/v1/auth
      */
     ServerFeatureTodoModule,
+    ServerFeatureUserModule,
+    ServerFeatureAuthModule,
   ],
 
   /**
@@ -172,8 +189,30 @@ import { AppService } from './app.service';
    * They can be injected into controllers or other services using dependency injection.
    * 
    * Example: AppService might have a getHello() method that returns a greeting
+   * 
+   * APP_GUARD Provider:
+   * This registers JwtAuthGuard as a global guard, meaning it will protect all routes
+   * by default. Routes can opt-out of authentication by using the @SkipAuth() decorator.
+   * 
+   * This is a common pattern in NestJS for applying authentication globally while
+   * allowing specific routes (like login) to be public.
    */
-  providers: [AppService],
+  providers: [
+    AppService,
+    /**
+     * Global JWT Authentication Guard
+     * 
+     * This guard is applied to all routes by default. It:
+     * - Validates JWT tokens from the Authorization header
+     * - Extracts user information from the token
+     * - Makes user data available via @ReqUser() and @ReqUserId() decorators
+     * - Allows routes to skip authentication using @SkipAuth() decorator
+     */
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+  ],
 })
 
 /**

@@ -110,12 +110,12 @@ Generated from: `docs/references/full_stack_developmen_series_part_8.md`
   - [x] 3.13 Write unit tests in `libs/server/feature-auth/src/lib/server-feature-auth.controller.spec.ts` for login method
 
 - [ ] 4.0 Protect Todo Endpoints with JWT Authentication
-  - [ ] 4.1 Update `apps/server/src/app/app.module.ts` to import ServerFeatureUserModule and ServerFeatureAuthModule, add APP_GUARD provider with JwtAuthGuard, update ConfigModule validationSchema to include JWT_SECRET (required) and JWT_ACCESS_TOKEN_EXPIRES_IN (default: '600s')
-  - [ ] 4.2 Update `apps/server/src/main.ts` to add .addBearerAuth() to DocumentBuilder configuration
-  - [ ] 4.3 Update `libs/server/feature-todo/src/lib/server-feature-todo.service.ts` to add userId: string as first parameter to all methods (getAll, getOne, create, update, upsert, delete), update queries to filter by user: { id: userId }
-  - [ ] 4.4 Update `libs/server/feature-todo/src/lib/server-feature-todo.controller.ts` to add @ApiBearerAuth() at controller level, add @ReqUserId() userId: string parameter to all route handlers, pass userId to service methods
-  - [ ] 4.5 Update `libs/server/feature-todo/src/lib/server-feature-todo.service.spec.ts` to include userId parameter in all test cases and verify todos are filtered by user
-  - [ ] 4.6 Update `libs/server/feature-todo/src/lib/server-feature-todo.controller.spec.ts` to mock @ReqUserId() decorator or use @ReqUser() mock in tests
+  - [x] 4.1 Update `apps/server/src/app/app.module.ts` to import ServerFeatureUserModule and ServerFeatureAuthModule, add APP_GUARD provider with JwtAuthGuard, update ConfigModule validationSchema to include JWT_SECRET (required) and JWT_ACCESS_TOKEN_EXPIRES_IN (default: '600s')
+  - [x] 4.2 Update `apps/server/src/main.ts` to add .addBearerAuth() to DocumentBuilder configuration
+  - [x] 4.3 Update `libs/server/feature-todo/src/lib/server-feature-todo.service.ts` to add userId: string as first parameter to all methods (getAll, getOne, create, update, upsert, delete), update queries to filter by user: { id: userId }
+  - [x] 4.4 Update `libs/server/feature-todo/src/lib/server-feature-todo.controller.ts` to add @ApiBearerAuth() at controller level, add @ReqUserId() userId: string parameter to all route handlers, pass userId to service methods
+  - [x] 4.5 Update `libs/server/feature-todo/src/lib/server-feature-todo.service.spec.ts` to include userId parameter in all test cases and verify todos are filtered by user
+  - [x] 4.6 Update `libs/server/feature-todo/src/lib/server-feature-todo.controller.spec.ts` to mock @ReqUserId() decorator or use @ReqUser() mock in tests
 
 - [ ] 5.0 Testing and Documentation Updates
   - [ ] 5.1 Create `apps/server-e2e/src/server/auth-controller.spec.ts` with E2E tests for POST /api/v1/auth/login (success, invalid credentials), setup test user and access token in beforeAll()

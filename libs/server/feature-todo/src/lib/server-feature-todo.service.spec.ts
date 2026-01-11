@@ -42,12 +42,13 @@ import {
  * Helper function to create fake todos
  * (Same as in controller tests - we reuse it)
  */
-function createMockTodo(): ITodo {
+function createMockTodo(userId?: string): ITodo {
   return {
     id: `todo-${Math.random().toString(36).substr(2, 9)}`,
     title: `Test Todo ${Math.random().toString(36).substr(2, 5)}`,
     description: `Test Description ${Math.random().toString(36).substr(2, 5)}`,
     completed: false,
+    ...(userId && { user_id: userId }),
   };
 }
 
@@ -85,59 +86,110 @@ describe('ServerFeatureTodoService', () => {
   });
 
   /**
-   * Test: getAll() - Should return all todos
+   * Test: getAll() - Should return all todos for a specific user
    * 
    * WHAT ARE WE TESTING?
    * ====================
    * That the service correctly calls the repository's find() method
-   * and returns the results.
+   * with user filtering and returns the results for that user.
    * 
    * HOW IT WORKS:
    * ============
    * 1. We tell the mock repository what to return when find() is called
-   * 2. We call the service's getAll() method
+   * 2. We call the service's getAll() method with a userId
    * 3. We check that it returns the correct data
-   * 4. We verify that find() was actually called (important!)
+   * 4. We verify that find() was called with the correct user filter
    */
-  it('should return an array of to-do items', async () => {
-    // Create an array of 5 fake todos
-    const todos = Array.from({ length: 5 }).map(() => createMockTodo());
+  it('should return an array of to-do items for a specific user', async () => {
+    const userId = 'user-123';
+    // Create an array of 5 fake todos for the user
+    const todos = Array.from({ length: 5 }).map(() => createMockTodo(userId));
     
     // Tell the mock repository: "When find() is called, return this Promise with these todos"
     // The ?. is optional chaining - it's safe if find doesn't exist (though it should)
     repoMock.find?.mockReturnValue(Promise.resolve(todos));
 
-    // Call the service method
-    const result = await service.getAll();
+    // Call the service method with userId
+    const result = await service.getAll(userId);
 
     // Check that we got back the right number of todos
     expect(result.length).toBe(todos.length);
-    // IMPORTANT: Verify that the repository method was actually called
-    // This ensures the service is using the repository correctly
-    expect(repoMock.find).toHaveBeenCalled();
+    // IMPORTANT: Verify that the repository method was called with user filtering
+    // This ensures the service is filtering by user correctly
+    expect(repoMock.find).toHaveBeenCalledWith({
+      where: { user_id: userId },
+    });
   });
 
   /**
-   * Test: getOne() - Should return a single todo
+   * Test: getAll() - Should only return todos for the specified user (user isolation)
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * That the service correctly finds a todo by ID and returns it.
+   * User isolation - ensuring that when a user queries for todos, they only get
+   * their own todos, not todos from other users.
+   * 
+   * WHY IS THIS IMPORTANT?
+   * =====================
+   * Security: Users should never be able to access other users' data.
+   * This test verifies that the user_id filter is working correctly.
    */
-  it('should return a single to-do item', async () => {
-    const todo = createMockTodo();
+  it('should only return todos for the specified user (user isolation)', async () => {
+    const userId1 = 'user-123';
+    const userId2 = 'user-456';
+    
+    // Create todos for different users
+    const user1Todos = [
+      createMockTodo(userId1),
+      createMockTodo(userId1),
+    ];
+    const user2Todos = [
+      createMockTodo(userId2),
+      createMockTodo(userId2),
+    ];
+    
+    // Mock find to return only user1's todos when called with user1's ID
+    repoMock.find?.mockReturnValue(Promise.resolve(user1Todos));
+
+    // Call getAll for user1
+    const result = await service.getAll(userId1);
+
+    // Verify that only user1's todos are returned
+    expect(result).toEqual(user1Todos);
+    expect(result.length).toBe(2);
+    // Verify that the query was filtered by user1's ID
+    expect(repoMock.find).toHaveBeenCalledWith({
+      where: { user_id: userId1 },
+    });
+    // Verify that user2's todos are NOT included
+    expect(result.every(todo => todo.user_id === userId1)).toBe(true);
+  });
+
+  /**
+   * Test: getOne() - Should return a single todo for a specific user
+   * 
+   * WHAT ARE WE TESTING?
+   * ====================
+   * That the service correctly finds a todo by ID and user ID and returns it.
+   */
+  it('should return a single to-do item for a specific user', async () => {
+    const userId = 'user-123';
+    const todo = createMockTodo(userId);
     
     // Mock the repository to return our fake todo when findOneBy() is called
     repoMock.findOneBy?.mockReturnValue(Promise.resolve(todo));
 
-    // Call the service method
-    const result = await service.getOne(todo.id);
+    // Call the service method with userId
+    const result = await service.getOne(userId, todo.id);
 
     // Check the result
     expect(result).toEqual(todo);
-    // Verify that findOneBy() was called with the correct ID
-    // This ensures the service is passing the right parameters to the repository
-    expect(repoMock.findOneBy).toHaveBeenCalledWith({ id: todo.id });
+    // Verify that findOneBy() was called with the correct ID and user_id
+    // This ensures the service is filtering by user correctly
+    expect(repoMock.findOneBy).toHaveBeenCalledWith({
+      id: todo.id,
+      user_id: userId,
+    });
   });
 
   /**
@@ -145,7 +197,8 @@ describe('ServerFeatureTodoService', () => {
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * Error handling! When a todo doesn't exist, the service should throw a NotFoundException.
+   * Error handling! When a todo doesn't exist or doesn't belong to the user,
+   * the service should throw a NotFoundException.
    * 
    * WHY TEST ERRORS?
    * ===============
@@ -157,59 +210,72 @@ describe('ServerFeatureTodoService', () => {
    * Use expect().rejects.toThrow() to check that a Promise rejects (fails) with an error.
    */
   it('should throw NotFoundException when todo is not found', async () => {
+    const userId = 'user-123';
     // Mock the repository to return null (todo not found)
     repoMock.findOneBy?.mockReturnValue(Promise.resolve(null));
 
     // Use rejects.toThrow() to check that the Promise fails with NotFoundException
     // await expect() waits for the Promise and checks if it throws an error
-    await expect(service.getOne('non-existent-id')).rejects.toThrow(
+    await expect(service.getOne(userId, 'non-existent-id')).rejects.toThrow(
       NotFoundException
     );
+    // Verify that the service checked for both id and user_id
+    expect(repoMock.findOneBy).toHaveBeenCalledWith({
+      id: 'non-existent-id',
+      user_id: userId,
+    });
   });
 
   /**
-   * Test: create() - Should create a new todo
+   * Test: create() - Should create a new todo for a specific user
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * That the service correctly saves a new todo to the repository.
+   * That the service correctly saves a new todo to the repository with the user_id.
    */
-  it('should create a new to-do item', async () => {
-    const newTodo = createMockTodo();
+  it('should create a new to-do item for a specific user', async () => {
+    const userId = 'user-123';
+    const newTodo = createMockTodo(userId);
     
     // Mock the repository to return the todo when save() is called
     repoMock.save?.mockReturnValue(Promise.resolve(newTodo));
 
-    // Call create with only title and description
-    // (The service will add ID and completed status)
-    const result = await service.create({
+    // Call create with userId and only title and description
+    // (The service will add ID, completed status, and user_id)
+    const result = await service.create(userId, {
       title: newTodo.title,
       description: newTodo.description,
     });
 
     // Check that we got back the created todo
     expect(result).toEqual(newTodo);
-    // Verify that save() was called (the service should save to the database)
-    expect(repoMock.save).toHaveBeenCalled();
+    // Verify that save() was called with user_id included
+    // This ensures the todo is associated with the correct user
+    expect(repoMock.save).toHaveBeenCalledWith({
+      title: newTodo.title,
+      description: newTodo.description,
+      user_id: userId,
+    });
   });
 
   /**
-   * Test: update() - Should update an existing todo
+   * Test: update() - Should update an existing todo for a specific user
    * 
    * WHAT ARE WE TESTING?
    * ====================
    * That the service:
-   * 1. Finds the existing todo
+   * 1. Finds the existing todo for the user
    * 2. Updates it with new data
    * 3. Saves it back to the repository
    * 
    * WHY TWO REPOSITORY CALLS?
    * ========================
-   * The service first finds the todo (to make sure it exists), then saves the updated version.
+   * The service first finds the todo (to make sure it exists and belongs to the user), then saves the updated version.
    * This is a common pattern: find, modify, save.
    */
-  it('should update an existing to-do item', async () => {
-    const todo = createMockTodo();
+  it('should update an existing to-do item for a specific user', async () => {
+    const userId = 'user-123';
+    const todo = createMockTodo(userId);
     const updatedTodo = { ...todo, title: 'Updated Title' }; // Copy todo and change title
 
     // Mock findOneBy to return the existing todo
@@ -217,13 +283,16 @@ describe('ServerFeatureTodoService', () => {
     // Mock save to return the updated todo
     repoMock.save?.mockReturnValue(Promise.resolve(updatedTodo));
 
-    // Call update with the ID and new data
-    const result = await service.update(todo.id, { title: 'Updated Title' });
+    // Call update with userId, the ID and new data
+    const result = await service.update(userId, todo.id, { title: 'Updated Title' });
 
     // Check that the title was updated
     expect(result.title).toBe('Updated Title');
-    // Verify that findOneBy was called to find the existing todo
-    expect(repoMock.findOneBy).toHaveBeenCalledWith({ id: todo.id });
+    // Verify that findOneBy was called to find the existing todo with user filtering
+    expect(repoMock.findOneBy).toHaveBeenCalledWith({
+      id: todo.id,
+      user_id: userId,
+    });
     // Verify that save was called to persist the changes
     expect(repoMock.save).toHaveBeenCalled();
   });
@@ -234,69 +303,88 @@ describe('ServerFeatureTodoService', () => {
    * WHAT ARE WE TESTING?
    * ====================
    * That the service correctly handles the case where someone tries to update
-   * a todo that doesn't exist.
+   * a todo that doesn't exist or doesn't belong to the user.
    */
   it('should throw NotFoundException when updating non-existent todo', async () => {
+    const userId = 'user-123';
     // Mock the repository to return null (todo not found)
     repoMock.findOneBy?.mockReturnValue(Promise.resolve(null));
 
     // Check that update() throws NotFoundException
     await expect(
-      service.update('non-existent-id', { title: 'New Title' })
+      service.update(userId, 'non-existent-id', { title: 'New Title' })
     ).rejects.toThrow(NotFoundException);
+    // Verify that the service checked for both id and user_id
+    expect(repoMock.findOneBy).toHaveBeenCalledWith({
+      id: 'non-existent-id',
+      user_id: userId,
+    });
   });
 
   /**
-   * Test: upsert() - Should create or update a todo
+   * Test: upsert() - Should create or update a todo for a specific user
    * 
    * WHAT IS UPSERT?
    * ===============
    * "Upsert" = Update if exists, Insert if not.
    * TypeORM's save() method does this automatically - if the ID exists, it updates;
    * if not, it creates a new record.
+   * 
+   * USER FILTERING:
+   * ==============
+   * The service ensures the user_id is set to the provided userId, ensuring
+   * todos are always associated with the correct user.
    */
-  it('should upsert a to-do item', async () => {
-    const todo = createMockTodo();
+  it('should upsert a to-do item for a specific user', async () => {
+    const userId = 'user-123';
+    const todo = createMockTodo(userId);
     
     // Mock save to return the todo
     repoMock.save?.mockReturnValue(Promise.resolve(todo));
 
-    // Call upsert with a complete todo object
-    const result = await service.upsert(todo);
+    // Call upsert with userId and a complete todo object
+    const result = await service.upsert(userId, todo);
 
     // Check the result
     expect(result).toEqual(todo);
-    // Verify that save was called with the todo
-    expect(repoMock.save).toHaveBeenCalledWith(todo);
+    // Verify that save was called with the todo and user_id set
+    expect(repoMock.save).toHaveBeenCalledWith({
+      ...todo,
+      user_id: userId,
+    });
   });
 
   /**
-   * Test: delete() - Should delete a todo
+   * Test: delete() - Should delete a todo for a specific user
    * 
    * WHAT ARE WE TESTING?
    * ====================
    * That the service:
-   * 1. Finds the todo (to make sure it exists)
+   * 1. Finds the todo for the user (to make sure it exists and belongs to the user)
    * 2. Removes it from the repository
    * 
    * WHY FIND FIRST?
    * ==============
-   * The service checks if the todo exists before trying to delete it.
-   * This allows it to throw a helpful error if the todo doesn't exist.
+   * The service checks if the todo exists and belongs to the user before trying to delete it.
+   * This allows it to throw a helpful error if the todo doesn't exist or doesn't belong to the user.
    */
-  it('should delete a to-do item', async () => {
-    const todo = createMockTodo();
+  it('should delete a to-do item for a specific user', async () => {
+    const userId = 'user-123';
+    const todo = createMockTodo(userId);
     
     // Mock findOneBy to return the todo (it exists)
     repoMock.findOneBy?.mockReturnValue(Promise.resolve(todo));
     // Mock remove to return the deleted todo
     repoMock.remove?.mockReturnValue(Promise.resolve(todo));
 
-    // Call delete
-    await service.delete(todo.id);
+    // Call delete with userId
+    await service.delete(userId, todo.id);
 
-    // Verify that findOneBy was called to find the todo
-    expect(repoMock.findOneBy).toHaveBeenCalledWith({ id: todo.id });
+    // Verify that findOneBy was called to find the todo with user filtering
+    expect(repoMock.findOneBy).toHaveBeenCalledWith({
+      id: todo.id,
+      user_id: userId,
+    });
     // Verify that remove was called to delete it
     expect(repoMock.remove).toHaveBeenCalledWith(todo);
   });
@@ -306,15 +394,22 @@ describe('ServerFeatureTodoService', () => {
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * That the service correctly handles trying to delete a todo that doesn't exist.
+   * That the service correctly handles trying to delete a todo that doesn't exist
+   * or doesn't belong to the user.
    */
   it('should throw NotFoundException when deleting non-existent todo', async () => {
+    const userId = 'user-123';
     // Mock the repository to return null (todo not found)
     repoMock.findOneBy?.mockReturnValue(Promise.resolve(null));
 
     // Check that delete() throws NotFoundException
-    await expect(service.delete('non-existent-id')).rejects.toThrow(
+    await expect(service.delete(userId, 'non-existent-id')).rejects.toThrow(
       NotFoundException
     );
+    // Verify that the service checked for both id and user_id
+    expect(repoMock.findOneBy).toHaveBeenCalledWith({
+      id: 'non-existent-id',
+      user_id: userId,
+    });
   });
 });

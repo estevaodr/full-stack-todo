@@ -208,14 +208,16 @@ describe('ServerFeatureTodoController', () => {
    * WHAT ARE WE TESTING?
    * ====================
    * We're testing that when someone calls getAll() on the controller,
-   * it returns an array of todo items.
+   * it returns an array of todo items for the authenticated user.
    * 
    * HOW DOES IT WORK?
    * ================
    * 1. We "spy" on the service's getAll() method
    *    - A spy watches a function and can control what it returns
    *    - We tell it to return a Promise with 5 fake todos
-   * 2. We call the controller's getAll() method
+   * 2. We call the controller's getAll() method with userId
+   *    - In the real app, @ReqUserId() extracts userId from the JWT token
+   *    - In tests, we pass it directly as a parameter
    * 3. We check (assert) that the result is an array with 5 items
    * 
    * WHY MOCK THE SERVICE?
@@ -226,7 +228,8 @@ describe('ServerFeatureTodoController', () => {
    * - We're only testing the controller's logic
    * - The test runs faster (no database calls)
    */
-  it('should return an array of to-do items', async () => {
+  it('should return an array of to-do items for the authenticated user', async () => {
+    const userId = 'user-123';
     // Create a spy that watches service.getAll() and makes it return fake data
     // mockReturnValue() tells Jest: "When getAll() is called, return this Promise"
     jest.spyOn(service, 'getAll').mockReturnValue(
@@ -236,14 +239,17 @@ describe('ServerFeatureTodoController', () => {
       })
     );
 
-    // Call the controller method (this is what happens when a GET request comes in)
-    const res = await controller.getAll();
+    // Call the controller method with userId
+    // In the real app, @ReqUserId() extracts userId from the JWT token
+    const res = await controller.getAll(userId);
 
     // ASSERTIONS - Check that the result is what we expect
     // expect() is Jest's way of checking values
     // .toBe() checks for exact equality (===)
     expect(Array.isArray(res)).toBe(true); // Make sure it's an array
     expect(res.length).toBe(5); // Make sure it has 5 items
+    // Verify that the service was called with the correct userId
+    expect(service.getAll).toHaveBeenCalledWith(userId);
   });
 
   /**
@@ -251,9 +257,10 @@ describe('ServerFeatureTodoController', () => {
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * Testing that getOne() returns a single todo item when given an ID.
+   * Testing that getOne() returns a single todo item when given an ID for the authenticated user.
    */
-  it('should return a single to-do item', async () => {
+  it('should return a single to-do item for the authenticated user', async () => {
+    const userId = 'user-123';
     // Create a fake todo item
     const todo = createMockTodo();
     
@@ -264,12 +271,15 @@ describe('ServerFeatureTodoController', () => {
       })
     );
 
-    // Call the controller method with the todo's ID
-    const res = await controller.getOne(todo.id);
+    // Call the controller method with userId and the todo's ID
+    // In the real app, @ReqUserId() extracts userId from the JWT token
+    const res = await controller.getOne(userId, todo.id);
 
     // Check that we got back the same todo
     expect(res).toEqual(todo); // .toEqual() does deep comparison (checks all properties)
     expect(res.id).toBe(todo.id); // Double-check the ID matches
+    // Verify that the service was called with the correct userId and id
+    expect(service.getOne).toHaveBeenCalledWith(userId, todo.id);
   });
 
   /**
@@ -277,9 +287,10 @@ describe('ServerFeatureTodoController', () => {
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * Testing that create() accepts todo data and returns the created todo.
+   * Testing that create() accepts todo data and returns the created todo for the authenticated user.
    */
-  it('should create a new to-do item', async () => {
+  it('should create a new to-do item for the authenticated user', async () => {
+    const userId = 'user-123';
     // Create a fake todo that will be "created"
     const newTodo = createMockTodo();
     
@@ -290,9 +301,10 @@ describe('ServerFeatureTodoController', () => {
       })
     );
 
-    // Call the controller's create() method with just title and description
-    // (The service will add the ID and completed status)
-    const res = await controller.create({
+    // Call the controller's create() method with userId and just title and description
+    // In the real app, @ReqUserId() extracts userId from the JWT token
+    // (The service will add the ID, completed status, and user_id)
+    const res = await controller.create(userId, {
       title: newTodo.title,
       description: newTodo.description,
     });
@@ -300,6 +312,11 @@ describe('ServerFeatureTodoController', () => {
     // Check that the created todo matches what we expected
     expect(res).toEqual(newTodo);
     expect(res.title).toBe(newTodo.title);
+    // Verify that the service was called with the correct userId and data
+    expect(service.create).toHaveBeenCalledWith(userId, {
+      title: newTodo.title,
+      description: newTodo.description,
+    });
   });
 
   /**
@@ -307,14 +324,15 @@ describe('ServerFeatureTodoController', () => {
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * Testing that update() can change properties of an existing todo.
+   * Testing that update() can change properties of an existing todo for the authenticated user.
    * 
    * WHAT IS PATCH?
    * =============
    * PATCH is an HTTP method for partial updates (changing only some fields).
    * Unlike PUT (which replaces the whole object), PATCH only updates what you send.
    */
-  it('should allow updates to a single todo', async () => {
+  it('should allow updates to a single todo for the authenticated user', async () => {
+    const userId = 'user-123';
     // Create a fake todo
     const todo = createMockTodo();
     const newTitle = 'newTitle'; // The new title we want to set
@@ -329,12 +347,15 @@ describe('ServerFeatureTodoController', () => {
         })
       );
 
-    // Call update with the todo ID and the new title
+    // Call update with userId, the todo ID and the new title
+    // In the real app, @ReqUserId() extracts userId from the JWT token
     // UpdateTodoDto allows partial updates (only title, only description, etc.)
-    const updated = await controller.update(todo.id, { title: newTitle } as UpdateTodoDto);
+    const updated = await controller.update(userId, todo.id, { title: newTitle } as UpdateTodoDto);
 
     // Check that the title was actually updated
     expect(updated.title).toBe(newTitle);
+    // Verify that the service was called with the correct userId, id, and data
+    expect(service.update).toHaveBeenCalledWith(userId, todo.id, { title: newTitle });
   });
 
   /**
@@ -345,7 +366,8 @@ describe('ServerFeatureTodoController', () => {
    * "Upsert" = Update if exists, Insert if not.
    * If a todo with that ID exists, update it. Otherwise, create a new one.
    */
-  it('should upsert a to-do item', async () => {
+  it('should upsert a to-do item for the authenticated user', async () => {
+    const userId = 'user-123';
     const todo = createMockTodo();
     
     // Mock the service to return the todo
@@ -355,11 +377,14 @@ describe('ServerFeatureTodoController', () => {
       })
     );
 
-    // Call upsert with a complete todo object (including ID)
-    const res = await controller.upsertOne(todo);
+    // Call upsert with userId and a complete todo object (including ID)
+    // In the real app, @ReqUserId() extracts userId from the JWT token
+    const res = await controller.upsertOne(userId, todo);
 
     // Check that we got back the same todo
     expect(res).toEqual(todo);
+    // Verify that the service was called with the correct userId and todo
+    expect(service.upsert).toHaveBeenCalledWith(userId, todo);
   });
 
   /**
@@ -367,14 +392,15 @@ describe('ServerFeatureTodoController', () => {
    * 
    * WHAT ARE WE TESTING?
    * ====================
-   * Testing that delete() removes a todo and doesn't return anything (void).
+   * Testing that delete() removes a todo for the authenticated user and doesn't return anything (void).
    * 
    * NOTE ON ASSERTIONS:
    * ==================
    * Since delete() returns void (nothing), we can't check the return value.
-   * Instead, we check that the service method was called with the correct ID.
+   * Instead, we check that the service method was called with the correct userId and ID.
    */
-  it('should delete a to-do item', async () => {
+  it('should delete a to-do item for the authenticated user', async () => {
+    const userId = 'user-123';
     const todo = createMockTodo();
     
     // Mock the service's delete method to return a resolved Promise
@@ -385,11 +411,12 @@ describe('ServerFeatureTodoController', () => {
       })
     );
 
-    // Call delete with the todo's ID
-    await controller.delete(todo.id);
+    // Call delete with userId and the todo's ID
+    // In the real app, @ReqUserId() extracts userId from the JWT token
+    await controller.delete(userId, todo.id);
 
-    // Check that the service's delete method was called with the correct ID
+    // Check that the service's delete method was called with the correct userId and ID
     // toHaveBeenCalledWith() verifies that a mock function was called with specific arguments
-    expect(service.delete).toHaveBeenCalledWith(todo.id);
+    expect(service.delete).toHaveBeenCalledWith(userId, todo.id);
   });
 });

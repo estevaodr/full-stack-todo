@@ -48,31 +48,38 @@ export class ServerFeatureTodoService {
   ) {}
 
   /**
-   * Retrieves all todo items from the database
-   * @returns Promise that resolves to an array of all todo items
+   * Retrieves all todo items from the database for a specific user
+   * @param userId - The unique identifier of the user
+   * @returns Promise that resolves to an array of all todo items for the user
    */
-  async getAll(): Promise<ITodo[]> {
+  async getAll(userId: string): Promise<ITodo[]> {
     // Old in-memory implementation:
     // return this.todos$$.value;
     
-    return await this.todoRepository.find();
+    return await this.todoRepository.find({
+      where: { user_id: userId },
+    });
   }
 
   /**
-   * Retrieves a single todo item by its ID from the database
+   * Retrieves a single todo item by its ID from the database for a specific user
+   * @param userId - The unique identifier of the user
    * @param id - The unique identifier of the todo item
    * @returns Promise that resolves to the todo item with the specified ID
-   * @throws NotFoundException if the todo item is not found
+   * @throws NotFoundException if the todo item is not found or doesn't belong to the user
    * 
    * Note: We could use TypeORM's `findOneOrFail` method which automatically throws
    * an error if not found, but we chose to use `findOneBy` and manually throw
    * NotFoundException to maintain consistency with NestJS error handling patterns.
    */
-  async getOne(id: string): Promise<ITodo> {
+  async getOne(userId: string, id: string): Promise<ITodo> {
     // Old in-memory implementation:
     // const todo = this.todos$$.value.find((td) => td.id === id);
     
-    const todo = await this.todoRepository.findOneBy({ id });
+    const todo = await this.todoRepository.findOneBy({
+      id,
+      user_id: userId,
+    });
     if (!todo) {
       throw new NotFoundException(`To-do could not be found!`);
     }
@@ -80,12 +87,13 @@ export class ServerFeatureTodoService {
   }
 
   /**
-   * Creates a new todo item in the database
+   * Creates a new todo item in the database for a specific user
    * TypeORM automatically generates a UUID for the ID and sets completed to false by default
+   * @param userId - The unique identifier of the user
    * @param todo - Partial todo data containing only title and description
    * @returns Promise that resolves to the newly created todo item with generated UUID
    */
-  async create(todo: Pick<ITodo, 'title' | 'description'>): Promise<ITodo> {
+  async create(userId: string, todo: Pick<ITodo, 'title' | 'description'>): Promise<ITodo> {
     // Old in-memory implementation:
     // const current = this.todos$$.value;
     // const newTodo: ITodo = {
@@ -95,19 +103,23 @@ export class ServerFeatureTodoService {
     // };
     // this.todos$$.next([...current, newTodo]);
     
-    const newTodo = await this.todoRepository.save({ ...todo });
+    const newTodo = await this.todoRepository.save({
+      ...todo,
+      user_id: userId,
+    });
     return newTodo;
   }
 
   /**
-   * Updates an existing todo item in the database
+   * Updates an existing todo item in the database for a specific user
    * Only updates the fields provided in the data parameter
+   * @param userId - The unique identifier of the user
    * @param id - The unique identifier of the todo item to update
    * @param data - Partial todo data containing only the fields to update
    * @returns Promise that resolves to the updated todo item
-   * @throws NotFoundException if the todo item is not found
+   * @throws NotFoundException if the todo item is not found or doesn't belong to the user
    */
-  async update(id: string, data: Partial<Omit<ITodo, 'id'>>): Promise<ITodo> {
+  async update(userId: string, id: string, data: Partial<Omit<ITodo, 'id'>>): Promise<ITodo> {
     // Old in-memory implementation:
     // const todo = this.todos$$.value.find((td) => td.id === id);
     // if (!todo) {
@@ -118,7 +130,10 @@ export class ServerFeatureTodoService {
     //   ...this.todos$$.value.map((td) => (td.id === id ? updated : td)),
     // ]);
     
-    const todo = await this.todoRepository.findOneBy({ id });
+    const todo = await this.todoRepository.findOneBy({
+      id,
+      user_id: userId,
+    });
     if (!todo) {
       throw new NotFoundException(`To-do could not be found!`);
     }
@@ -127,12 +142,13 @@ export class ServerFeatureTodoService {
   }
 
   /**
-   * Creates or updates a todo item (upsert operation) in the database
+   * Creates or updates a todo item (upsert operation) in the database for a specific user
    * If a todo with the given ID exists, it updates it; otherwise, it creates a new one
+   * @param userId - The unique identifier of the user
    * @param data - Complete todo data including ID
    * @returns Promise that resolves to the created or updated todo item
    */
-  async upsert(data: ITodo): Promise<ITodo> {
+  async upsert(userId: string, data: ITodo): Promise<ITodo> {
     // Old in-memory implementation:
     // const todo = this.todos$$.value.find((td) => td.id === data.id);
     // if (!todo) {
@@ -147,15 +163,20 @@ export class ServerFeatureTodoService {
     // ]);
     
     // TypeORM's save method performs an upsert operation automatically
-    return await this.todoRepository.save(data);
+    // Ensure the user_id is set to the provided userId
+    return await this.todoRepository.save({
+      ...data,
+      user_id: userId,
+    });
   }
 
   /**
-   * Deletes a todo item by its ID from the database
+   * Deletes a todo item by its ID from the database for a specific user
+   * @param userId - The unique identifier of the user
    * @param id - The unique identifier of the todo item to delete
-   * @throws NotFoundException if the todo item is not found
+   * @throws NotFoundException if the todo item is not found or doesn't belong to the user
    */
-  async delete(id: string): Promise<void> {
+  async delete(userId: string, id: string): Promise<void> {
     // Old in-memory implementation:
     // const todo = this.todos$$.value.find((td) => td.id === id);
     // if (!todo) {
@@ -163,7 +184,10 @@ export class ServerFeatureTodoService {
     // }
     // this.todos$$.next([...this.todos$$.value.filter((td) => td.id !== id)]);
     
-    const todo = await this.todoRepository.findOneBy({ id });
+    const todo = await this.todoRepository.findOneBy({
+      id,
+      user_id: userId,
+    });
     if (!todo) {
       throw new NotFoundException(`To-do could not be found!`);
     }

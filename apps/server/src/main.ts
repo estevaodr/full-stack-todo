@@ -29,6 +29,14 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle(`Full Stack To-Do REST API`)
     .setVersion('1.0')
+    .addBearerAuth({
+      type: 'http',
+      scheme: 'bearer',
+      bearerFormat: 'JWT',
+      description: 'Enter JWT token',
+    })
+    // No name parameter - this becomes the default bearer auth scheme
+    // Works with @ApiBearerAuth() decorator without parameters
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api/v1', app, document);
