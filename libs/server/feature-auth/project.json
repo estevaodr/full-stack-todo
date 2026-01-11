@@ -1,7 +1,7 @@
 {
-  "name": "server-feature-user",
+  "name": "server-feature-auth",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/server/feature-user/src",
+  "sourceRoot": "libs/server/feature-auth/src",
   "projectType": "library",
   "tags": ["scope:server", "type:feature"],
   "targets": {
@@ -12,7 +12,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/server/feature-user/jest.config.cts",
+        "jestConfig": "libs/server/feature-auth/jest.config.cts",
         "passWithNoTests": true
       },
       "configurations": {
@@ -24,4 +24,3 @@
     }
   }
 }
-

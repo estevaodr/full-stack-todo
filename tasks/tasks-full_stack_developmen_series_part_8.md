@@ -95,19 +95,19 @@ Generated from: `docs/references/full_stack_developmen_series_part_8.md`
   - [x] 2.9 Update `libs/server/util/src/index.ts` to export decorators and guard
 
 - [ ] 3.0 User and Auth Feature Libraries Implementation
-  - [ ] 3.1 Generate feature-user library: `npx nx generate @nx/nest:library --name=feature-user --controller --service --directory=libs/server --importPath=@full-stack-todo/server/feature-user --strict --tags=type:feature,scope:server`
-  - [ ] 3.2 Generate feature-auth library: `npx nx generate @nx/nest:library --name=feature-auth --controller --service --directory=libs/server --importPath=@full-stack-todo/server/feature-auth --strict --tags=type:feature,scope:server`
-  - [ ] 3.3 Implement `libs/server/feature-user/src/lib/server-feature-user.service.ts` with getOne(id), getOneByEmail(email), and create(user) methods using bcrypt for password hashing (10 rounds)
-  - [ ] 3.4 Update `libs/server/feature-user/src/lib/server-feature-user.module.ts` to import DataAccessTodoModule and TypeOrmModule.forFeature([UserEntitySchema]), export ServerFeatureUserService
-  - [ ] 3.5 Implement `libs/server/feature-user/src/lib/server-feature-user.controller.ts` with POST /users (public, @SkipAuth()) and GET /users/:id (protected, @ApiBearerAuth(), verify reqUserId === id)
-  - [ ] 3.6 Write unit tests in `libs/server/feature-user/src/lib/server-feature-user.service.spec.ts` for getOne, getOneByEmail, create methods
-  - [ ] 3.7 Write unit tests in `libs/server/feature-user/src/lib/server-feature-user.controller.spec.ts` for createUser and getUser methods
-  - [ ] 3.8 Create `libs/server/feature-auth/src/lib/jwt-strategy.service.ts` extending PassportStrategy(Strategy) with jwtFromRequest, secretOrKey from ConfigService, and validate() method returning { userId: sub, ...rest }
-  - [ ] 3.9 Implement `libs/server/feature-auth/src/lib/server-feature-auth.service.ts` with validateUser(email, password) and generateAccessToken(user) methods, using forwardRef for ServerFeatureUserService
-  - [ ] 3.10 Update `libs/server/feature-auth/src/lib/server-feature-auth.module.ts` to import JwtModule.registerAsync() with ConfigService, PassportModule, ServerFeatureUserModule (with forwardRef), provide JwtStrategy, export ServerFeatureAuthService
-  - [ ] 3.11 Implement `libs/server/feature-auth/src/lib/server-feature-auth.controller.ts` with POST /auth/login (public, @SkipAuth()) endpoint
-  - [ ] 3.12 Write unit tests in `libs/server/feature-auth/src/lib/server-feature-auth.service.spec.ts` for validateUser and generateAccessToken methods
-  - [ ] 3.13 Write unit tests in `libs/server/feature-auth/src/lib/server-feature-auth.controller.spec.ts` for login method
+  - [x] 3.1 Generate feature-user library: `npx nx generate @nx/nest:library --name=feature-user --controller --service --directory=libs/server --importPath=@full-stack-todo/server/feature-user --strict --tags=type:feature,scope:server`
+  - [x] 3.2 Generate feature-auth library: `npx nx generate @nx/nest:library --name=feature-auth --controller --service --directory=libs/server --importPath=@full-stack-todo/server/feature-auth --strict --tags=type:feature,scope:server`
+  - [x] 3.3 Implement `libs/server/feature-user/src/lib/server-feature-user.service.ts` with getOne(id), getOneByEmail(email), and create(user) methods using bcrypt for password hashing (10 rounds)
+  - [x] 3.4 Update `libs/server/feature-user/src/lib/server-feature-user.module.ts` to import DataAccessTodoModule and TypeOrmModule.forFeature([UserEntitySchema]), export ServerFeatureUserService
+  - [x] 3.5 Implement `libs/server/feature-user/src/lib/server-feature-user.controller.ts` with POST /users (public, @SkipAuth()) and GET /users/:id (protected, @ApiBearerAuth(), verify reqUserId === id)
+  - [x] 3.6 Write unit tests in `libs/server/feature-user/src/lib/server-feature-user.service.spec.ts` for getOne, getOneByEmail, create methods
+  - [x] 3.7 Write unit tests in `libs/server/feature-user/src/lib/server-feature-user.controller.spec.ts` for createUser and getUser methods
+  - [x] 3.8 Create `libs/server/feature-auth/src/lib/jwt-strategy.service.ts` extending PassportStrategy(Strategy) with jwtFromRequest, secretOrKey from ConfigService, and validate() method returning { userId: sub, ...rest }
+  - [x] 3.9 Implement `libs/server/feature-auth/src/lib/server-feature-auth.service.ts` with validateUser(email, password) and generateAccessToken(user) methods, using forwardRef for ServerFeatureUserService
+  - [x] 3.10 Update `libs/server/feature-auth/src/lib/server-feature-auth.module.ts` to import JwtModule.registerAsync() with ConfigService, PassportModule, ServerFeatureUserModule (with forwardRef), provide JwtStrategy, export ServerFeatureAuthService
+  - [x] 3.11 Implement `libs/server/feature-auth/src/lib/server-feature-auth.controller.ts` with POST /auth/login (public, @SkipAuth()) endpoint
+  - [x] 3.12 Write unit tests in `libs/server/feature-auth/src/lib/server-feature-auth.service.spec.ts` for validateUser and generateAccessToken methods
+  - [x] 3.13 Write unit tests in `libs/server/feature-auth/src/lib/server-feature-auth.controller.spec.ts` for login method
 
 - [ ] 4.0 Protect Todo Endpoints with JWT Authentication
   - [ ] 4.1 Update `apps/server/src/app/app.module.ts` to import ServerFeatureUserModule and ServerFeatureAuthModule, add APP_GUARD provider with JwtAuthGuard, update ConfigModule validationSchema to include JWT_SECRET (required) and JWT_ACCESS_TOKEN_EXPIRES_IN (default: '600s')

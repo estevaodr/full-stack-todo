@@ -29,12 +29,18 @@
       "@full-stack-todo/server/data-access-todo": [
         "libs/server/data-access-todo/src/index.ts"
       ],
-      "@full-stack-todo/server/util": [
-        "libs/server/util/src/index.ts"
-      ],
+      "@full-stack-todo/server/util": ["libs/server/util/src/index.ts"],
       "@full-stack-todo/ui-style": ["libs/client/ui-style/src/index.ts"],
       "@fst/client/ui-components": ["libs/client/ui-components/src/index.ts"],
-      "@full-stack-todo/client/ui-components": ["libs/client/ui-components/src/index.ts"]
+      "@full-stack-todo/client/ui-components": [
+        "libs/client/ui-components/src/index.ts"
+      ],
+      "@full-stack-todo/server/feature-user": [
+        "libs/server/feature-user/src/index.ts"
+      ],
+      "@full-stack-todo/server/feature-auth": [
+        "libs/server/feature-auth/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]
