@@ -5,4 +5,7 @@
  * Import using the path alias: @full-stack-todo/shared/domain
  */
 export * from './lib/models/todo.interface';
+export * from './lib/models/user.interface';
+export * from './lib/models/token-response.interface';
+export * from './lib/models/jwt-payload.interface';
 

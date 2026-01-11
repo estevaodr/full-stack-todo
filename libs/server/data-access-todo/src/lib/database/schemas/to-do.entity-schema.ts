@@ -44,12 +44,22 @@ export const ToDoEntitySchema = new EntitySchema<ITodo>({
      * Title column - The main text of the todo item
      * - type: String - Stores text data
      * - nullable: false - This field is required and cannot be null/empty
-     * - unique: true - Ensures no two todos can have the same title (prevents duplicates)
+     * Note: Title uniqueness is now enforced per user via the unique constraint on ['title', 'user_id']
      */
     title: {
       type: String,
       nullable: false,
-      unique: true,
+    },
+
+    /**
+     * User ID column - Foreign key to the user who owns this todo
+     * - type: 'uuid' - Stores a UUID string matching the user's id
+     * - nullable: true - This field is optional (for backward compatibility during migration)
+     * Note: This column is created automatically by the 'user' relation's joinColumn
+     */
+    user_id: {
+      type: 'uuid',
+      nullable: true,
     },
     
     /**
@@ -75,5 +85,38 @@ export const ToDoEntitySchema = new EntitySchema<ITodo>({
       nullable: false,
     },
   },
+
+  // Relation definitions - defines relationships with other entities
+  relations: {
+    /**
+     * User relation - Many todos belong to one user
+     * - type: 'many-to-one' - _many_ todos belong to _one_ user
+     * - target: 'user' - Name of the database table we're associating with
+     * - joinColumn.name: 'user_id' - Column name in this table where the foreign key
+     *   of the associated table is referenced
+     * - inverseSide: 'todos' - Name of the property on the user side that relates back to todos
+     */
+    user: {
+      type: 'many-to-one',
+      target: 'user',
+      joinColumn: {
+        name: 'user_id',
+      },
+      inverseSide: 'todos',
+    },
+  },
+
+  // Unique constraints - ensures data integrity
+  uniques: [
+    {
+      /**
+       * UNIQUE_TITLE_USER - Adds a constraint to the table that ensures each
+       * userID + title combination is unique. This allows multiple users to have
+       * todos with the same title, but prevents a single user from having duplicate titles.
+       */
+      name: 'UNIQUE_TITLE_USER',
+      columns: ['title', 'user.id'],
+    },
+  ],
 });
 

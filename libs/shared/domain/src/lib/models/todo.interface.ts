@@ -1,3 +1,5 @@
+import { IUser } from './user.interface';
+
 /**
  * Interface representing a Todo item.
  * This is the core domain model shared between frontend and backend.
@@ -12,6 +14,16 @@ export interface ITodo {
   description: string;
   /** Whether the todo item has been completed */
   completed: boolean;
+
+  /**
+   * These fields are marked as optional, as there
+   * will be situations where the user is not returned
+   * as part of the response payload.
+   */
+  /** The user who owns this todo item */
+  user?: IUser;
+  /** The ID of the user who owns this todo item */
+  user_id?: string;
 }
 
 /**
