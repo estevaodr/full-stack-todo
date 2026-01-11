@@ -84,15 +84,15 @@ Generated from: `docs/references/full_stack_developmen_series_part_8.md`
   - [x] 1.9 Update `libs/server/data-access-todo/src/index.ts` to export UserEntitySchema
 
 - [ ] 2.0 Authentication Infrastructure and Dependencies
-  - [ ] 2.1 Install dependencies: `npm install --save @nestjs/passport passport passport-jwt @nestjs/jwt bcrypt`
-  - [ ] 2.2 Install dev dependencies: `npm install --save-dev @types/passport-jwt @types/bcrypt`
-  - [ ] 2.3 Create `libs/server/data-access-todo/src/lib/dtos/user.dto.ts` with UserResponseDto (implements IPublicUserData) and CreateUserDto (implements ICreateUser) with @IsEmail(), @IsStrongPassword() validation and Swagger decorators
-  - [ ] 2.4 Create `libs/server/data-access-todo/src/lib/dtos/auth.dto.ts` with LoginRequestDto (email, password) and LoginResponseDto (implements ITokenResponse) with validation and Swagger decorators
-  - [ ] 2.5 Update `libs/server/data-access-todo/src/index.ts` to export user and auth DTOs
-  - [ ] 2.6 Create `libs/server/util/src/lib/decorators/req-user.decorator.ts` with @ReqUser() and @ReqUserId() parameter decorators using createParamDecorator
-  - [ ] 2.7 Create `libs/server/util/src/lib/skip-auth.ts` with SKIP_AUTH_KEY constant and @SkipAuth() decorator using SetMetadata
-  - [ ] 2.8 Create `libs/server/util/src/lib/guards/jwt.auth-guard.ts` with JwtAuthGuard extending AuthGuard('jwt'), using Reflector to check for SKIP_AUTH_KEY metadata
-  - [ ] 2.9 Update `libs/server/util/src/index.ts` to export decorators and guard
+  - [x] 2.1 Install dependencies: `npm install --save @nestjs/passport passport passport-jwt @nestjs/jwt bcrypt`
+  - [x] 2.2 Install dev dependencies: `npm install --save-dev @types/passport-jwt @types/bcrypt`
+  - [x] 2.3 Create `libs/server/data-access-todo/src/lib/dtos/user.dto.ts` with UserResponseDto (implements IPublicUserData) and CreateUserDto (implements ICreateUser) with @IsEmail(), @IsStrongPassword() validation and Swagger decorators
+  - [x] 2.4 Create `libs/server/data-access-todo/src/lib/dtos/auth.dto.ts` with LoginRequestDto (email, password) and LoginResponseDto (implements ITokenResponse) with validation and Swagger decorators
+  - [x] 2.5 Update `libs/server/data-access-todo/src/index.ts` to export user and auth DTOs
+  - [x] 2.6 Create `libs/server/util/src/lib/decorators/req-user.decorator.ts` with @ReqUser() and @ReqUserId() parameter decorators using createParamDecorator
+  - [x] 2.7 Create `libs/server/util/src/lib/skip-auth.ts` with SKIP_AUTH_KEY constant and @SkipAuth() decorator using SetMetadata
+  - [x] 2.8 Create `libs/server/util/src/lib/guards/jwt.auth-guard.ts` with JwtAuthGuard extending AuthGuard('jwt'), using Reflector to check for SKIP_AUTH_KEY metadata
+  - [x] 2.9 Update `libs/server/util/src/index.ts` to export decorators and guard
 
 - [ ] 3.0 User and Auth Feature Libraries Implementation
   - [ ] 3.1 Generate feature-user library: `npx nx generate @nx/nest:library --name=feature-user --controller --service --directory=libs/server --importPath=@full-stack-todo/server/feature-user --strict --tags=type:feature,scope:server`
