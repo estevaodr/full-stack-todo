@@ -5,6 +5,7 @@ var __TEARDOWN_MESSAGE__: string;
 
 module.exports = async function () {
   // Start services that that the app needs to run (e.g. database, docker-compose, etc.).
+  // Note: Environment variables are loaded from .env file automatically by NestJS ConfigModule
   console.log('\nSetting up...\n');
 
   const host = process.env.HOST ?? 'localhost';

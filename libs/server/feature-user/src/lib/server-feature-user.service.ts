@@ -35,7 +35,10 @@ export class ServerFeatureUserService {
    * @throws NotFoundException if the user is not found
    */
   async getOne(id: string): Promise<IUser> {
-    const user = await this.userRepository.findOneBy({ id });
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['todos'], // Load the todos relation
+    });
     if (!user) {
       throw new NotFoundException(`User could not be found!`);
     }

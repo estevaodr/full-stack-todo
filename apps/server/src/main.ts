@@ -3,7 +3,7 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger, VersioningType } from '@nestjs/common';
+import { Logger, ValidationPipe, VersioningType } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AppModule } from './app/app.module';
@@ -12,6 +12,20 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
   app.setGlobalPrefix(globalPrefix);
+
+  // Global validation pipe - automatically validates all incoming requests
+  // This ensures DTOs are validated and returns proper 400 Bad Request errors
+  // when validation fails, instead of 500 Internal Server Error
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true, // Strip properties that don't have decorators
+      forbidNonWhitelisted: true, // Throw error if non-whitelisted properties are sent
+      transform: true, // Automatically transform payloads to DTO instances
+      transformOptions: {
+        enableImplicitConversion: true, // Allow implicit type conversion
+      },
+    }),
+  );
 
   // Set up API versioning
   // Versioning any API should be standard procedure - this means all endpoints

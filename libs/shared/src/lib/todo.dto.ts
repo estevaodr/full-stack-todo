@@ -202,9 +202,6 @@ export class UpdateTodoDto implements Partial<Omit<ITodo, 'id'>> {
    * 
    * @IsOptional() allows the field to be undefined
    * @IsString() validates the type if the field is provided
-   * 
-   * Note: The `!` is still used because TypeScript needs to know the type,
-   * but the value can be undefined at runtime until validation.
    */
   @ApiProperty({
     type: String,
@@ -214,7 +211,7 @@ export class UpdateTodoDto implements Partial<Omit<ITodo, 'id'>> {
   })
   @IsString()
   @IsOptional()
-  title!: string;
+  title?: string;
 
   /**
    * The description of the todo item
@@ -230,7 +227,7 @@ export class UpdateTodoDto implements Partial<Omit<ITodo, 'id'>> {
   })
   @IsString()
   @IsOptional()
-  description!: string;
+  description?: string;
 
   /**
    * The completion status of the todo item
@@ -249,7 +246,7 @@ export class UpdateTodoDto implements Partial<Omit<ITodo, 'id'>> {
   })
   @IsBoolean()
   @IsOptional()
-  completed!: boolean;
+  completed?: boolean;
 }
 
 /**

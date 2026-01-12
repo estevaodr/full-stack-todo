@@ -3,6 +3,7 @@ import axios from 'axios';
 
 module.exports = async function () {
   // Configure axios for tests to use.
+  // Note: Environment variables are loaded from .env file automatically by NestJS ConfigModule
   const host = process.env.HOST ?? 'localhost';
   const port = process.env.PORT ?? '3000';
   axios.defaults.baseURL = `http://${host}:${port}`;

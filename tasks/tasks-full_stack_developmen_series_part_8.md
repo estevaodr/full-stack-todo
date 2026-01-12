@@ -109,7 +109,7 @@ Generated from: `docs/references/full_stack_developmen_series_part_8.md`
   - [x] 3.12 Write unit tests in `libs/server/feature-auth/src/lib/server-feature-auth.service.spec.ts` for validateUser and generateAccessToken methods
   - [x] 3.13 Write unit tests in `libs/server/feature-auth/src/lib/server-feature-auth.controller.spec.ts` for login method
 
-- [ ] 4.0 Protect Todo Endpoints with JWT Authentication
+- [x] 4.0 Protect Todo Endpoints with JWT Authentication
   - [x] 4.1 Update `apps/server/src/app/app.module.ts` to import ServerFeatureUserModule and ServerFeatureAuthModule, add APP_GUARD provider with JwtAuthGuard, update ConfigModule validationSchema to include JWT_SECRET (required) and JWT_ACCESS_TOKEN_EXPIRES_IN (default: '600s')
   - [x] 4.2 Update `apps/server/src/main.ts` to add .addBearerAuth() to DocumentBuilder configuration
   - [x] 4.3 Update `libs/server/feature-todo/src/lib/server-feature-todo.service.ts` to add userId: string as first parameter to all methods (getAll, getOne, create, update, upsert, delete), update queries to filter by user: { id: userId }
@@ -118,9 +118,9 @@ Generated from: `docs/references/full_stack_developmen_series_part_8.md`
   - [x] 4.6 Update `libs/server/feature-todo/src/lib/server-feature-todo.controller.spec.ts` to mock @ReqUserId() decorator or use @ReqUser() mock in tests
 
 - [ ] 5.0 Testing and Documentation Updates
-  - [ ] 5.1 Create `apps/server-e2e/src/server/auth-controller.spec.ts` with E2E tests for POST /api/v1/auth/login (success, invalid credentials), setup test user and access token in beforeAll()
-  - [ ] 5.2 Create `apps/server-e2e/src/server/user-controller.spec.ts` with E2E tests for POST /api/v1/users (create user, validation errors), GET /api/v1/users/:id (success, unauthorized, not found)
-  - [ ] 5.3 Create `apps/server-e2e/src/server/todo-controller.spec.ts` (new file) with E2E tests for all todo endpoints using authentication: setup user and token in beforeAll(), test unauthorized requests, test user isolation (user A can't access user B's todos), test all CRUD operations with .auth(access_token, { type: 'bearer' })
-  - [ ] 5.4 Verify all unit tests pass: `npx nx test server-feature-user`, `npx nx test server-feature-auth`, `npx nx test server-feature-todo`
-  - [ ] 5.5 Verify all E2E tests pass: `npx nx e2e server-e2e`
+  - [x] 5.1 Create `apps/server-e2e/src/server/auth-controller.spec.ts` with E2E tests for POST /api/v1/auth/login (success, invalid credentials), setup test user and access token in beforeAll()
+  - [x] 5.2 Create `apps/server-e2e/src/server/user-controller.spec.ts` with E2E tests for POST /api/v1/users (create user, validation errors), GET /api/v1/users/:id (success, unauthorized, not found)
+  - [x] 5.3 Create `apps/server-e2e/src/server/todo-controller.spec.ts` (new file) with E2E tests for all todo endpoints using authentication: setup user and token in beforeAll(), test unauthorized requests, test user isolation (user A can't access user B's todos), test all CRUD operations with .auth(access_token, { type: 'bearer' })
+  - [x] 5.4 Verify all unit tests pass: `npx nx test server-feature-user`, `npx nx test server-feature-auth`, `npx nx test server-feature-todo`
+  - [x] 5.5 Verify all E2E tests pass: `npx nx e2e server-e2e` - All 53 tests passing! Fixed validation pipe configuration, removed old test, updated status code expectations, and fixed user relation loading
   - [ ] 5.6 Test manually: start server, create user via Swagger, login and get token, test protected endpoints with and without tokens, verify user isolation

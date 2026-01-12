@@ -115,7 +115,7 @@ export const ToDoEntitySchema = new EntitySchema<ITodo>({
        * todos with the same title, but prevents a single user from having duplicate titles.
        */
       name: 'UNIQUE_TITLE_USER',
-      columns: ['title', 'user.id'],
+      columns: ['title', 'user_id'],
     },
   ],
 });
