@@ -22,6 +22,7 @@ const config: Config = {
   ],
   testEnvironment: 'jsdom',
   moduleNameMapper: {
+    '^@full-stack-todo/client/util$': '<rootDir>/../util/src',
     '^@full-stack-todo/(.*)$': '<rootDir>/../../../$1/src',
   },
   testMatch: ['<rootDir>/src/**/*.spec.ts'],
