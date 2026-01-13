@@ -75,8 +75,8 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 1.6 Install jwt-decode: `npm install jwt-decode`
   - [x] 1.7 Generate Auth service: `npx nx generate @schematics/angular:service Auth --project=client-data-access --path=libs/client/data-access/src/lib`
   - [x] 1.8 Generate User service: `npx nx generate @schematics/angular:service User --project=client-data-access --path=libs/client/data-access/src/lib`
-  - [ ] 1.9 Implement `libs/client/data-access/src/lib/auth.service.ts` with BehaviorSubjects for accessToken$ and userData$, methods: setToken, clearToken, loadToken, loginUser, logoutUser, isTokenExpired, decodeToken (using jwt-decode)
-  - [ ] 1.10 Implement `libs/client/data-access/src/lib/user.service.ts` with getUser method (if needed based on backend API)
+  - [x] 1.9 Implement `libs/client/data-access/src/lib/auth.service.ts` with BehaviorSubjects for accessToken$ and userData$, methods: setToken, clearToken, loadToken, loginUser, logoutUser, isTokenExpired, decodeToken (using jwt-decode)
+  - [x] 1.10 Implement `libs/client/data-access/src/lib/user.service.ts` with getUser method (if needed based on backend API)
   - [ ] 1.11 Write unit tests in `libs/client/data-access/src/lib/auth.service.spec.ts` for all AuthService methods, mocking localStorage and HttpClient
   - [ ] 1.12 Write unit tests in `libs/client/data-access/src/lib/user.service.spec.ts` for UserService methods
   - [ ] 1.13 Update `libs/client/data-access/src/index.ts` to export AuthService and UserService
