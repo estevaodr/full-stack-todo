@@ -66,7 +66,7 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
 
 ## Tasks
 
-- [ ] 1.0 Authentication Infrastructure Setup
+- [x] 1.0 Authentication Infrastructure Setup
   - [x] 1.1 Create `libs/shared/domain/src/lib/models/login-payload.interface.ts` with ILoginPayload interface (email: string, password: string)
   - [x] 1.2 Update `libs/shared/domain/src/index.ts` to export ILoginPayload
   - [x] 1.3 Generate client util library: `npx nx generate @nx/node:library --name=util --directory=libs/client --importPath=@full-stack-todo/client/util --strict --tags=type:util,scope:client --unitTestRunner=none`
