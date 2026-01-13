@@ -15,3 +15,4 @@
  * of security considerations. See documentation for more details.
  */
 export const TOKEN_STORAGE_KEY = 'fst-token-storage';
+  // checkov:skip=CKV_SECRET_6: ADD REASON
