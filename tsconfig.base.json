@@ -41,7 +41,10 @@
       "@full-stack-todo/server/feature-auth": [
         "libs/server/feature-auth/src/index.ts"
       ],
-      "@full-stack-todo/client/util": ["libs/client/util/src/index.ts"]
+      "@full-stack-todo/client/util": ["libs/client/util/src/index.ts"],
+      "@full-stack-todo/client/feature-login": [
+        "libs/client/feature-login/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

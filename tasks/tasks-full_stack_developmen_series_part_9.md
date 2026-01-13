@@ -82,7 +82,7 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 1.13 Update `libs/client/data-access/src/index.ts` to export AuthService and UserService
 
 - [ ] 2.0 Login Feature Implementation
-  - [ ] 2.1 Generate login feature library: `npx nx generate @nx/angular:library --name=feature-login --directory=libs/client --changeDetection=OnPush --importPath=@full-stack-todo/client/feature-login --skipModule --standalone --style=scss --tags=type:feature,scope:client`
+  - [x] 2.1 Generate login feature library: `npx nx generate @nx/angular:library --name=feature-login --directory=libs/client --changeDetection=OnPush --importPath=@full-stack-todo/client/feature-login --skipModule --standalone --style=scss --tags=type:feature,scope:client`
   - [ ] 2.2 Generate Storybook configuration: `npx nx generate @nx/angular:storybook-configuration client-feature-login --tsConfiguration --configureTestRunner`
   - [ ] 2.3 Update `libs/client/feature-login/project.json` build-storybook target to include styles from `apps/client/src/styles.scss` and stylePreprocessorOptions with includePaths to `libs/client/ui-style/src/lib/scss`
   - [ ] 2.4 Create login component template `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.html` with form structure (email and password inputs, submit button)

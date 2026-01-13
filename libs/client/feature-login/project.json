@@ -1,0 +1,13 @@
+{
+  "name": "FeatureLogin",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/feature-login/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["type:feature", "scope:client"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}
