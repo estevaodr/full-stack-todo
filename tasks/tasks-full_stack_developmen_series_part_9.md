@@ -69,12 +69,12 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
 - [ ] 1.0 Authentication Infrastructure Setup
   - [x] 1.1 Create `libs/shared/domain/src/lib/models/login-payload.interface.ts` with ILoginPayload interface (email: string, password: string)
   - [x] 1.2 Update `libs/shared/domain/src/index.ts` to export ILoginPayload
-  - [ ] 1.3 Generate client util library: `npx nx generate @nx/node:library --name=util --directory=libs/client --importPath=@full-stack-todo/client/util --strict --tags=type:util,scope:client --unitTestRunner=none`
-  - [ ] 1.4 Create `libs/client/util/src/lib/constants.ts` with TOKEN_STORAGE_KEY constant ('fst-token-storage')
-  - [ ] 1.5 Update `libs/client/util/src/index.ts` to export constants
-  - [ ] 1.6 Install jwt-decode: `npm install jwt-decode`
-  - [ ] 1.7 Generate Auth service: `npx nx generate @schematics/angular:service Auth --project=client-data-access --path=libs/client/data-access/src/lib`
-  - [ ] 1.8 Generate User service: `npx nx generate @schematics/angular:service User --project=client-data-access --path=libs/client/data-access/src/lib`
+  - [x] 1.3 Generate client util library: `npx nx generate @nx/node:library --name=util --directory=libs/client --importPath=@full-stack-todo/client/util --strict --tags=type:util,scope:client --unitTestRunner=none`
+  - [x] 1.4 Create `libs/client/util/src/lib/constants.ts` with TOKEN_STORAGE_KEY constant ('fst-token-storage')
+  - [x] 1.5 Update `libs/client/util/src/index.ts` to export constants
+  - [x] 1.6 Install jwt-decode: `npm install jwt-decode`
+  - [x] 1.7 Generate Auth service: `npx nx generate @schematics/angular:service Auth --project=client-data-access --path=libs/client/data-access/src/lib`
+  - [x] 1.8 Generate User service: `npx nx generate @schematics/angular:service User --project=client-data-access --path=libs/client/data-access/src/lib`
   - [ ] 1.9 Implement `libs/client/data-access/src/lib/auth.service.ts` with BehaviorSubjects for accessToken$ and userData$, methods: setToken, clearToken, loadToken, loginUser, logoutUser, isTokenExpired, decodeToken (using jwt-decode)
   - [ ] 1.10 Implement `libs/client/data-access/src/lib/user.service.ts` with getUser method (if needed based on backend API)
   - [ ] 1.11 Write unit tests in `libs/client/data-access/src/lib/auth.service.spec.ts` for all AuthService methods, mocking localStorage and HttpClient
