@@ -43,6 +43,7 @@
   --color-status-success: #{$nord14};
   --color-status-warning: #{$nord13};
   --color-status-info: #{$nord10};
+  --color-error: #{$nord11}; // Alias for status-danger
   
   // Primary Action Colors
   --color-primary: #{$nord10};
@@ -113,6 +114,7 @@
   --color-status-success: #{$nord14};
   --color-status-warning: #{$nord13};
   --color-status-info: #{$nord10};
+  --color-error: #{$nord11}; // Alias for status-danger
   
   // Primary Action Colors
   --color-primary: #{$nord9};

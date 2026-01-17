@@ -83,17 +83,17 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
 
 - [ ] 2.0 Login Feature Implementation
   - [x] 2.1 Generate login feature library: `npx nx generate @nx/angular:library --name=feature-login --directory=libs/client --changeDetection=OnPush --importPath=@full-stack-todo/client/feature-login --skipModule --standalone --style=scss --tags=type:feature,scope:client`
-  - [ ] 2.2 Generate Storybook configuration: `npx nx generate @nx/angular:storybook-configuration client-feature-login --tsConfiguration --configureTestRunner`
-  - [ ] 2.3 Update `libs/client/feature-login/project.json` build-storybook target to include styles from `apps/client/src/styles.scss` and stylePreprocessorOptions with includePaths to `libs/client/ui-style/src/lib/scss`
-  - [ ] 2.4 Create login component template `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.html` with form structure (email and password inputs, submit button)
-  - [ ] 2.5 Implement `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.ts` with FormGroup, FormControls for email and password, validation (required, email), getters for form state, submitForm method with error handling
-  - [ ] 2.6 Update login template with formControlName bindings, validation error messages, error display using BehaviorSubject
-  - [ ] 2.7 Create `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.scss` with layout styles for login container
-  - [ ] 2.8 Update `libs/client/ui-style/src/lib/scss/components/_form_control.scss` with input-group--invalid styles and validation-text styles (error, warning, visible modifiers)
-  - [ ] 2.9 Create Storybook story `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.stories.ts` with componentWrapperDecorator for visualization
-  - [ ] 2.10 Create `libs/client/feature-login/src/lib/lib.routes.ts` with login route
-  - [ ] 2.11 Write unit tests in `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.spec.ts` for form validation, submission, error handling
-  - [ ] 2.12 Update `libs/client/feature-login/src/index.ts` to export login component and routes
+  - [x] 2.2 Generate Storybook configuration: `npx nx generate @nx/angular:storybook-configuration FeatureLogin --tsConfiguration`
+  - [x] 2.3 Update `libs/client/feature-login/project.json` build-storybook target to include styles from `apps/client/src/styles.scss` and stylePreprocessorOptions with includePaths to `libs/client/ui-style/src/lib/scss`
+  - [x] 2.4 Create login component template `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.html` with form structure (email and password inputs, submit button)
+  - [x] 2.5 Implement `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.ts` with FormGroup, FormControls for email and password, validation (required, email), getters for form state, submitForm method with error handling
+  - [x] 2.6 Update login template with formControlName bindings, validation error messages, error display using BehaviorSubject
+  - [x] 2.7 Create `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.scss` with layout styles for login container
+  - [x] 2.8 Update `libs/client/ui-style/src/lib/scss/components/_form_control.scss` with input-group--invalid styles and validation-text styles (error, warning, visible modifiers)
+  - [x] 2.9 Create Storybook story `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.stories.ts` with mocked Auth and Router services
+  - [x] 2.10 Create `libs/client/feature-login/src/lib/lib.routes.ts` with login route
+  - [x] 2.11 Write unit tests in `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.spec.ts` for form validation, submission, error handling
+  - [x] 2.12 Update `libs/client/feature-login/src/index.ts` to export login component and routes
 
 - [ ] 3.0 JWT Interceptor and Guard Implementation
   - [ ] 3.1 Generate JWT interceptor: `npx nx generate @schematics/angular:interceptor Jwt --project=client-data-access --functional --path=libs/client/data-access/src/lib/interceptors`

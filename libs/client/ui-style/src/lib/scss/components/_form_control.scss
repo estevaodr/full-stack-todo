@@ -1,0 +1,312 @@
+/**
+ * Form Control Component Styles
+ * 
+ * Base form control styles for inputs, textareas, and form validation.
+ * Provides consistent styling across all form elements with validation states.
+ * 
+ * Features:
+ * - Base input/textarea/select styling
+ * - Validation states (invalid, valid)
+ * - Error message display
+ * - Input group container
+ * - Focus states for accessibility
+ * - Disabled states
+ */
+
+@use '../abstracts' as *;
+@use '../vendors' as *;
+
+/**
+ * Form Group
+ * 
+ * Container for form fields (label + input + validation).
+ * Provides consistent spacing between form fields.
+ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, $space-x-sm);
+  margin-bottom: var(--spacing-md, $space-md);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/**
+ * Form Label
+ * 
+ * Label for form inputs.
+ * Provides consistent typography and spacing.
+ */
+.form-label {
+  display: block;
+  font-size: var(--font-size-sm, calc($font-size-base * 0.875));
+  font-weight: 600;
+  color: var(--color-text-default, $color-text-default);
+  margin-bottom: var(--spacing-xs, $space-x-sm);
+}
+
+/**
+ * Input Group
+ * 
+ * Container for input fields.
+ * Allows for validation state styling and icon positioning.
+ */
+.input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * Form Input, Textarea, Select
+ * 
+ * Base styling for all form input elements.
+ * Provides consistent appearance across input types.
+ */
+.form-input,
+.form-textarea,
+.form-select {
+  width: 100%;
+  padding: var(--spacing-sm, $space-sm);
+  font-size: var(--font-size-base, $font-size-base);
+  border: 1px solid var(--color-border-default, $nord3);
+  border-radius: var(--border-radius-base, 4px);
+  background-color: var(--color-bg-default, $color-ui-light);
+  color: var(--color-text-default, $color-text-default);
+  font-family: inherit;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
+  /**
+   * Focus State
+   * 
+   * Provides visual feedback when the input is focused.
+   * Includes a subtle shadow for better visibility.
+   */
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary, $nord10);
+    box-shadow: 0 0 0 3px rgba(94, 129, 172, 0.1);
+  }
+  
+  /**
+   * Placeholder Styling
+   */
+  &::placeholder {
+    color: var(--color-text-muted, $nord3);
+    opacity: 0.7;
+  }
+  
+  /**
+   * Disabled State
+   */
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--color-bg-secondary, $nord1);
+  }
+  
+  /**
+   * Read-only State
+   */
+  &:read-only {
+    background-color: var(--color-bg-secondary, $nord1);
+    cursor: default;
+  }
+}
+
+/**
+ * Textarea Specific Styles
+ * 
+ * Textareas can be resized vertically and have a minimum height.
+ */
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+  font-family: inherit;
+}
+
+/**
+ * Select Specific Styles
+ * 
+ * Select dropdowns have specific styling needs.
+ */
+.form-select {
+  cursor: pointer;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23646e88' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--spacing-sm, $space-sm) center;
+  background-size: 12px;
+  padding-right: calc(var(--spacing-md, $space-md) + 12px);
+  
+  &:disabled {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%233b4252' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  }
+}
+
+/**
+ * Invalid Input State
+ * 
+ * Applied when the input has validation errors.
+ * Visual indicator for invalid fields with error color.
+ */
+.input-group--invalid .form-input,
+.input-group--invalid .form-textarea,
+.input-group--invalid .form-select,
+.form-input.ng-invalid.ng-touched,
+.form-textarea.ng-invalid.ng-touched,
+.form-select.ng-invalid.ng-touched {
+  border-color: var(--color-status-danger, $nord11);
+  
+  &:focus {
+    border-color: var(--color-status-danger, $nord11);
+    box-shadow: 0 0 0 3px rgba(191, 97, 106, 0.1);
+  }
+}
+
+/**
+ * Valid Input State
+ * 
+ * Applied when the input is valid (optional, for positive feedback).
+ * Visual indicator for valid fields with success color.
+ */
+.input-group--valid .form-input,
+.input-group--valid .form-textarea,
+.input-group--valid .form-select,
+.form-input.ng-valid.ng-touched,
+.form-textarea.ng-valid.ng-touched,
+.form-select.ng-valid.ng-touched {
+  border-color: var(--color-status-success, $nord14);
+  
+  &:focus {
+    border-color: var(--color-status-success, $nord14);
+    box-shadow: 0 0 0 3px rgba(143, 188, 187, 0.1);
+  }
+}
+
+/**
+ * Validation Text Container
+ * 
+ * Container for validation error and success messages.
+ * Prevents layout shift by maintaining minimum height.
+ */
+.validation-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, $space-x-sm);
+  min-height: 1.25rem; // Prevents layout shift when errors appear
+  margin-top: var(--spacing-xs, $space-x-sm);
+}
+
+/**
+ * Validation Text - Error Variant
+ * 
+ * Error message styling.
+ * Hidden by default, shown when validation fails.
+ */
+.validation-text--error {
+  font-size: var(--font-size-sm, calc($font-size-base * 0.875));
+  color: var(--color-status-danger, $nord11);
+  display: none; // Hidden by default
+  line-height: 1.4;
+}
+
+/**
+ * Validation Text - Success Variant
+ * 
+ * Success message styling (optional, for positive feedback).
+ */
+.validation-text--success {
+  font-size: var(--font-size-sm, calc($font-size-base * 0.875));
+  color: var(--color-status-success, $nord14);
+  display: none; // Hidden by default
+  line-height: 1.4;
+}
+
+/**
+ * Validation Text - Visible Modifier
+ * 
+ * Shows the validation message when validation state changes.
+ */
+.validation-text--visible {
+  display: block;
+}
+
+/**
+ * Form Error Container
+ * 
+ * Container for server-side error messages.
+ * Displayed above form actions or at the top of the form.
+ */
+.form-error {
+  padding: var(--spacing-sm, $space-sm);
+  background-color: rgba(191, 97, 106, 0.1);
+  border: 1px solid var(--color-status-danger, $nord11);
+  border-radius: var(--border-radius-base, 4px);
+  margin-bottom: var(--spacing-md, $space-md);
+}
+
+/**
+ * Form Success Container
+ * 
+ * Container for success messages (optional).
+ */
+.form-success {
+  padding: var(--spacing-sm, $space-sm);
+  background-color: rgba(143, 188, 187, 0.1);
+  border: 1px solid var(--color-status-success, $nord14);
+  border-radius: var(--border-radius-base, 4px);
+  margin-bottom: var(--spacing-md, $space-md);
+}
+
+/**
+ * Form Actions
+ * 
+ * Container for form action buttons (submit, reset, etc.).
+ */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, $space-sm);
+  margin-top: var(--spacing-md, $space-md);
+  
+  /**
+   * Horizontal layout for multiple buttons
+   */
+  &--horizontal {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+}
+
+/**
+ * Required Field Indicator
+ * 
+ * Visual indicator for required fields.
+ * Can be used with labels or as a standalone element.
+ */
+.required-indicator {
+  color: var(--color-status-danger, $nord11);
+  margin-left: var(--spacing-xs, $space-x-sm);
+}
+
+/**
+ * Responsive Design
+ * 
+ * Adjustments for smaller screens.
+ */
+@media (max-width: 768px) {
+  .form-actions {
+    &--horizontal {
+      flex-direction: column;
+    }
+  }
+  
+  .form-input,
+  .form-textarea,
+  .form-select {
+    font-size: 16px; // Prevents zoom on iOS
+  }
+}
