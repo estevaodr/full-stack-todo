@@ -1,0 +1,78 @@
+{
+  "name": "FeatureRegister",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/client/feature-register/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["type:feature", "scope:client"],
+  "targets": {
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "storybook": {
+      "executor": "@storybook/angular:start-storybook",
+      "options": {
+        "port": 4400,
+        "configDir": "libs/client/feature-register/.storybook",
+        "browserTarget": "FeatureRegister:build-storybook",
+        "compodoc": false,
+        "styles": [
+          "apps/client/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/client/ui-style/src/lib/scss"
+          ]
+        }
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "build-storybook": {
+      "executor": "@storybook/angular:build-storybook",
+      "outputs": ["{options.outputDir}"],
+      "options": {
+        "outputDir": "dist/storybook/FeatureRegister",
+        "configDir": "libs/client/feature-register/.storybook",
+        "browserTarget": "FeatureRegister:build-storybook",
+        "compodoc": false,
+        "styles": [
+          "apps/client/src/styles.scss"
+        ],
+        "stylePreprocessorOptions": {
+          "includePaths": [
+            "libs/client/ui-style/src/lib/scss"
+          ]
+        }
+      },
+      "configurations": {
+        "ci": {
+          "quiet": true
+        }
+      }
+    },
+    "test-storybook": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "test-storybook -c libs/client/feature-register/.storybook --url=http://localhost:4400"
+      }
+    },
+    "static-storybook": {
+      "executor": "@nx/web:file-server",
+      "dependsOn": ["build-storybook"],
+      "options": {
+        "buildTarget": "FeatureRegister:build-storybook",
+        "staticFilePath": "dist/storybook/FeatureRegister",
+        "spa": true
+      },
+      "configurations": {
+        "ci": {
+          "buildTarget": "FeatureRegister:build-storybook:ci"
+        }
+      }
+    }
+  }
+}

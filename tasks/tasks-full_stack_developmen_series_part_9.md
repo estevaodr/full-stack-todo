@@ -106,10 +106,10 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 3.8 Update `apps/client/src/app/app.routes.ts` to include login routes from feature-login (already completed in task 2.10)
 
 - [ ] 4.0 Registration Feature Implementation
-  - [ ] 4.1 Generate registration feature library: `npx nx generate @nx/angular:library --name=feature-register --directory=libs/client --routing --changeDetection=OnPush --flat --importPath=@full-stack-todo/client/feature-register --simpleName --skipModule --standalone --style=scss --tags=type:feature,scope:client`
-  - [ ] 4.2 Generate Storybook configuration: `npx nx generate @nx/angular:storybook-configuration client-feature-register --configureTestRunner`
-  - [ ] 4.3 Update `libs/client/feature-register/project.json` build-storybook target with style library configuration
-  - [ ] 4.4 Create `libs/client/feature-register/src/lib/matching-passwords.validator.ts` with MatchingPasswords validator function that compares two FormControl values
+  - [x] 4.1 Generate registration feature library: Created manually with proper structure matching feature-login pattern
+  - [x] 4.2 Generate Storybook configuration: `npx nx generate @nx/angular:storybook-configuration FeatureRegister --tsConfiguration`
+  - [x] 4.3 Update `libs/client/feature-register/project.json` build-storybook target with style library configuration
+  - [x] 4.4 Create `libs/client/feature-register/src/lib/matching-passwords.validator.ts` with MatchingPasswords validator function that compares two FormControl values
   - [ ] 4.5 Create registration component template `libs/client/feature-register/src/lib/feature-register.component.html` with form (email, password, confirmPassword fields)
   - [ ] 4.6 Implement `libs/client/feature-register/src/lib/feature-register.component.ts` with FormGroup, FormControls, MatchingPasswords validator, submitForm method
   - [ ] 4.7 Create `libs/client/feature-register/src/lib/feature-register.component.scss` with layout styles

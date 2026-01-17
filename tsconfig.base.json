@@ -44,6 +44,9 @@
       "@full-stack-todo/client/util": ["libs/client/util/src/index.ts"],
       "@full-stack-todo/client/feature-login": [
         "libs/client/feature-login/src/index.ts"
+      ],
+      "@full-stack-todo/client/feature-register": [
+        "libs/client/feature-register/src/index.ts"
       ]
     }
   },
