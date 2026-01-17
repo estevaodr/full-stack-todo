@@ -110,7 +110,7 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 4.2 Generate Storybook configuration: `npx nx generate @nx/angular:storybook-configuration FeatureRegister --tsConfiguration`
   - [x] 4.3 Update `libs/client/feature-register/project.json` build-storybook target with style library configuration
   - [x] 4.4 Create `libs/client/feature-register/src/lib/matching-passwords.validator.ts` with MatchingPasswords validator function that compares two FormControl values
-  - [ ] 4.5 Create registration component template `libs/client/feature-register/src/lib/feature-register.component.html` with form (email, password, confirmPassword fields)
+  - [x] 4.5 Create registration component template `libs/client/feature-register/src/lib/feature-register/feature-register.html` with form (email, password, confirmPassword fields)
   - [ ] 4.6 Implement `libs/client/feature-register/src/lib/feature-register.component.ts` with FormGroup, FormControls, MatchingPasswords validator, submitForm method
   - [ ] 4.7 Create `libs/client/feature-register/src/lib/feature-register.component.scss` with layout styles
   - [ ] 4.8 Create Storybook story `libs/client/feature-register/src/lib/feature-register.stories.ts`

@@ -1,1 +1,106 @@
-<p>FeatureRegister works!</p>
+<!--
+  Registration Component Template
+  
+  A form for user registration with email, password, and confirm password fields.
+  Uses reactive forms with validation including password matching.
+-->
+
+<div class="register-container">
+  <div class="register-card">
+    <h1 class="register-title">Register</h1>
+    
+    <form [formGroup]="registerForm" (ngSubmit)="submitForm()" class="register-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email" class="form-label">Email *</label>
+        <div class="input-group" [class.input-group--invalid]="emailControl?.invalid && emailControl?.touched">
+          <input
+            id="email"
+            type="email"
+            class="form-input"
+            formControlName="email"
+            placeholder="Enter your email"
+            autocomplete="email"
+            required
+          />
+        </div>
+        <!-- Validation error messages -->
+        <div class="validation-text" *ngIf="emailControl?.invalid && emailControl?.touched">
+          <span class="validation-text--error validation-text--visible" *ngIf="emailControl?.errors?.['required']">
+            Email is required
+          </span>
+          <span class="validation-text--error validation-text--visible" *ngIf="emailControl?.errors?.['email']">
+            Please enter a valid email address
+          </span>
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password" class="form-label">Password *</label>
+        <div class="input-group" [class.input-group--invalid]="passwordControl?.invalid && passwordControl?.touched">
+          <input
+            id="password"
+            type="password"
+            class="form-input"
+            formControlName="password"
+            placeholder="Enter your password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+        <!-- Validation error messages -->
+        <div class="validation-text" *ngIf="passwordControl?.invalid && passwordControl?.touched">
+          <span class="validation-text--error validation-text--visible" *ngIf="passwordControl?.errors?.['required']">
+            Password is required
+          </span>
+        </div>
+      </div>
+
+      <!-- Confirm Password Field -->
+      <div class="form-group">
+        <label for="confirmPassword" class="form-label">Confirm Password *</label>
+        <div class="input-group" [class.input-group--invalid]="confirmPasswordControl?.invalid && confirmPasswordControl?.touched">
+          <input
+            id="confirmPassword"
+            type="password"
+            class="form-input"
+            formControlName="confirmPassword"
+            placeholder="Confirm your password"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+        <!-- Validation error messages -->
+        <div class="validation-text" *ngIf="confirmPasswordControl?.invalid && confirmPasswordControl?.touched">
+          <span class="validation-text--error validation-text--visible" *ngIf="confirmPasswordControl?.errors?.['required']">
+            Please confirm your password
+          </span>
+        </div>
+        <!-- Password matching error (from form-level validator) -->
+        <div class="validation-text" *ngIf="registerForm.hasError('matchingPasswords') && confirmPasswordControl?.touched">
+          <span class="validation-text--error validation-text--visible">
+            Passwords do not match
+          </span>
+        </div>
+      </div>
+
+      <!-- Error Display (connected to BehaviorSubject) -->
+      <div class="form-error" *ngIf="errorMessage$ | async as errorMessage">
+        <span class="validation-text--error validation-text--visible">{{ errorMessage }}</span>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-actions">
+        <button
+          type="submit"
+          class="btn btn--primary btn--full-width"
+          [disabled]="registerForm.invalid || (isSubmitting$ | async)"
+        >
+          <span *ngIf="!(isSubmitting$ | async)">Register</span>
+          <span *ngIf="isSubmitting$ | async">Registering...</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
