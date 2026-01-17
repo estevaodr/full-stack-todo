@@ -95,15 +95,15 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 2.11 Write unit tests in `libs/client/feature-login/src/lib/client-feature-login/client-feature-login.component.spec.ts` for form validation, submission, error handling
   - [x] 2.12 Update `libs/client/feature-login/src/index.ts` to export login component and routes
 
-- [ ] 3.0 JWT Interceptor and Guard Implementation
-  - [ ] 3.1 Generate JWT interceptor: `npx nx generate @schematics/angular:interceptor Jwt --project=client-data-access --functional --path=libs/client/data-access/src/lib/interceptors`
-  - [ ] 3.2 Implement `libs/client/data-access/src/lib/interceptors/jwt.interceptor.ts` as functional interceptor using HttpInterceptorFn, inject AuthService, use accessToken$ with take(1), clone request with Authorization header
-  - [ ] 3.3 Generate Auth guard: `npx nx generate @schematics/angular:guard Auth --project=client-data-access --functional --path=libs/client/data-access/src/lib/guards`
-  - [ ] 3.4 Implement `libs/client/data-access/src/lib/guards/auth.guard.ts` as functional guard using CanActivateFn, check isTokenExpired, redirect to /login with returnUrl query param if expired
-  - [ ] 3.5 Update `libs/client/data-access/src/index.ts` to export jwtInterceptor and authGuard
-  - [ ] 3.6 Update `apps/client/src/main.ts` to add jwtInterceptor to provideHttpClient(withInterceptors([jwtInterceptor]))
-  - [ ] 3.7 Update `libs/client/feature-dashboard/src/lib/lib.routes.ts` to add canActivate: [authGuard] to dashboard route
-  - [ ] 3.8 Update `apps/client/src/app/app.routes.ts` to include login routes from feature-login
+- [x] 3.0 JWT Interceptor and Guard Implementation
+  - [x] 3.1 Generate JWT interceptor: `npx nx generate @schematics/angular:interceptor Jwt --project=DataAccess --functional --path=libs/client/data-access/src/lib/interceptors`
+  - [x] 3.2 Implement `libs/client/data-access/src/lib/interceptors/jwt-interceptor.ts` as functional interceptor using HttpInterceptorFn, inject AuthService, use accessToken$ with take(1), clone request with Authorization header
+  - [x] 3.3 Generate Auth guard: `npx nx generate @schematics/angular:guard Auth --project=DataAccess --functional --path=libs/client/data-access/src/lib/guards`
+  - [x] 3.4 Implement `libs/client/data-access/src/lib/guards/auth-guard.ts` as functional guard using CanActivateFn, check isTokenExpired, redirect to /login with returnUrl query param if expired
+  - [x] 3.5 Update `libs/client/data-access/src/index.ts` to export jwtInterceptor and authGuard
+  - [x] 3.6 Update `apps/client/src/main.ts` to add jwtInterceptor to provideHttpClient(withInterceptors([jwtInterceptor]))
+  - [x] 3.7 Update `libs/client/feature-dashboard/src/lib/lib.routes.ts` to add canActivate: [authGuard] to dashboard route
+  - [x] 3.8 Update `apps/client/src/app/app.routes.ts` to include login routes from feature-login (already completed in task 2.10)
 
 - [ ] 4.0 Registration Feature Implementation
   - [ ] 4.1 Generate registration feature library: `npx nx generate @nx/angular:library --name=feature-register --directory=libs/client --routing --changeDetection=OnPush --flat --importPath=@full-stack-todo/client/feature-register --simpleName --skipModule --standalone --style=scss --tags=type:feature,scope:client`
