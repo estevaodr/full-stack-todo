@@ -1,0 +1,118 @@
+/**
+ * Application Root Component Styles
+ * 
+ * Styles for the main application component including the header
+ * and main content area.
+ */
+
+// Import design system variables
+@use 'abstracts/variables' as *;
+@use 'vendors' as *;
+
+/**
+ * App Header
+ * 
+ * Global header that appears at the top of every page.
+ * Contains the app title, user greeting, and navigation actions.
+ */
+.app-header {
+  background-color: var(--color-bg-secondary, $color-ui-light);
+  border-bottom: 1px solid var(--color-border-default, $nord3);
+  padding: var(--spacing-md, $space-md) 0;
+  
+  &__content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg, $space-lg);
+  }
+  
+  &__title {
+    margin: 0;
+    font-size: var(--font-size-xl, calc($font-size-base * 1.25));
+    font-weight: 700;
+    color: var(--color-text-default, $color-text-default);
+    letter-spacing: -0.02em;
+  }
+  
+  &__nav {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, $space-md);
+  }
+  
+  &__user {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md, $space-md);
+  }
+  
+  &__greeting {
+    font-size: var(--font-size-base, $font-size-base);
+    color: var(--color-text-default, $color-text-default);
+    font-weight: 500;
+  }
+}
+
+/**
+ * Skip Link
+ * 
+ * Accessibility feature that allows keyboard users to skip to main content.
+ * Hidden by default, visible on focus.
+ */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--color-bg-primary, $nord0);
+  color: var(--color-text-inverse, $nord6);
+  padding: var(--spacing-sm, $space-sm) var(--spacing-md, $space-md);
+  text-decoration: none;
+  z-index: 100;
+  
+  &:focus {
+    top: 0;
+  }
+}
+
+/**
+ * Main Content Area
+ * 
+ * Container for the router outlet and page content.
+ */
+#main-content {
+  min-height: calc(100vh - 80px);
+}
+
+/**
+ * Responsive Design
+ * 
+ * Adjusts layout for smaller screens.
+ */
+@media (max-width: 768px) {
+  .app-header {
+    &__content {
+      flex-direction: column;
+      gap: var(--spacing-md, $space-md);
+      align-items: flex-start;
+    }
+    
+    &__nav {
+      width: 100%;
+      justify-content: space-between;
+    }
+    
+    &__user {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--spacing-sm, $space-sm);
+      width: 100%;
+    }
+    
+    &__greeting {
+      font-size: var(--font-size-sm, calc($font-size-base * 0.875));
+    }
+  }
+}

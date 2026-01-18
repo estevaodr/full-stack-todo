@@ -1,4 +1,32 @@
 <a href="#main-content" class="skip-link">Skip to main content</a>
+<header class="app-header">
+  <div class="app-header__content">
+    <h1 class="app-header__title">{{ title }}</h1>
+    <nav class="app-header__nav">
+      <!-- User greeting and logout (when logged in) -->
+      <div class="app-header__user" *ngIf="user$ | async as user">
+        <span class="app-header__greeting">Hello, {{ user.email }}</span>
+        <button
+          type="button"
+          class="btn btn--secondary"
+          (click)="logout()"
+          aria-label="Logout"
+        >
+          Logout
+        </button>
+      </div>
+      <!-- Login link (when not logged in) -->
+      <a
+        *ngIf="(user$ | async) === null"
+        routerLink="/login"
+        class="btn btn--primary"
+        aria-label="Login"
+      >
+        Login
+      </a>
+    </nav>
+  </div>
+</header>
 <main id="main-content">
   <router-outlet></router-outlet>
 </main>

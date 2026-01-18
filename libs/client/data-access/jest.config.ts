@@ -14,7 +14,7 @@ const config: Config = {
       },
     ],
   },
-  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$)'],
+  transformIgnorePatterns: ['node_modules/(?!.*\\.mjs$|jwt-decode)'],
   snapshotSerializers: [
     'jest-preset-angular/build/serializers/no-ng-attributes',
     'jest-preset-angular/build/serializers/ng-snapshot',
@@ -24,6 +24,7 @@ const config: Config = {
   moduleNameMapper: {
     '^@full-stack-todo/client/util$': '<rootDir>/../util/src',
     '^@full-stack-todo/(.*)$': '<rootDir>/../../../$1/src',
+    '^jwt-decode$': '<rootDir>/src/__mocks__/jwt-decode.ts',
   },
   testMatch: ['<rootDir>/src/**/*.spec.ts'],
 };

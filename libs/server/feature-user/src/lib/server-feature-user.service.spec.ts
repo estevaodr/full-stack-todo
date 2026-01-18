@@ -57,8 +57,8 @@ export type MockType<T> = {
  */
 export const repositoryMockFactory: () => MockType<Repository<IUser>> = jest.fn(
   () => ({
-    findOne: jest.fn((entity) => entity),
-    findOneBy: jest.fn(() => ({})),
+    findOne: jest.fn(() => null),
+    findOneBy: jest.fn(() => null),
     save: jest.fn((entity) => entity),
     findOneOrFail: jest.fn(() => ({})),
     delete: jest.fn(() => null),
@@ -125,17 +125,21 @@ describe('ServerFeatureUserService', () => {
   it('should return a single user', async () => {
     const user = createMockUser();
     
-    // Mock the repository to return our fake user when findOneBy() is called
-    repoMock.findOneBy?.mockReturnValue(Promise.resolve(user));
+    // Mock the repository to return our fake user when findOne() is called
+    // The service uses findOne() with where and relations options
+    repoMock.findOne?.mockReturnValue(Promise.resolve(user));
 
     // Call the service method
     const result = await service.getOne(user.id);
 
     // Check the result
     expect(result).toEqual(user);
-    // Verify that findOneBy() was called with the correct ID
+    // Verify that findOne() was called with the correct options
     // This ensures the service is passing the right parameters to the repository
-    expect(repoMock.findOneBy).toHaveBeenCalledWith({ id: user.id });
+    expect(repoMock.findOne).toHaveBeenCalledWith({
+      where: { id: user.id },
+      relations: ['todos'],
+    });
   });
 
   /**
@@ -152,13 +156,20 @@ describe('ServerFeatureUserService', () => {
    */
   it('should throw NotFoundException when user is not found', async () => {
     // Mock the repository to return null (user not found)
-    repoMock.findOneBy?.mockReturnValue(Promise.resolve(null));
+    // The service uses findOne() with where and relations options
+    repoMock.findOne?.mockReturnValue(Promise.resolve(null));
 
     // Use rejects.toThrow() to check that the Promise fails with NotFoundException
     // await expect() waits for the Promise and checks if it throws an error
     await expect(service.getOne('non-existent-id')).rejects.toThrow(
       NotFoundException
     );
+    
+    // Verify that findOne() was called with the correct options
+    expect(repoMock.findOne).toHaveBeenCalledWith({
+      where: { id: 'non-existent-id' },
+      relations: ['todos'],
+    });
   });
 
   /**

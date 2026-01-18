@@ -36,12 +36,9 @@ import { Auth } from './auth';
 // @ts-ignore - Path mapping works at runtime, TypeScript language server false positive
 import { ILoginPayload, ITokenResponse, IAccessTokenPayload } from '@full-stack-todo/shared/domain';
 import { TOKEN_STORAGE_KEY } from '@full-stack-todo/client/util';
+// Mock jwtDecode - using manual mock from __mocks__ directory
+jest.mock('jwt-decode');
 import { jwtDecode } from 'jwt-decode';
-
-// Mock jwtDecode
-jest.mock('jwt-decode', () => ({
-  jwtDecode: jest.fn(),
-}));
 
 /**
  * Helper function to create a mock JWT token payload

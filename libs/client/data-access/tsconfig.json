@@ -3,14 +3,14 @@
   "compilerOptions": {
     "isolatedModules": true,
     "target": "es2022",
-    "moduleResolution": "bundler",
+    "moduleResolution": "node",
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "emitDecoratorMetadata": false,
-    "module": "preserve"
+    "module": "esnext"
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,

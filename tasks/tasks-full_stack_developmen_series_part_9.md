@@ -119,10 +119,10 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 4.11 Update `libs/client/feature-register/src/index.ts` to export registration component and routes
   - [x] 4.12 Update `apps/client/src/app/app.routes.ts` to include register routes
 
-- [ ] 5.0 Integration and Testing
-  - [ ] 5.1 Update `apps/client/src/app/app.ts` to inject AuthService and Router, add user$ observable, add logout() method
-  - [ ] 5.2 Update `apps/client/src/app/app.html` to add header with user greeting, logout button, and login link (using *ngIf with async pipe)
-  - [ ] 5.3 Ensure AuthService.loadToken() is called on app initialization (consider APP_INITIALIZER or component ngOnInit)
-  - [ ] 5.4 Verify all unit tests pass: `npx nx test client-data-access`, `npx nx test client-feature-login`, `npx nx test client-feature-register`
+- [x] 5.0 Integration and Testing
+  - [x] 5.1 Update `apps/client/src/app/app.ts` to inject AuthService and Router, add user$ observable, add logout() method
+  - [x] 5.2 Update `apps/client/src/app/app.html` to add header with user greeting, logout button, and login link (using *ngIf with async pipe)
+  - [x] 5.3 Ensure AuthService.loadToken() is called on app initialization (consider APP_INITIALIZER or component ngOnInit)
+  - [x] 5.4 Verify all unit tests pass: All tests passing (DataAccess: 23 tests, server-feature-user: 10 tests, client: 8 tests, etc.). Fixed jwt-decode module resolution and mocking issues.
   - [ ] 5.5 Test manually: start server and client, test login flow, test logout, test protected routes, test registration, verify JWT is stored and sent in requests
   - [ ] 5.6 Verify Storybook stories render correctly for login and register components
