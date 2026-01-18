@@ -105,19 +105,19 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 3.7 Update `libs/client/feature-dashboard/src/lib/lib.routes.ts` to add canActivate: [authGuard] to dashboard route
   - [x] 3.8 Update `apps/client/src/app/app.routes.ts` to include login routes from feature-login (already completed in task 2.10)
 
-- [ ] 4.0 Registration Feature Implementation
+- [x] 4.0 Registration Feature Implementation
   - [x] 4.1 Generate registration feature library: Created manually with proper structure matching feature-login pattern
   - [x] 4.2 Generate Storybook configuration: `npx nx generate @nx/angular:storybook-configuration FeatureRegister --tsConfiguration`
   - [x] 4.3 Update `libs/client/feature-register/project.json` build-storybook target with style library configuration
   - [x] 4.4 Create `libs/client/feature-register/src/lib/matching-passwords.validator.ts` with MatchingPasswords validator function that compares two FormControl values
   - [x] 4.5 Create registration component template `libs/client/feature-register/src/lib/feature-register/feature-register.html` with form (email, password, confirmPassword fields)
-  - [ ] 4.6 Implement `libs/client/feature-register/src/lib/feature-register.component.ts` with FormGroup, FormControls, MatchingPasswords validator, submitForm method
-  - [ ] 4.7 Create `libs/client/feature-register/src/lib/feature-register.component.scss` with layout styles
-  - [ ] 4.8 Create Storybook story `libs/client/feature-register/src/lib/feature-register.stories.ts`
-  - [ ] 4.9 Create `libs/client/feature-register/src/lib/lib.routes.ts` with register route
-  - [ ] 4.10 Write unit tests in `libs/client/feature-register/src/lib/feature-register.component.spec.ts` for form validation, password matching, submission
-  - [ ] 4.11 Update `libs/client/feature-register/src/index.ts` to export registration component and routes
-  - [ ] 4.12 Update `apps/client/src/app/app.routes.ts` to include register routes
+  - [x] 4.6 Implement `libs/client/feature-register/src/lib/feature-register/feature-register.ts` with FormGroup, FormControls, MatchingPasswords validator, submitForm method
+  - [x] 4.7 Create `libs/client/feature-register/src/lib/feature-register/feature-register.scss` with layout styles
+  - [x] 4.8 Create Storybook story `libs/client/feature-register/src/lib/feature-register/feature-register.stories.ts` with mocked User and Router services
+  - [x] 4.9 Create `libs/client/feature-register/src/lib/lib.routes.ts` with register route
+  - [x] 4.10 Write unit tests in `libs/client/feature-register/src/lib/feature-register/feature-register.spec.ts` for form validation, password matching, submission
+  - [x] 4.11 Update `libs/client/feature-register/src/index.ts` to export registration component and routes
+  - [x] 4.12 Update `apps/client/src/app/app.routes.ts` to include register routes
 
 - [ ] 5.0 Integration and Testing
   - [ ] 5.1 Update `apps/client/src/app/app.ts` to inject AuthService and Router, add user$ observable, add logout() method

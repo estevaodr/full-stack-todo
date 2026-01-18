@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { IPublicUserData } from '@full-stack-todo/shared/domain';
+import { ICreateUser, IPublicUserData } from '@full-stack-todo/shared/domain';
 
 /**
  * User Service for retrieving user information
@@ -21,6 +21,22 @@ export class User {
    * 'readonly' ensures this reference can't be reassigned after initialization
    */
   private readonly http = inject(HttpClient);
+
+  /**
+   * Creates a new user account
+   * 
+   * HTTP Method: POST
+   * Endpoint: /api/v1/users
+   * 
+   * Note: This is a public endpoint that does not require authentication.
+   * The password will be hashed on the server before storage.
+   * 
+   * @param userData - User data containing email and password
+   * @returns Observable<IPublicUserData> - The newly created user data (password excluded) wrapped in an Observable
+   */
+  createUser(userData: ICreateUser): Observable<IPublicUserData> {
+    return this.http.post<IPublicUserData>(`/api/v1/users`, userData);
+  }
 
   /**
    * Retrieves a single user by their unique ID

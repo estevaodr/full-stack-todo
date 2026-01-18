@@ -43,7 +43,7 @@ export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
       }
 
       // If no token, pass the request through unchanged
-      return next(req);
+  return next(req);
     })
   );
 };

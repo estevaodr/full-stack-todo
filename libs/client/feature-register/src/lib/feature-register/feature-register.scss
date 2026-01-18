@@ -1,0 +1,241 @@
+/**
+ * Registration Component Styles
+ * 
+ * Styles for the registration form component.
+ * Creates a centered card layout for the registration form.
+ */
+
+// Import design system variables
+@use 'abstracts/variables' as *;
+@use 'vendors' as *;
+
+/**
+ * Register Container
+ * 
+ * Main container that centers the register card on the page.
+ * Uses flexbox to center content both horizontally and vertically.
+ */
+.register-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 100px);
+  padding: var(--spacing-lg, $space-lg);
+  background-color: var(--color-bg-default, $color-ui-light);
+}
+
+/**
+ * Register Card
+ * 
+ * The card container that holds the registration form.
+ * Provides a clean, centered form layout with proper spacing.
+ */
+.register-card {
+  width: 100%;
+  max-width: 400px;
+  background-color: var(--color-bg-default, $color-ui-light);
+  border-radius: var(--border-radius-lg, 8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1), 0 4px 16px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--color-border-default, $nord3);
+  padding: var(--spacing-xl, $space-x-lg);
+}
+
+/**
+ * Register Title
+ * 
+ * The main heading for the registration page.
+ */
+.register-title {
+  margin: 0 0 var(--spacing-xl, $space-x-lg) 0;
+  font-size: var(--font-size-2xl, calc($font-size-base * 1.5));
+  font-weight: 700;
+  color: var(--color-text-default, $color-text-default);
+  text-align: center;
+  letter-spacing: -0.02em;
+}
+
+/**
+ * Register Form
+ * 
+ * Container for the form elements.
+ */
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md, $space-md);
+}
+
+/**
+ * Form Group
+ * 
+ * Container for form fields (label + input + validation).
+ * Provides consistent spacing between form fields.
+ */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, $space-x-sm);
+}
+
+/**
+ * Form Label
+ * 
+ * Label for form inputs.
+ * Styled to match the design system.
+ */
+.form-label {
+  display: block;
+  font-size: var(--font-size-sm, calc($font-size-base * 0.875));
+  font-weight: 600;
+  color: var(--color-text-default, $color-text-default);
+}
+
+/**
+ * Input Group
+ * 
+ * Container for input fields.
+ * Allows for validation state styling.
+ */
+.input-group {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/**
+ * Form Input
+ * 
+ * Base input field styling.
+ * Matches the design system form input styles.
+ */
+.form-input {
+  width: 100%;
+  padding: var(--spacing-sm, $space-sm);
+  font-size: var(--font-size-base, $font-size-base);
+  border: 1px solid var(--color-border-default, $nord3);
+  border-radius: var(--border-radius-base, 4px);
+  background-color: var(--color-bg-default, $color-ui-light);
+  color: var(--color-text-default, $color-text-default);
+  font-family: inherit;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary, $nord10);
+    box-shadow: 0 0 0 3px rgba(94, 129, 172, 0.1);
+  }
+  
+  &::placeholder {
+    color: var(--color-text-muted, $nord3);
+  }
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/**
+ * Invalid Input State
+ * 
+ * Applied when the input has validation errors.
+ * Visual indicator for invalid fields.
+ */
+.input-group--invalid .form-input {
+  border-color: var(--color-error, #bf616a);
+  
+  &:focus {
+    border-color: var(--color-error, #bf616a);
+    box-shadow: 0 0 0 3px rgba(191, 97, 106, 0.1);
+  }
+}
+
+/**
+ * Validation Text
+ * 
+ * Container for validation error messages.
+ * Initially hidden, shown when validation fails.
+ */
+.validation-text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs, $space-x-sm);
+  min-height: 1.25rem; // Prevents layout shift when errors appear
+}
+
+/**
+ * Validation Text - Error Variant
+ * 
+ * Error message styling.
+ */
+.validation-text--error {
+  font-size: var(--font-size-sm, calc($font-size-base * 0.875));
+  color: var(--color-error, #bf616a);
+  display: none; // Hidden by default
+}
+
+/**
+ * Validation Text - Visible Modifier
+ * 
+ * Shows the validation message when validation fails.
+ */
+.validation-text--visible {
+  display: block;
+}
+
+/**
+ * Form Error
+ * 
+ * Container for server-side error messages.
+ * Displayed above the submit button.
+ */
+.form-error {
+  padding: var(--spacing-sm, $space-sm);
+  background-color: rgba(191, 97, 106, 0.1);
+  border: 1px solid var(--color-error, #bf616a);
+  border-radius: var(--border-radius-base, 4px);
+  margin-bottom: var(--spacing-sm, $space-sm);
+}
+
+/**
+ * Form Actions
+ * 
+ * Container for form action buttons (submit, etc.).
+ */
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm, $space-sm);
+  margin-top: var(--spacing-md, $space-md);
+}
+
+/**
+ * Full Width Button Modifier
+ * 
+ * Makes buttons span the full width of their container.
+ */
+.btn--full-width {
+  width: 100%;
+}
+
+/**
+ * Responsive Design
+ * 
+ * Adjusts layout for smaller screens.
+ */
+@media (max-width: 768px) {
+  .register-container {
+    padding: var(--spacing-md, $space-md);
+    min-height: calc(100vh - 60px);
+  }
+  
+  .register-card {
+    max-width: 100%;
+    padding: var(--spacing-lg, $space-lg);
+  }
+  
+  .register-title {
+    font-size: var(--font-size-xl, calc($font-size-base * 1.25));
+    margin-bottom: var(--spacing-lg, $space-lg);
+  }
+}
