@@ -1,14 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { Router, RouterModule } from '@angular/router';
-import { of } from 'rxjs';
+import { of, Observable } from 'rxjs';
 import { App } from './app';
 import { Auth } from '@full-stack-todo/client/data-access';
+import { IAccessTokenPayload } from '@full-stack-todo/shared/domain';
 
 /**
  * Mock Auth Service for testing
  */
 class MockAuthService {
-  userData$ = of(null);
+  userData$: Observable<IAccessTokenPayload | null> = of(null);
   accessToken$ = of(null);
   loadToken = vi.fn();
   logoutUser = vi.fn();
