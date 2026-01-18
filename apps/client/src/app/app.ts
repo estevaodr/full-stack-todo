@@ -28,7 +28,7 @@ export class App implements OnInit {
    */
   readonly user$: Observable<IAccessTokenPayload | null> = this.auth.userData$;
 
-  protected title = 'client';
+  protected title = 'todo list';
 
   /**
    * Initialize the app by loading any existing token from localStorage

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { BehaviorSubject, Observable, catchError, of, tap } from 'rxjs';
 import { Auth } from '@full-stack-todo/client/data-access';
 import { ILoginPayload } from '@full-stack-todo/shared/domain';
@@ -21,7 +21,7 @@ import { ILoginPayload } from '@full-stack-todo/shared/domain';
 @Component({
   selector: 'lib-client-feature-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterLink],
   templateUrl: './client-feature-login.component.html',
   styleUrl: './client-feature-login.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
