@@ -81,6 +81,10 @@ class MockRouter {
     this.navigatePath = path;
     return Promise.resolve(true);
   }
+
+  initialNavigation(): void {
+    // Mock implementation for Storybook - no-op
+  }
 }
 
 /**

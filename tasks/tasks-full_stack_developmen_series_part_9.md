@@ -124,5 +124,5 @@ Generated from: `docs/references/full_stack_developmen_series_part_9.md`
   - [x] 5.2 Update `apps/client/src/app/app.html` to add header with user greeting, logout button, and login link (using *ngIf with async pipe)
   - [x] 5.3 Ensure AuthService.loadToken() is called on app initialization (consider APP_INITIALIZER or component ngOnInit)
   - [x] 5.4 Verify all unit tests pass: All tests passing (DataAccess: 23 tests, server-feature-user: 10 tests, client: 8 tests, etc.). Fixed jwt-decode module resolution and mocking issues.
-  - [ ] 5.5 Test manually: start server and client, test login flow, test logout, test protected routes, test registration, verify JWT is stored and sent in requests
-  - [ ] 5.6 Verify Storybook stories render correctly for login and register components
+  - [x] 5.5 Test manually: start server and client, test login flow, test logout, test protected routes, test registration, verify JWT is stored and sent in requests
+  - [x] 5.6 Verify Storybook stories render correctly for login and register components
