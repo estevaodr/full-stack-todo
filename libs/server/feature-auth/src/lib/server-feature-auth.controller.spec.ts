@@ -39,11 +39,14 @@ import { LoginRequestDto } from '@full-stack-todo/server/data-access-todo';
 
 /**
  * Helper function to create fake public user data
+ * Uses deterministic IDs to prevent flaky tests
  */
+let mockUserCounter = 0;
 function createMockPublicUser(): IPublicUserData {
+  mockUserCounter++;
   return {
-    id: `user-${Math.random().toString(36).substr(2, 9)}`,
-    email: `user${Math.random().toString(36).substr(2, 5)}@example.com`,
+    id: `user-${mockUserCounter}`,
+    email: `user${mockUserCounter}@example.com`,
     todos: [],
   };
 }
@@ -90,6 +93,9 @@ describe('ServerFeatureAuthController', () => {
    * This is different from service tests where we mock the dependencies.
    */
   beforeEach(async () => {
+    // Reset counter for deterministic mock data
+    mockUserCounter = 0;
+    
     // Create a mock service with the methods we need
     const mockService = {
       validateUser: jest.fn(),

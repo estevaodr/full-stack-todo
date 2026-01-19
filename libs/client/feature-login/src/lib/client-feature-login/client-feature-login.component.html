@@ -13,7 +13,7 @@
       <!-- Email Field -->
       <div class="form-group">
         <label for="email" class="form-label">Email *</label>
-        <div class="input-group" [class.input-group--invalid]="emailControl?.invalid && emailControl?.touched">
+        <div class="input-group" [class.input-group--invalid]="emailControl.invalid && emailControl.touched">
           <input
             id="email"
             type="email"
@@ -25,11 +25,11 @@
           />
         </div>
         <!-- Validation error messages -->
-        <div class="validation-text" *ngIf="emailControl?.invalid && emailControl?.touched">
-          <span class="validation-text--error validation-text--visible" *ngIf="emailControl?.errors?.['required']">
+        <div class="validation-text" *ngIf="emailControl.invalid && emailControl.touched">
+          <span class="validation-text--error validation-text--visible" *ngIf="emailControl.errors?.['required']">
             Email is required
           </span>
-          <span class="validation-text--error validation-text--visible" *ngIf="emailControl?.errors?.['email']">
+          <span class="validation-text--error validation-text--visible" *ngIf="emailControl.errors?.['email']">
             Please enter a valid email address
           </span>
         </div>
@@ -38,7 +38,7 @@
       <!-- Password Field -->
       <div class="form-group">
         <label for="password" class="form-label">Password *</label>
-        <div class="input-group" [class.input-group--invalid]="passwordControl?.invalid && passwordControl?.touched">
+        <div class="input-group" [class.input-group--invalid]="passwordControl.invalid && passwordControl.touched">
           <input
             id="password"
             type="password"
@@ -50,8 +50,8 @@
           />
         </div>
         <!-- Validation error messages -->
-        <div class="validation-text" *ngIf="passwordControl?.invalid && passwordControl?.touched">
-          <span class="validation-text--error validation-text--visible" *ngIf="passwordControl?.errors?.['required']">
+        <div class="validation-text" *ngIf="passwordControl.invalid && passwordControl.touched">
+          <span class="validation-text--error validation-text--visible" *ngIf="passwordControl.errors?.['required']">
             Password is required
           </span>
         </div>

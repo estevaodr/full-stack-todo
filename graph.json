@@ -1,6 +1,535 @@
 {
   "graph": {
     "nodes": {
+      "FeatureDashboard": {
+        "name": "FeatureDashboard",
+        "type": "lib",
+        "data": {
+          "root": "libs/client/feature-dashboard",
+          "targets": {
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "FeatureDashboard",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/client/feature-dashboard/src",
+          "prefix": "lib",
+          "projectType": "library",
+          "tags": [
+            "type:feature",
+            "scope:client"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "FeatureRegister": {
+        "name": "FeatureRegister",
+        "type": "lib",
+        "data": {
+          "root": "libs/client/feature-register",
+          "targets": {
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            },
+            "build-storybook": {
+              "executor": "@storybook/angular:build-storybook",
+              "outputs": [
+                "{options.outputDir}"
+              ],
+              "options": {
+                "outputDir": "dist/storybook/FeatureRegister",
+                "configDir": "libs/client/feature-register/.storybook",
+                "browserTarget": "FeatureRegister:build-storybook",
+                "compodoc": false,
+                "styles": [
+                  "apps/client/src/styles.scss"
+                ],
+                "stylePreprocessorOptions": {
+                  "includePaths": [
+                    "libs/client/ui-style/src/lib/scss"
+                  ]
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              },
+              "parallelism": true,
+              "cache": true
+            },
+            "storybook": {
+              "executor": "@storybook/angular:start-storybook",
+              "options": {
+                "port": 4400,
+                "configDir": "libs/client/feature-register/.storybook",
+                "browserTarget": "FeatureRegister:build-storybook",
+                "compodoc": false,
+                "styles": [
+                  "apps/client/src/styles.scss"
+                ],
+                "stylePreprocessorOptions": {
+                  "includePaths": [
+                    "libs/client/ui-style/src/lib/scss"
+                  ]
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              },
+              "parallelism": true
+            },
+            "static-storybook": {
+              "dependsOn": [
+                "build-storybook"
+              ],
+              "continuous": true,
+              "executor": "@nx/web:file-server",
+              "options": {
+                "buildTarget": "FeatureRegister:build-storybook",
+                "staticFilePath": "dist/storybook/FeatureRegister",
+                "spa": true
+              },
+              "configurations": {
+                "ci": {
+                  "buildTarget": "FeatureRegister:build-storybook:ci"
+                }
+              },
+              "parallelism": true
+            },
+            "build-deps": {
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "options": {},
+              "parallelism": true,
+              "executor": "nx:noop"
+            },
+            "watch-deps": {
+              "continuous": true,
+              "dependsOn": [
+                "build-deps"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npx nx watch --projects FeatureRegister --includeDependentProjects -- npx nx build-deps FeatureRegister"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test-storybook": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "test-storybook -c libs/client/feature-register/.storybook --url=http://localhost:4400"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "FeatureRegister",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/client/feature-register/src",
+          "prefix": "lib",
+          "projectType": "library",
+          "tags": [
+            "type:feature",
+            "scope:client"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "data-access-todo": {
+        "name": "data-access-todo",
+        "type": "lib",
+        "data": {
+          "root": "libs/server/data-access-todo",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "libs/server/data-access-todo",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.mjs",
+                "{workspaceRoot}/libs/server/data-access-todo/eslint.config.mjs",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "metadata": {
+                "technologies": [
+                  "jest"
+                ],
+                "description": "Run Jest Tests",
+                "help": {
+                  "command": "npx jest --help",
+                  "example": {
+                    "options": {
+                      "coverage": true
+                    }
+                  }
+                }
+              },
+              "cache": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js",
+                {
+                  "externalDependencies": [
+                    "jest"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{workspaceRoot}/coverage/libs/server/data-access-todo"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "cwd": "libs/server/data-access-todo",
+                "env": {
+                  "TS_NODE_COMPILER_OPTIONS": "{\"moduleResolution\":\"node10\",\"module\":\"commonjs\",\"customConditions\":null}"
+                },
+                "command": "jest",
+                "passWithNoTests": true
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "data-access-todo",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/server/data-access-todo/src",
+          "projectType": "library",
+          "tags": [
+            "type:data-access",
+            "scope:server"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "FeatureLogin": {
+        "name": "FeatureLogin",
+        "type": "lib",
+        "data": {
+          "root": "libs/client/feature-login",
+          "targets": {
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            },
+            "build-storybook": {
+              "executor": "@storybook/angular:build-storybook",
+              "outputs": [
+                "{options.outputDir}"
+              ],
+              "options": {
+                "outputDir": "dist/storybook/FeatureLogin",
+                "configDir": "libs/client/feature-login/.storybook",
+                "browserTarget": "FeatureLogin:build-storybook",
+                "compodoc": false,
+                "styles": [
+                  "apps/client/src/styles.scss"
+                ],
+                "stylePreprocessorOptions": {
+                  "includePaths": [
+                    "libs/client/ui-style/src/lib/scss"
+                  ]
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              },
+              "parallelism": true,
+              "cache": true
+            },
+            "storybook": {
+              "executor": "@storybook/angular:start-storybook",
+              "options": {
+                "port": 4400,
+                "configDir": "libs/client/feature-login/.storybook",
+                "browserTarget": "FeatureLogin:build-storybook",
+                "compodoc": false,
+                "styles": [
+                  "apps/client/src/styles.scss"
+                ],
+                "stylePreprocessorOptions": {
+                  "includePaths": [
+                    "libs/client/ui-style/src/lib/scss"
+                  ]
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              },
+              "parallelism": true
+            },
+            "static-storybook": {
+              "dependsOn": [
+                "build-storybook"
+              ],
+              "continuous": true,
+              "executor": "@nx/web:file-server",
+              "options": {
+                "buildTarget": "FeatureLogin:build-storybook",
+                "staticFilePath": "dist/storybook/FeatureLogin",
+                "spa": true
+              },
+              "configurations": {
+                "ci": {
+                  "buildTarget": "FeatureLogin:build-storybook:ci"
+                }
+              },
+              "parallelism": true
+            },
+            "build-deps": {
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "options": {},
+              "parallelism": true,
+              "executor": "nx:noop"
+            },
+            "watch-deps": {
+              "continuous": true,
+              "dependsOn": [
+                "build-deps"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npx nx watch --projects FeatureLogin --includeDependentProjects -- npx nx build-deps FeatureLogin"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test-storybook": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "test-storybook -c libs/client/feature-login/.storybook --url=http://localhost:4400"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "FeatureLogin",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/client/feature-login/src",
+          "prefix": "lib",
+          "projectType": "library",
+          "tags": [
+            "type:feature",
+            "scope:client"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "ui-components": {
+        "name": "ui-components",
+        "type": "lib",
+        "data": {
+          "root": "libs/client/ui-components",
+          "targets": {
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "@nx/jest:jest",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "jestConfig": "libs/client/ui-components/jest.config.ts",
+                "passWithNoTests": true
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "build-storybook": {
+              "executor": "@storybook/angular:build-storybook",
+              "outputs": [
+                "{options.outputDir}"
+              ],
+              "options": {
+                "outputDir": "dist/storybook/ui-components",
+                "configDir": "libs/client/ui-components/.storybook",
+                "browserTarget": "ui-components:build-storybook",
+                "compodoc": false,
+                "styles": [
+                  "apps/client/src/styles.scss"
+                ],
+                "stylePreprocessorOptions": {
+                  "includePaths": [
+                    "libs/client/ui-style/src/lib/scss"
+                  ]
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              },
+              "parallelism": true,
+              "cache": true
+            },
+            "storybook": {
+              "executor": "@storybook/angular:start-storybook",
+              "options": {
+                "port": 4400,
+                "configDir": "libs/client/ui-components/.storybook",
+                "browserTarget": "ui-components:build-storybook",
+                "compodoc": false,
+                "styles": [
+                  "apps/client/src/styles.scss"
+                ],
+                "stylePreprocessorOptions": {
+                  "includePaths": [
+                    "libs/client/ui-style/src/lib/scss"
+                  ]
+                }
+              },
+              "configurations": {
+                "ci": {
+                  "quiet": true
+                }
+              },
+              "parallelism": true
+            },
+            "static-storybook": {
+              "dependsOn": [
+                "build-storybook"
+              ],
+              "continuous": true,
+              "executor": "@nx/web:file-server",
+              "options": {
+                "buildTarget": "build-storybook",
+                "staticFilePath": "libs/client/ui-components/storybook-static"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "build-deps": {
+              "dependsOn": [
+                "^build"
+              ],
+              "configurations": {},
+              "options": {},
+              "parallelism": true,
+              "executor": "nx:noop"
+            },
+            "watch-deps": {
+              "continuous": true,
+              "dependsOn": [
+                "build-deps"
+              ],
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "npx nx watch --projects ui-components --includeDependentProjects -- npx nx build-deps ui-components"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "ui-components",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/client/ui-components/src",
+          "prefix": "fst",
+          "projectType": "library",
+          "tags": [
+            "type:ui",
+            "scope:client"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "server-feature-auth": {
+        "name": "server-feature-auth",
+        "type": "lib",
+        "data": {
+          "root": "libs/server/feature-auth",
+          "targets": {
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "@nx/jest:jest",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "jestConfig": "libs/server/feature-auth/jest.config.cts",
+                "passWithNoTests": true
+              },
+              "configurations": {
+                "ci": {
+                  "ci": true,
+                  "codeCoverage": true
+                }
+              },
+              "parallelism": true
+            }
+          },
+          "name": "server-feature-auth",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/server/feature-auth/src",
+          "projectType": "library",
+          "tags": [
+            "scope:server",
+            "type:feature"
+          ],
+          "implicitDependencies": []
+        }
+      },
       "server-feature-todo": {
         "name": "server-feature-todo",
         "type": "lib",
@@ -44,6 +573,46 @@
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
+            },
+            "test": {
+              "options": {
+                "cwd": "libs/server/feature-todo",
+                "env": {
+                  "TS_NODE_COMPILER_OPTIONS": "{\"moduleResolution\":\"node10\",\"module\":\"commonjs\",\"customConditions\":null}"
+                },
+                "command": "jest"
+              },
+              "metadata": {
+                "technologies": [
+                  "jest"
+                ],
+                "description": "Run Jest Tests",
+                "help": {
+                  "command": "npx jest --help",
+                  "example": {
+                    "options": {
+                      "coverage": true
+                    }
+                  }
+                }
+              },
+              "cache": true,
+              "inputs": [
+                "default",
+                "^production",
+                "{workspaceRoot}/jest.preset.js",
+                {
+                  "externalDependencies": [
+                    "jest"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{workspaceRoot}/coverage/libs/server/feature-todo"
+              ],
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
             }
           },
           "name": "server-feature-todo",
@@ -53,6 +622,210 @@
           "tags": [
             "scope:server",
             "type:feature"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "server-feature-user": {
+        "name": "server-feature-user",
+        "type": "lib",
+        "data": {
+          "root": "libs/server/feature-user",
+          "targets": {
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "@nx/jest:jest",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "jestConfig": "libs/server/feature-user/jest.config.cts",
+                "passWithNoTests": true
+              },
+              "configurations": {
+                "ci": {
+                  "ci": true,
+                  "codeCoverage": true
+                }
+              },
+              "parallelism": true
+            }
+          },
+          "name": "server-feature-user",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/server/feature-user/src",
+          "projectType": "library",
+          "tags": [
+            "scope:server",
+            "type:feature"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "DataAccess": {
+        "name": "DataAccess",
+        "type": "lib",
+        "data": {
+          "root": "libs/client/data-access",
+          "targets": {
+            "lint": {
+              "executor": "@nx/eslint:lint",
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            },
+            "test": {
+              "executor": "@nx/jest:jest",
+              "outputs": [
+                "{workspaceRoot}/coverage/{projectRoot}"
+              ],
+              "options": {
+                "jestConfig": "libs/client/data-access/jest.config.ts",
+                "passWithNoTests": true
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "DataAccess",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/client/data-access/src",
+          "prefix": "lib",
+          "projectType": "library",
+          "tags": [
+            "type:data-access",
+            "scope:client"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "ui-components-e2e": {
+        "name": "ui-components-e2e",
+        "type": "e2e",
+        "data": {
+          "root": "apps/ui-components-e2e",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "apps/ui-components-e2e",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.mjs",
+                "{workspaceRoot}/apps/ui-components-e2e/eslint.config.mjs",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "e2e": {
+              "executor": "@nx/cypress:cypress",
+              "options": {
+                "cypressConfig": "apps/ui-components-e2e/cypress.config.ts",
+                "devServerTarget": "ui-components:storybook",
+                "testingType": "e2e"
+              },
+              "configurations": {
+                "ci": {
+                  "devServerTarget": "ui-components:storybook:ci"
+                }
+              },
+              "parallelism": true
+            }
+          },
+          "name": "ui-components-e2e",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "projectType": "application",
+          "sourceRoot": "apps/ui-components-e2e/src",
+          "implicitDependencies": [
+            "ui-components"
+          ],
+          "tags": []
+        }
+      },
+      "ui-style": {
+        "name": "ui-style",
+        "type": "lib",
+        "data": {
+          "root": "libs/client/ui-style",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "libs/client/ui-style",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.mjs",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "ui-style",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/client/ui-style/src",
+          "projectType": "library",
+          "tags": [
+            "type:ui",
+            "scope:client"
           ],
           "implicitDependencies": []
         }
@@ -113,6 +886,162 @@
           "implicitDependencies": []
         }
       },
+      "server-util": {
+        "name": "server-util",
+        "type": "lib",
+        "data": {
+          "root": "libs/server/util",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "libs/server/util",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.mjs",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "server-util",
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/server/util/src",
+          "projectType": "library",
+          "tags": [
+            "type:util",
+            "scope:server"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "util": {
+        "name": "util",
+        "type": "lib",
+        "data": {
+          "root": "libs/client/util",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "libs/client/util",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.mjs",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            },
+            "nx-release-publish": {
+              "executor": "@nx/js:release-publish",
+              "dependsOn": [
+                "^nx-release-publish"
+              ],
+              "options": {},
+              "configurations": {},
+              "parallelism": true
+            },
+            "build": {
+              "executor": "@nx/js:tsc",
+              "outputs": [
+                "{options.outputPath}"
+              ],
+              "options": {
+                "outputPath": "dist/libs/client/util",
+                "tsConfig": "libs/client/util/tsconfig.lib.json",
+                "packageJson": "libs/client/util/package.json",
+                "main": "libs/client/util/src/index.ts",
+                "assets": [
+                  "libs/client/util/*.md"
+                ]
+              },
+              "configurations": {},
+              "parallelism": true,
+              "cache": true,
+              "dependsOn": [
+                "^build"
+              ],
+              "inputs": [
+                "production",
+                "^production"
+              ]
+            }
+          },
+          "name": "util",
+          "projectType": "library",
+          "tags": [
+            "npm:public",
+            "type:util",
+            "scope:client"
+          ],
+          "metadata": {
+            "targetGroups": {},
+            "js": {
+              "packageName": "@full-stack-todo/client/util",
+              "packageVersion": "0.0.1",
+              "packageMain": "./src/index.ts",
+              "isInPackageManagerWorkspaces": false
+            }
+          },
+          "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/client/util/src",
+          "implicitDependencies": []
+        }
+      },
       "client-e2e": {
         "name": "client-e2e",
         "type": "e2e",
@@ -157,180 +1086,6 @@
               "executor": "nx:run-commands",
               "configurations": {},
               "parallelism": true
-            },
-            "e2e": {
-              "options": {
-                "cwd": "apps/client-e2e",
-                "command": "playwright test"
-              },
-              "metadata": {
-                "technologies": [
-                  "playwright"
-                ],
-                "description": "Runs Playwright Tests",
-                "help": {
-                  "command": "npx playwright test --help",
-                  "example": {
-                    "options": {
-                      "workers": 1
-                    }
-                  }
-                }
-              },
-              "dependsOn": [
-                {
-                  "projects": [
-                    "client"
-                  ],
-                  "target": "serve"
-                }
-              ],
-              "cache": true,
-              "inputs": [
-                "default",
-                "^production",
-                {
-                  "externalDependencies": [
-                    "@playwright/test"
-                  ]
-                }
-              ],
-              "outputs": [
-                "{workspaceRoot}/dist/.playwright/apps/client-e2e/test-output",
-                "{workspaceRoot}/dist/.playwright/apps/client-e2e/playwright-report"
-              ],
-              "executor": "nx:run-commands",
-              "configurations": {},
-              "parallelism": true
-            },
-            "e2e-ci--src/example.spec.ts": {
-              "options": {
-                "cwd": "apps/client-e2e",
-                "env": {
-                  "PLAYWRIGHT_HTML_OUTPUT_DIR": "../../dist/.playwright/apps/client-e2e/playwright-report/src-example-spec-ts",
-                  "PLAYWRIGHT_HTML_REPORT": "../../dist/.playwright/apps/client-e2e/playwright-report/src-example-spec-ts"
-                },
-                "command": "playwright test src/example.spec.ts --output=../../dist/.playwright/apps/client-e2e/test-output/src-example-spec-ts"
-              },
-              "metadata": {
-                "technologies": [
-                  "playwright"
-                ],
-                "description": "Runs Playwright Tests in src/example.spec.ts in CI",
-                "help": {
-                  "command": "npx playwright test --help",
-                  "example": {
-                    "options": {
-                      "workers": 1
-                    }
-                  }
-                }
-              },
-              "dependsOn": [
-                {
-                  "projects": [
-                    "client"
-                  ],
-                  "target": "serve"
-                }
-              ],
-              "cache": true,
-              "inputs": [
-                "default",
-                "^production",
-                {
-                  "externalDependencies": [
-                    "@playwright/test"
-                  ]
-                }
-              ],
-              "outputs": [
-                "{workspaceRoot}/dist/.playwright/apps/client-e2e/test-output/src-example-spec-ts",
-                "{workspaceRoot}/dist/.playwright/apps/client-e2e/playwright-report/src-example-spec-ts"
-              ],
-              "executor": "nx:run-commands",
-              "configurations": {},
-              "parallelism": true
-            },
-            "e2e-ci": {
-              "executor": "nx:noop",
-              "cache": true,
-              "inputs": [
-                "default",
-                "^production",
-                {
-                  "externalDependencies": [
-                    "@playwright/test"
-                  ]
-                }
-              ],
-              "outputs": [
-                "{workspaceRoot}/dist/.playwright/apps/client-e2e/test-output",
-                "{workspaceRoot}/dist/.playwright/apps/client-e2e/playwright-report"
-              ],
-              "dependsOn": [
-                {
-                  "target": "e2e-ci--src/example.spec.ts",
-                  "projects": "self",
-                  "params": "forward",
-                  "options": "forward"
-                }
-              ],
-              "metadata": {
-                "technologies": [
-                  "playwright"
-                ],
-                "description": "Runs Playwright Tests in CI",
-                "nonAtomizedTarget": "e2e",
-                "help": {
-                  "command": "npx playwright test --help",
-                  "example": {
-                    "options": {
-                      "workers": 1
-                    }
-                  }
-                }
-              },
-              "configurations": {},
-              "options": {},
-              "parallelism": true
-            },
-            "e2e-ci--merge-reports": {
-              "executor": "@nx/playwright:merge-reports",
-              "cache": true,
-              "inputs": [
-                "default",
-                "^production",
-                {
-                  "externalDependencies": [
-                    "@playwright/test"
-                  ]
-                }
-              ],
-              "outputs": [
-                "{workspaceRoot}/dist/.playwright/apps/client-e2e/playwright-report"
-              ],
-              "options": {
-                "config": "playwright.config.ts",
-                "expectedSuites": 1
-              },
-              "metadata": {
-                "technologies": [
-                  "playwright"
-                ],
-                "description": "Merges Playwright blob reports from atomized tasks to produce unified reports for the configured reporters."
-              },
-              "configurations": {},
-              "parallelism": true
-            }
-          },
-          "metadata": {
-            "targetGroups": {
-              "E2E (CI)": [
-                "e2e-ci--src/example.spec.ts",
-                "e2e-ci",
-                "e2e-ci--merge-reports"
-              ]
             }
           },
           "name": "client-e2e",
@@ -444,7 +1199,12 @@
                 ],
                 "styles": [
                   "apps/client/src/styles.scss"
-                ]
+                ],
+                "stylePreprocessorOptions": {
+                  "includePaths": [
+                    "libs/client/ui-style/src/lib/scss"
+                  ]
+                }
               },
               "configurations": {
                 "production": {
@@ -796,6 +1556,15 @@
               "configurations": {},
               "options": {},
               "parallelism": true
+            },
+            "seed": {
+              "executor": "nx:run-commands",
+              "options": {
+                "command": "ts-node --project scripts/tsconfig.json --require tsconfig-paths/register scripts/seed.ts",
+                "cwd": ""
+              },
+              "configurations": {},
+              "parallelism": true
             }
           },
           "name": "server",
@@ -804,17 +1573,270 @@
           "tags": [],
           "implicitDependencies": []
         }
+      },
+      "shared": {
+        "name": "shared",
+        "type": "lib",
+        "data": {
+          "root": "libs/shared",
+          "targets": {
+            "lint": {
+              "cache": true,
+              "options": {
+                "cwd": "libs/shared",
+                "command": "eslint ."
+              },
+              "inputs": [
+                "default",
+                "^default",
+                "{workspaceRoot}/eslint.config.mjs",
+                "{workspaceRoot}/tools/eslint-rules/**/*",
+                {
+                  "externalDependencies": [
+                    "eslint"
+                  ]
+                }
+              ],
+              "outputs": [
+                "{options.outputFile}"
+              ],
+              "metadata": {
+                "technologies": [
+                  "eslint"
+                ],
+                "description": "Runs ESLint on project",
+                "help": {
+                  "command": "npx eslint --help",
+                  "example": {
+                    "options": {
+                      "max-warnings": 0
+                    }
+                  }
+                }
+              },
+              "executor": "nx:run-commands",
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "name": "shared",
+          "$schema": "../../node_modules/nx/schemas/project-schema.json",
+          "sourceRoot": "libs/shared/src",
+          "projectType": "library",
+          "tags": [
+            "type:lib",
+            "scope:shared"
+          ],
+          "implicitDependencies": []
+        }
+      },
+      "@full-stack-todo/source": {
+        "name": "@full-stack-todo/source",
+        "type": "lib",
+        "data": {
+          "root": ".",
+          "name": "@full-stack-todo/source",
+          "tags": [
+            "npm:private"
+          ],
+          "metadata": {
+            "targetGroups": {
+              "NPM Scripts": [
+                "seed",
+                "test:all",
+                "prepare"
+              ]
+            },
+            "js": {
+              "packageName": "@full-stack-todo/source",
+              "packageVersion": "0.0.0",
+              "isInPackageManagerWorkspaces": false
+            }
+          },
+          "targets": {
+            "seed": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "seed"
+              },
+              "metadata": {
+                "scriptContent": "ts-node --project scripts/tsconfig.json --require tsconfig-paths/register scripts/seed.ts",
+                "runCommand": "npm run seed"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "test:all": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "test:all"
+              },
+              "metadata": {
+                "scriptContent": "nx run-many --target=test --all",
+                "runCommand": "npm run test:all"
+              },
+              "configurations": {},
+              "parallelism": true
+            },
+            "prepare": {
+              "executor": "nx:run-script",
+              "options": {
+                "script": "prepare"
+              },
+              "metadata": {
+                "scriptContent": "husky",
+                "runCommand": "npm run prepare"
+              },
+              "configurations": {},
+              "parallelism": true
+            }
+          },
+          "$schema": "node_modules/nx/schemas/project-schema.json",
+          "projectType": "library",
+          "implicitDependencies": []
+        }
       }
     },
     "dependencies": {
-      "server-feature-todo": [
+      "FeatureDashboard": [
         {
-          "source": "server-feature-todo",
+          "source": "FeatureDashboard",
+          "target": "DataAccess",
+          "type": "static"
+        },
+        {
+          "source": "FeatureDashboard",
+          "target": "shared-domain",
+          "type": "static"
+        },
+        {
+          "source": "FeatureDashboard",
+          "target": "ui-components",
+          "type": "static"
+        }
+      ],
+      "FeatureRegister": [
+        {
+          "source": "FeatureRegister",
+          "target": "DataAccess",
+          "type": "static"
+        },
+        {
+          "source": "FeatureRegister",
           "target": "shared-domain",
           "type": "static"
         }
       ],
+      "data-access-todo": [
+        {
+          "source": "data-access-todo",
+          "target": "shared-domain",
+          "type": "static"
+        }
+      ],
+      "FeatureLogin": [
+        {
+          "source": "FeatureLogin",
+          "target": "DataAccess",
+          "type": "static"
+        },
+        {
+          "source": "FeatureLogin",
+          "target": "shared-domain",
+          "type": "static"
+        }
+      ],
+      "ui-components": [
+        {
+          "source": "ui-components",
+          "target": "shared-domain",
+          "type": "static"
+        }
+      ],
+      "server-feature-auth": [
+        {
+          "source": "server-feature-auth",
+          "target": "shared-domain",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-auth",
+          "target": "data-access-todo",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-auth",
+          "target": "server-util",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-auth",
+          "target": "server-feature-user",
+          "type": "static"
+        }
+      ],
+      "server-feature-todo": [
+        {
+          "source": "server-feature-todo",
+          "target": "shared",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-todo",
+          "target": "shared-domain",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-todo",
+          "target": "data-access-todo",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-todo",
+          "target": "server-util",
+          "type": "static"
+        }
+      ],
+      "server-feature-user": [
+        {
+          "source": "server-feature-user",
+          "target": "shared-domain",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-user",
+          "target": "data-access-todo",
+          "type": "static"
+        },
+        {
+          "source": "server-feature-user",
+          "target": "server-util",
+          "type": "static"
+        }
+      ],
+      "DataAccess": [
+        {
+          "source": "DataAccess",
+          "target": "shared-domain",
+          "type": "static"
+        },
+        {
+          "source": "DataAccess",
+          "target": "util",
+          "type": "static"
+        }
+      ],
+      "ui-components-e2e": [
+        {
+          "source": "ui-components-e2e",
+          "target": "ui-components",
+          "type": "implicit"
+        }
+      ],
+      "ui-style": [],
       "shared-domain": [],
+      "server-util": [],
+      "util": [],
       "client-e2e": [
         {
           "source": "client-e2e",
@@ -827,13 +1849,93 @@
           "source": "server-e2e",
           "target": "server",
           "type": "implicit"
+        },
+        {
+          "source": "server-e2e",
+          "target": "data-access-todo",
+          "type": "static"
+        },
+        {
+          "source": "server-e2e",
+          "target": "shared",
+          "type": "static"
+        },
+        {
+          "source": "server-e2e",
+          "target": "shared-domain",
+          "type": "static"
         }
       ],
-      "client": [],
+      "client": [
+        {
+          "source": "client",
+          "target": "FeatureDashboard",
+          "type": "static"
+        },
+        {
+          "source": "client",
+          "target": "FeatureLogin",
+          "type": "static"
+        },
+        {
+          "source": "client",
+          "target": "FeatureRegister",
+          "type": "static"
+        },
+        {
+          "source": "client",
+          "target": "DataAccess",
+          "type": "static"
+        },
+        {
+          "source": "client",
+          "target": "shared-domain",
+          "type": "static"
+        }
+      ],
       "server": [
         {
           "source": "server",
           "target": "server-feature-todo",
+          "type": "static"
+        },
+        {
+          "source": "server",
+          "target": "server-feature-user",
+          "type": "static"
+        },
+        {
+          "source": "server",
+          "target": "server-feature-auth",
+          "type": "static"
+        },
+        {
+          "source": "server",
+          "target": "server-util",
+          "type": "static"
+        },
+        {
+          "source": "server",
+          "target": "shared",
+          "type": "static"
+        }
+      ],
+      "shared": [
+        {
+          "source": "shared",
+          "target": "shared-domain",
+          "type": "static"
+        }
+      ],
+      "@full-stack-todo/source": [
+        {
+          "source": "@full-stack-todo/source",
+          "target": "data-access-todo",
+          "type": "static"
+        },
+        {
+          "source": "@full-stack-todo/source",
+          "target": "shared",
           "type": "static"
         }
       ]

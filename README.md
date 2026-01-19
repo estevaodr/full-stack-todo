@@ -55,6 +55,8 @@ make e2e-server      # Run server e2e tests
 make e2e-client      # Run client e2e tests
 ```
 
+**Note:** This project uses Husky to automatically run all tests before every commit. See [docs/test/GIT_HOOKS.md](docs/test/GIT_HOOKS.md) for more information about Git hooks.
+
 ### Building
 
 ```sh

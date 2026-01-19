@@ -35,6 +35,8 @@ import { Auth } from './auth';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore - Path mapping works at runtime, TypeScript language server false positive
 import { ILoginPayload, ITokenResponse, IAccessTokenPayload } from '@full-stack-todo/shared/domain';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore - Path mapping works at runtime, TypeScript language server false positive
 import { TOKEN_STORAGE_KEY } from '@full-stack-todo/client/util';
 // Mock jwtDecode - using manual mock from __mocks__ directory
 jest.mock('jwt-decode');

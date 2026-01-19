@@ -40,11 +40,14 @@ jest.mock('bcrypt', () => ({
 
 /**
  * Helper function to create fake users
+ * Uses deterministic IDs to prevent flaky tests
  */
+let mockUserCounter = 0;
 function createMockUser(): IUser {
+  mockUserCounter++;
   return {
-    id: `user-${Math.random().toString(36).substr(2, 9)}`,
-    email: `user${Math.random().toString(36).substr(2, 5)}@example.com`,
+    id: `user-${mockUserCounter}`,
+    email: `user${mockUserCounter}@example.com`,
     password: 'hashedPassword123', // This is a hashed password, not the actual password
     todos: [],
   };
@@ -78,6 +81,9 @@ describe('ServerFeatureAuthService', () => {
   beforeEach(async () => {
     // Clear all mocks before each test
     jest.clearAllMocks();
+    
+    // Reset counter for deterministic mock data
+    mockUserCounter = 0;
 
     // Create mock implementations
     const mockUserService = {
