@@ -1,0 +1,3 @@
+# Setup .env file from .env.development after merge/pull
+echo "Setting up environment file..."
+npx ts-node --project scripts/tsconfig.json scripts/setup-env.ts

@@ -45,5 +45,7 @@ Thumbs.db
 
 __screenshots__/
 
+.envs
+
 
 storybook-static
