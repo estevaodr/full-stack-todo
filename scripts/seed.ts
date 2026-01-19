@@ -12,6 +12,10 @@
  *   npx ts-node --project scripts/tsconfig.json --require tsconfig-paths/register scripts/seed.ts
  */
 
+// Load environment variables from .env file
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 import { DataSource } from 'typeorm';
 import { ToDoEntitySchema, UserEntitySchema } from '@full-stack-todo/server/data-access-todo';
 import { ITodo, IUser } from '@full-stack-todo/shared/domain';
@@ -128,8 +132,6 @@ async function seed() {
     }
 
     // Process each user from seed data
-    let totalTodosCreated = 0;
-    
     for (const seedUser of seedData.users) {
       console.log(`\n👤 Creating user: ${seedUser.email}`);
       
@@ -158,7 +160,6 @@ async function seed() {
           } as Omit<ITodo, 'id'>);
           
           console.log(`      ✓ Created: "${todo.title}" (${todo.completed ? 'completed' : 'pending'})`);
-          totalTodosCreated++;
         }
       }
     }
