@@ -1,0 +1,51 @@
+# Seed Data for Full Stack Todo Application
+# This file contains sample users and their todos for database seeding
+
+users:
+  - email: alice@example.com
+    password: SecureP@ssw0rd123!
+    todos:
+      - title: Welcome to Full Stack Todo!
+        description: This is your first todo item. You can edit, complete, or delete it.
+        completed: false
+      - title: Add a route to create todo items!
+        description: Yes, this is foreshadowing a POST route introduction
+        completed: false
+      - title: Learn TypeORM
+        description: Understand how TypeORM works with NestJS and SQLite
+        completed: true
+      - title: Implement database seeding
+        description: Create a script to populate the database with initial data
+        completed: true
+      - title: Build amazing features
+        description: Use this todo app as a foundation for your next project
+        completed: false
+
+  - email: bob@example.com
+    password: MySecureP@ss123!
+    todos:
+      - title: Review the codebase
+        description: Familiarize yourself with the project structure
+        completed: true
+      - title: Set up development environment
+        description: Install dependencies and configure local setup
+        completed: true
+      - title: Write unit tests
+        description: Add comprehensive test coverage
+        completed: false
+      - title: Deploy to production
+        description: Prepare for production deployment
+        completed: false
+
+  - email: charlie@example.com
+    password: TestP@ssw0rd456!
+    todos:
+      - title: Read documentation
+        description: Go through all the project documentation
+        completed: true
+      - title: Explore API endpoints
+        description: Test all available API endpoints
+        completed: false
+      - title: Improve UI/UX
+        description: Enhance the user interface and experience
+        completed: false

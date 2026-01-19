@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "seed": "ts-node --project scripts/tsconfig.json --require tsconfig-paths/register scripts/seed.ts",
-    "env": "ts-node --project scripts/tsconfig.json scripts/setup-env.ts",
+    "env": "ts-node --project scripts/tsconfig.json scripts/env.ts",
     "test:all": "nx run-many --target=test --all",
     "prepare": "husky"
   },
@@ -72,6 +72,7 @@
     "@types/bcrypt": "^6.0.0",
     "@types/better-sqlite3": "^7.6.13",
     "@types/jest": "^30.0.0",
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "20.19.9",
     "@types/passport-jwt": "^4.0.1",
     "@typescript-eslint/utils": "^8.40.0",
@@ -86,6 +87,7 @@
     "jest-environment-node": "^30.0.2",
     "jest-preset-angular": "^16.0.0",
     "jest-util": "^30.0.2",
+    "js-yaml": "^4.1.1",
     "jsdom": "^27.1.0",
     "nx": "22.3.3",
     "nx-stylelint": "^18.0.2",
