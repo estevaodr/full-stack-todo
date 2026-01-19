@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "seed": "ts-node --project scripts/tsconfig.json --require tsconfig-paths/register scripts/seed.ts",
-    "set-env": "ts-node --project scripts/tsconfig.json scripts/setup-env.ts",
+    "env": "ts-node --project scripts/tsconfig.json scripts/setup-env.ts",
     "test:all": "nx run-many --target=test --all",
     "prepare": "husky"
   },
