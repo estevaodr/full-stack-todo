@@ -82,6 +82,8 @@ import { AppService } from './app.service';
        */
       validationSchema: Joi.object({
         DATABASE_URL: Joi.string().default('postgresql://postgres:postgres@localhost:5432/fullstack_todo'),
+        // Logging configuration
+        LOG_LEVEL: Joi.string().valid('INFO', 'DEBUG').default('INFO'), // Optional: Logging level (INFO=clean logs, DEBUG=includes SQL queries)
         // JWT configuration
         JWT_SECRET: Joi.string().required(), // Required: Secret key for signing JWT tokens
         JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().default('600s'), // Optional: Token expiration time (defaults to 10 minutes)
@@ -124,13 +126,18 @@ import { AppService } from './app.service';
         synchronize: true,
         
         /**
-         * logging: true
+         * logging: config.get('LOG_LEVEL') === 'DEBUG'
          * 
-         * Enables SQL query logging to the console.
-         * Useful for debugging - you'll see all SQL queries being executed.
-         * Consider setting to false in production for performance.
+         * Enables SQL query logging only when LOG_LEVEL is set to DEBUG.
+         * 
+         * Log Levels:
+         * - INFO: Clean logs without SQL queries (default)
+         * - DEBUG: Includes all SQL queries for debugging
+         * 
+         * Set LOG_LEVEL=DEBUG in .env to see all SQL queries being executed.
+         * Useful for debugging database issues.
          */
-        logging: true,
+        logging: config.get('LOG_LEVEL') === 'DEBUG',
         
         /**
          * autoLoadEntities: true
