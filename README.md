@@ -24,10 +24,26 @@ npm install
 
 ### 2. Start PostgreSQL Database
 
-The application uses PostgreSQL as its database. Start it using Docker Compose:
+The application uses PostgreSQL as its database. You have two options:
+
+**Option A: Automatic (Recommended)**
+
+PostgreSQL will be started automatically when you run the server:
+
+```sh
+npx nx serve server
+# or
+npx nx run-many --target=serve --projects=server,client
+```
+
+**Option B: Manual**
+
+Start PostgreSQL manually using Docker Compose:
 
 ```sh
 docker-compose up -d
+# or using Nx
+npx nx postgres
 ```
 
 This will start a PostgreSQL 16 container with:
@@ -40,6 +56,8 @@ To verify PostgreSQL is running:
 
 ```sh
 docker-compose ps
+# or
+npx nx postgres:logs
 ```
 
 ### 3. Seed the Database (Optional)

@@ -25,8 +25,9 @@ client: ## Run the client in development mode
 	@echo "$(YELLOW)Starting client...$(NC)"
 	npx nx serve client
 
-run: ## Run both server and client in parallel using run-many
+run: ## Run both server and client in parallel using run-many (automatically starts PostgreSQL)
 	@echo "$(YELLOW)Starting server and client...$(NC)"
+	@echo "$(GREEN)Note: PostgreSQL will be started automatically if not running$(NC)"
 	npx nx run-many --target=serve --projects=server,client --parallel=2
 
 all: run ## Alias for run (starts both server and client)

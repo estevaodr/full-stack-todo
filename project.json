@@ -2,5 +2,27 @@
   "name": "@full-stack-todo/source",
   "$schema": "node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
-  "targets": {}
+  "targets": {
+    "postgres": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose up -d",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "postgres:down": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose down",
+        "cwd": "{workspaceRoot}"
+      }
+    },
+    "postgres:logs": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "docker-compose logs -f postgres",
+        "cwd": "{workspaceRoot}"
+      }
+    }
+  }
 }
