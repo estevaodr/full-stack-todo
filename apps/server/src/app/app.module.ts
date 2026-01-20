@@ -26,12 +26,12 @@ import { APP_GUARD } from '@nestjs/core';
 // ConfigModule and ConfigService are used for managing environment variables
 // - ConfigModule: Sets up the configuration system
 // - ConfigService: Injected service to read environment variables anywhere in the app
-// This is injected into TypeOrmModule.forRootAsync to read DATABASE_PATH dynamically
+// This is injected into TypeOrmModule.forRootAsync to read DATABASE_URL dynamically
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 // TypeOrmModule is NestJS's integration with TypeORM (an Object-Relational Mapping library)
 // It handles database connections, entity management, and database operations
-// In this case, we're using SQLite (a file-based database, great for development)
+// In this case, we're using PostgreSQL (a robust, production-ready database)
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 // Joi is a validation library used to validate and provide defaults for environment variables
@@ -96,7 +96,7 @@ import { AppService } from './app.service';
      * forRootAsync() is used instead of forRoot() when you need to inject services
      * (like ConfigService) to configure the database connection dynamically.
      * 
-     * Why async? Because we need ConfigService to read DATABASE_PATH from environment variables,
+     * Why async? Because we need ConfigService to read DATABASE_URL from environment variables,
      * and ConfigService is only available after dependency injection happens.
      */
     TypeOrmModule.forRootAsync({
@@ -107,8 +107,8 @@ import { AppService } from './app.service';
        * NestJS automatically provides this because we listed it in 'inject' array below.
        */
       useFactory: (config: ConfigService) => ({
-        type: 'better-sqlite3', // Database type: SQLite (file-based, no server needed)
-        database: config.get('DATABASE_PATH'), // Path to the SQLite database file
+        type: 'postgres', // Database type: PostgreSQL
+        url: config.get('DATABASE_URL'), // PostgreSQL connection string
         
         /**
          * synchronize: true

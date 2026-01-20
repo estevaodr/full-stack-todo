@@ -44,7 +44,7 @@
   - [x] 2.6 Verify no references to `better-sqlite3` remain in codebase (search for imports/usage)
   - [x] 2.7 Verify PostgreSQL driver is available and can be imported
 
-- [ ] 3.0 Update environment variables and validation
+- [x] 3.0 Update environment variables and validation
   - [x] 3.1 Update `.env.development` template with `DATABASE_URL` connection string
   - [x] 3.2 Update Joi validation schema in `apps/server/src/app/app.module.ts` to replace `DATABASE_PATH` validation
   - [x] 3.3 Add validation for `DATABASE_URL` (string, default: 'postgresql://postgres:postgres@localhost:5432/fullstack_todo')
@@ -52,15 +52,15 @@
   - [x] 3.5 Test environment variable validation at application startup
 
 - [ ] 4.0 Update TypeORM configuration for PostgreSQL
-  - [ ] 4.1 Change `type` from `'better-sqlite3'` to `'postgres'` in `apps/server/src/app/app.module.ts`
-  - [ ] 4.2 Replace `database` property with `url` property using `config.get('DATABASE_URL')`
-  - [ ] 4.3 Keep `synchronize: true` for development
-  - [ ] 4.4 Keep `logging: true` for development
-  - [ ] 4.5 Keep `autoLoadEntities: true`
-  - [ ] 4.6 Update code comments to reflect PostgreSQL instead of SQLite
-  - [ ] 4.7 Test TypeORM connection to PostgreSQL on application startup
-  - [ ] 4.8 Verify schema synchronization works (tables created automatically)
-  - [ ] 4.9 Verify logging shows PostgreSQL queries
+  - [x] 4.1 Change `type` from `'better-sqlite3'` to `'postgres'` in `apps/server/src/app/app.module.ts`
+  - [x] 4.2 Replace `database` property with `url` property using `config.get('DATABASE_URL')`
+  - [x] 4.3 Keep `synchronize: true` for development
+  - [x] 4.4 Keep `logging: true` for development
+  - [x] 4.5 Keep `autoLoadEntities: true`
+  - [x] 4.6 Update code comments to reflect PostgreSQL instead of SQLite
+  - [x] 4.7 Test TypeORM connection to PostgreSQL on application startup
+  - [x] 4.8 Verify schema synchronization works (tables created automatically)
+  - [x] 4.9 Verify logging shows PostgreSQL queries
 
 - [ ] 5.0 Update seed script for PostgreSQL
   - [ ] 5.1 Change DataSource `type` from `'better-sqlite3'` to `'postgres'` in `scripts/seed.ts`
