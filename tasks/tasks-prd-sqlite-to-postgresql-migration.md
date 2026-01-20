@@ -36,13 +36,13 @@
   - [x] 1.9 Verify data persistence by stopping and restarting container
 
 - [ ] 2.0 Update npm dependencies (remove SQLite, add PostgreSQL)
-  - [ ] 2.1 Remove `better-sqlite3` from dependencies in `package.json`
-  - [ ] 2.2 Remove `@types/better-sqlite3` from devDependencies in `package.json`
-  - [ ] 2.3 Add `pg` to dependencies in `package.json`
-  - [ ] 2.4 Add `@types/pg` to devDependencies in `package.json`
-  - [ ] 2.5 Run `npm install` to update `package-lock.json`
-  - [ ] 2.6 Verify no references to `better-sqlite3` remain in codebase (search for imports/usage)
-  - [ ] 2.7 Verify PostgreSQL driver is available and can be imported
+  - [x] 2.1 Remove `better-sqlite3` from dependencies in `package.json`
+  - [x] 2.2 Remove `@types/better-sqlite3` from devDependencies in `package.json`
+  - [x] 2.3 Add `pg` to dependencies in `package.json`
+  - [x] 2.4 Add `@types/pg` to devDependencies in `package.json`
+  - [x] 2.5 Run `npm install` to update `package-lock.json`
+  - [x] 2.6 Verify no references to `better-sqlite3` remain in codebase (search for imports/usage)
+  - [x] 2.7 Verify PostgreSQL driver is available and can be imported
 
 - [ ] 3.0 Update environment variables and validation
   - [ ] 3.1 Update `.env.development` template with new PostgreSQL variables (DATABASE_HOST, DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME)
