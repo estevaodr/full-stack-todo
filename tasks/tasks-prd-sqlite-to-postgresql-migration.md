@@ -51,7 +51,7 @@
   - [x] 3.4 Remove `DATABASE_PATH` from validation schema
   - [x] 3.5 Test environment variable validation at application startup
 
-- [ ] 4.0 Update TypeORM configuration for PostgreSQL
+- [x] 4.0 Update TypeORM configuration for PostgreSQL
   - [x] 4.1 Change `type` from `'better-sqlite3'` to `'postgres'` in `apps/server/src/app/app.module.ts`
   - [x] 4.2 Replace `database` property with `url` property using `config.get('DATABASE_URL')`
   - [x] 4.3 Keep `synchronize: true` for development
@@ -63,20 +63,20 @@
   - [x] 4.9 Verify logging shows PostgreSQL queries
 
 - [ ] 5.0 Update seed script for PostgreSQL
-  - [ ] 5.1 Change DataSource `type` from `'better-sqlite3'` to `'postgres'` in `scripts/seed.ts`
-  - [ ] 5.2 Replace `getDatabasePath()` function with `getDatabaseUrl()` function
-  - [ ] 5.3 Update `getDatabaseUrl()` to read `DATABASE_URL` environment variable
-  - [ ] 5.4 Provide default value matching Docker Compose configuration (postgresql://postgres:postgres@localhost:5432/fullstack_todo)
-  - [ ] 5.5 Update DataSource configuration to use `url` property instead of file path
-  - [ ] 5.6 Remove file path logic and directory creation code (no longer needed)
-  - [ ] 5.7 Update console log messages to reflect PostgreSQL connection instead of file path
-  - [ ] 5.8 Update error messages to reference PostgreSQL instead of SQLite
-  - [ ] 5.9 Test seed script connects to PostgreSQL successfully
-  - [ ] 5.10 Test seed script creates users and todos successfully
-  - [ ] 5.11 Test seed script handles duplicate data gracefully
-  - [ ] 5.12 Update `docs/scripts/SEED_SCRIPT.md` to reflect PostgreSQL usage
-  - [ ] 5.13 Update documentation to reference Docker Compose requirement
-  - [ ] 5.14 Update documentation to remove SQLite-specific instructions
+  - [x] 5.1 Change DataSource `type` from `'better-sqlite3'` to `'postgres'` in `scripts/seed.ts`
+  - [x] 5.2 Replace `getDatabasePath()` function with `getDatabaseUrl()` function
+  - [x] 5.3 Update `getDatabaseUrl()` to read `DATABASE_URL` environment variable
+  - [x] 5.4 Provide default value matching Docker Compose configuration (postgresql://postgres:postgres@localhost:5432/fullstack_todo)
+  - [x] 5.5 Update DataSource configuration to use `url` property instead of file path
+  - [x] 5.6 Remove file path logic and directory creation code (no longer needed)
+  - [x] 5.7 Update console log messages to reflect PostgreSQL connection instead of file path
+  - [x] 5.8 Update error messages to reference PostgreSQL instead of SQLite
+  - [x] 5.9 Test seed script connects to PostgreSQL successfully
+  - [x] 5.10 Test seed script creates users and todos successfully
+  - [x] 5.11 Test seed script handles duplicate data gracefully
+  - [x] 5.12 Update `docs/scripts/SEED_SCRIPT.md` to reflect PostgreSQL usage
+  - [x] 5.13 Update documentation to reference Docker Compose requirement
+  - [x] 5.14 Update documentation to remove SQLite-specific instructions
 
 - [ ] 6.0 Update gitignore and documentation
   - [ ] 6.1 Add `postgres-data/` to `.gitignore` file

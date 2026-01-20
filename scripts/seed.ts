@@ -42,15 +42,15 @@ interface SeedData {
 }
 
 /**
- * Get the database path from environment variable or use default
+ * Get the database URL from environment variable or use default
  */
-function getDatabasePath(): string {
-  const envPath = process.env.DATABASE_PATH;
-  if (envPath) {
-    return path.resolve(envPath);
+function getDatabaseUrl(): string {
+  const envUrl = process.env.DATABASE_URL;
+  if (envUrl) {
+    return envUrl;
   }
-  // Default path as defined in app.module.ts
-  return path.resolve(process.cwd(), 'tmp', 'db.sqlite');
+  // Default URL matching Docker Compose configuration
+  return 'postgresql://postgres:postgres@localhost:5432/fullstack_todo';
 }
 
 /**
@@ -84,27 +84,20 @@ function loadSeedData(): SeedData {
  * Main seeding function
  */
 async function seed() {
-  const databasePath = getDatabasePath();
+  const databaseUrl = getDatabaseUrl();
   
   console.log(`🌱 Starting database seed...`);
-  console.log(`📁 Database path: ${databasePath}`);
+  console.log(`🔗 Database URL: ${databaseUrl.replace(/:[^:@]+@/, ':****@')}`); // Hide password in logs
 
   // Load seed data from YAML
   console.log(`📄 Loading seed data from YAML...`);
   const seedData = loadSeedData();
   console.log(`   Found ${seedData.users.length} user(s) to seed`);
 
-  // Ensure the database directory exists
-  const dbDir = path.dirname(databasePath);
-  if (!fs.existsSync(dbDir)) {
-    fs.mkdirSync(dbDir, { recursive: true });
-    console.log(`📂 Created database directory: ${dbDir}`);
-  }
-
   // Create DataSource connection with both User and Todo entities
   const dataSource = new DataSource({
-    type: 'better-sqlite3',
-    database: databasePath,
+    type: 'postgres',
+    url: databaseUrl,
     entities: [UserEntitySchema, ToDoEntitySchema],
     synchronize: true, // Create/update schema automatically (safe for seeding script)
     logging: false,
@@ -126,8 +119,7 @@ async function seed() {
 
     if (existingUserCount > 0 || existingTodoCount > 0) {
       console.log('⚠️  Database already contains data.');
-      console.log('   To reseed, delete the database file first or clear existing data.');
-      console.log(`   Database file: ${databasePath}`);
+      console.log('   To reseed, clear existing data from the database first.');
       return;
     }
 
@@ -174,6 +166,12 @@ async function seed() {
     
   } catch (error) {
     console.error('❌ Error seeding database:', error);
+    if (error instanceof Error) {
+      console.error(`   Error message: ${error.message}`);
+      if (error.message.includes('ECONNREFUSED') || error.message.includes('connect')) {
+        console.error('   💡 Make sure PostgreSQL is running (docker-compose up -d)');
+      }
+    }
     process.exit(1);
   } finally {
     // Close the connection

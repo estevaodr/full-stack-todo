@@ -2,7 +2,7 @@
 
 ## Overview
 
-The seed script (`scripts/seed.ts`) is a utility tool that populates the SQLite database with initial sample data. It's designed to help developers quickly set up a development environment with pre-configured todo items.
+The seed script (`scripts/seed.ts`) is a utility tool that populates the PostgreSQL database with initial sample data. It's designed to help developers quickly set up a development environment with pre-configured todo items.
 
 ## Purpose
 
@@ -17,7 +17,8 @@ Before running the seed script, ensure you have:
 - Node.js and npm installed
 - All project dependencies installed (`npm install`)
 - TypeScript and ts-node available (included in devDependencies)
-- A valid database path configured (or use the default)
+- PostgreSQL running (via Docker Compose: `docker-compose up -d`)
+- A valid database connection configured (or use the default)
 
 ## Usage
 
@@ -51,22 +52,34 @@ This method runs the script directly without going through npm or Nx.
 
 ## Configuration
 
-### Database Path
+### Database Connection
 
-The script determines the database path using the following priority:
+The script determines the database connection using the following priority:
 
-1. **Environment Variable**: If `DATABASE_PATH` is set, it uses that value
-2. **Default Path**: Falls back to `tmp/db.sqlite` in the project root
+1. **Environment Variable**: If `DATABASE_URL` is set, it uses that value
+2. **Default URL**: Falls back to `postgresql://postgres:postgres@localhost:5432/fullstack_todo`
 
-#### Setting a Custom Database Path
+#### Setting a Custom Database URL
 
 ```bash
 # Using environment variable
-DATABASE_PATH=./custom/path/database.sqlite npm run seed
+DATABASE_URL=postgresql://user:password@host:port/database npm run seed
 
 # Or export it first
-export DATABASE_PATH=./custom/path/database.sqlite
+export DATABASE_URL=postgresql://user:password@host:port/database
 npm run seed
+```
+
+#### Starting PostgreSQL
+
+Before running the seed script, make sure PostgreSQL is running:
+
+```bash
+# Start PostgreSQL using Docker Compose
+docker-compose up -d
+
+# Verify it's running
+docker-compose ps
 ```
 
 ### Sample Data
@@ -110,18 +123,21 @@ The script provides detailed console output:
 
 ```
 🌱 Starting database seed...
-📁 Database path: /path/to/tmp/db.sqlite
+🔗 Database URL: postgresql://postgres:****@localhost:5432/fullstack_todo
+📄 Loading seed data from YAML...
+   Found 3 user(s) to seed
 ✅ Database connection established
-📊 Existing todos in database: 0
-📝 Inserting 5 sample todos...
-   ✓ Created: "Welcome to Full Stack Todo!"
-   ✓ Created: "Add a route to create todo items!"
-   ✓ Created: "Learn TypeORM"
-   ✓ Created: "Implement database seeding"
-   ✓ Created: "Build amazing features"
+📊 Existing data in database: 0 user(s), 0 todo(s)
+
+👤 Creating user: alice@example.com
+   ✓ User created with ID: ...
+   📝 Creating 5 todo(s) for alice@example.com...
+      ✓ Created: "Welcome to Full Stack Todo!" (pending)
+      ...
 
 ✨ Seeding complete!
-📊 Total todos in database: 5
+📊 Total users in database: 3
+📊 Total todos in database: 12
 🔌 Database connection closed
 🎉 Seed script completed successfully
 ```
@@ -135,11 +151,22 @@ The script provides detailed console output:
 
 If you need to reseed the database (replace existing data), you have a few options:
 
-### Option 1: Delete the Database File
+### Option 1: Clear Existing Data
 
 ```bash
-# Delete the database file
-rm tmp/db.sqlite
+# Clear existing data using psql
+docker exec full-stack-todo-postgres psql -U postgres -d fullstack_todo -c "TRUNCATE TABLE \"user\", todo CASCADE;"
+
+# Then run the seed script
+npm run seed
+```
+
+### Option 2: Recreate the Database
+
+```bash
+# Drop and recreate the database
+docker exec full-stack-todo-postgres psql -U postgres -c "DROP DATABASE IF EXISTS fullstack_todo;"
+docker exec full-stack-todo-postgres psql -U postgres -c "CREATE DATABASE fullstack_todo;"
 
 # Then run the seed script
 npm run seed
@@ -171,18 +198,19 @@ The seed script uses:
 
 ```typescript
 const dataSource = new DataSource({
-  type: 'better-sqlite3',
-  database: databasePath,
-  entities: [ToDoEntitySchema],
-  synchronize: false, // Don't auto-sync in scripts
+  type: 'postgres',
+  url: databaseUrl,
+  entities: [UserEntitySchema, ToDoEntitySchema],
+  synchronize: true, // Create/update schema automatically (safe for seeding script)
   logging: false,
 });
 ```
 
 **Important Notes**:
-- `synchronize: false` - The script doesn't modify the database schema
+- `synchronize: true` - The script automatically creates/updates the database schema
 - `logging: false` - SQL queries are not logged (set to `true` for debugging)
-- Uses the same entity schema as the main application
+- Uses the same entity schemas as the main application
+- Requires PostgreSQL to be running (use `docker-compose up -d`)
 
 ### File Structure
 
@@ -205,20 +233,23 @@ scripts/
 #### Issue: "Database already contains data"
 
 **Solution**: This is expected behavior. To reseed:
-- Delete the database file: `rm tmp/db.sqlite`
+- Clear existing data: `docker exec full-stack-todo-postgres psql -U postgres -d fullstack_todo -c "TRUNCATE TABLE \"user\", todo CASCADE;"`
 - Or modify the script to skip the check
 
-#### Issue: "Cannot connect to database"
+#### Issue: "Cannot connect to database" or "ECONNREFUSED"
 
 **Possible Causes**:
-- Database path is incorrect
-- File permissions issue
-- Database file is locked by another process
+- PostgreSQL is not running
+- Database URL is incorrect
+- Connection credentials are wrong
+- Port 5432 is not accessible
 
 **Solution**:
-- Verify `DATABASE_PATH` environment variable
-- Check file permissions
-- Ensure no other process is using the database
+- Start PostgreSQL: `docker-compose up -d`
+- Verify PostgreSQL is running: `docker-compose ps`
+- Verify `DATABASE_URL` environment variable
+- Check connection string format: `postgresql://user:password@host:port/database`
+- Ensure Docker container is healthy: `docker inspect full-stack-todo-postgres`
 
 #### Issue: "TypeORM entity not found"
 
@@ -232,10 +263,13 @@ The seed script can be integrated into CI/CD pipelines:
 
 ```yaml
 # Example GitHub Actions workflow
+- name: Start PostgreSQL
+  run: docker-compose up -d
+
 - name: Seed Database
   run: npm run seed
   env:
-    DATABASE_PATH: ./tmp/test-db.sqlite
+    DATABASE_URL: postgresql://postgres:postgres@localhost:5432/fullstack_todo
 ```
 
 ## Customization
