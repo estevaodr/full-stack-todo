@@ -24,7 +24,7 @@
 
 ## Tasks
 
-- [ ] 1.0 Set up Docker Compose with PostgreSQL
+- [x] 1.0 Set up Docker Compose with PostgreSQL
   - [x] 1.1 Create `docker-compose.yml` file in project root
   - [x] 1.2 Configure PostgreSQL service with latest version (postgres:16 or postgres:latest)
   - [x] 1.3 Set up environment variables for PostgreSQL (POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB)
