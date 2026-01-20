@@ -1,0 +1,182 @@
+version: '3'
+
+vars:
+  BLUE: '\033[0;34m'
+  GREEN: '\033[0;32m'
+  YELLOW: '\033[0;33m'
+  NC: '\033[0m'
+
+tasks:
+  default:
+    desc: Show this help message
+    cmds:
+      - task --list
+
+  install:
+    desc: Install dependencies
+    cmds:
+      - echo "{{.YELLOW}}Installing dependencies...{{.NC}}"
+      - cmd: npm install
+        silent: true
+
+  server:
+    desc: Run the server in development mode
+    cmds:
+      - echo "{{.YELLOW}}Starting server...{{.NC}}"
+      - cmd: npx nx serve server
+        silent: true
+
+  client:
+    desc: Run the client in development mode
+    cmds:
+      - echo "{{.YELLOW}}Starting client...{{.NC}}"
+      - cmd: npx nx serve client
+        silent: true
+
+  run:
+    desc: Run both server and client in parallel (automatically starts PostgreSQL)
+    cmds:
+      - echo "{{.YELLOW}}Starting server and client...{{.NC}}"
+      - echo "{{.GREEN}}Note - PostgreSQL will be started automatically if not running{{.NC}}"
+      - cmd: npx nx run-many --target=serve --projects=server,client --parallel=2
+        silent: true
+
+  all:
+    desc: Alias for run (starts both server and client)
+    cmds:
+      - task run
+
+  kill:
+    desc: Kill all running server and client processes
+    cmds:
+      - echo "{{.YELLOW}}Stopping all services...{{.NC}}"
+      - cmd: pkill -f "nx serve server" || true
+        silent: true
+      - cmd: pkill -f "nx serve client" || true
+        silent: true
+      - cmd: pkill -f "webpack-cli" || true
+        silent: true
+      - cmd: bash -c 'lsof -ti :3000 2>/dev/null | xargs kill -9 2>/dev/null || true'
+        silent: true
+      - cmd: bash -c 'lsof -ti :4200 2>/dev/null | xargs kill -9 2>/dev/null || true'
+        silent: true
+      - echo "{{.GREEN}}All services stopped{{.NC}}"
+
+  run-many:
+    desc: Run a target on multiple projects
+    summary: |
+      Usage: task run-many TARGET=<target> [PROJECTS=<projects>]
+      Examples:
+        task run-many TARGET=test PROJECTS=server,client
+        task run-many TARGET=build
+    cmds:
+      - |
+        if [ -z "{{.TARGET}}" ]; then
+          echo "{{.YELLOW}}Usage: task run-many TARGET=<target> [PROJECTS=<project1,project2>]{{.NC}}"
+          echo "{{.YELLOW}}Example: task run-many TARGET=test PROJECTS=server,client{{.NC}}"
+          echo "{{.YELLOW}}Example: task run-many TARGET=build{{.NC}}"
+          exit 1
+        fi
+        if [ -z "{{.PROJECTS}}" ]; then
+          echo "{{.YELLOW}}Running target {{.TARGET}} on all projects...{{.NC}}"
+          npx nx run-many --target={{.TARGET}} --all
+        else
+          echo "{{.YELLOW}}Running target {{.TARGET}} on projects: {{.PROJECTS}}...{{.NC}}"
+          npx nx run-many --target={{.TARGET}} --projects={{.PROJECTS}}
+        fi
+    silent: true
+
+  test:
+    desc: Run all tests
+    cmds:
+      - echo "{{.YELLOW}}Running all tests...{{.NC}}"
+      - cmd: npx nx run-many --target=test --all
+        silent: true
+
+  test-server:
+    desc: Run server tests
+    cmds:
+      - echo "{{.YELLOW}}Running server tests...{{.NC}}"
+      - cmd: npx nx test server
+        silent: true
+
+  test-client:
+    desc: Run client tests
+    cmds:
+      - echo "{{.YELLOW}}Running client tests...{{.NC}}"
+      - cmd: npx nx test client
+        silent: true
+
+  e2e:
+    desc: Run all e2e tests
+    cmds:
+      - echo "{{.YELLOW}}Running all e2e tests...{{.NC}}"
+      - cmd: npx nx run-many --target=e2e --all
+        silent: true
+
+  e2e-client:
+    desc: Run client e2e tests
+    cmds:
+      - echo "{{.YELLOW}}Running client e2e tests...{{.NC}}"
+      - cmd: npx nx e2e client-e2e
+        silent: true
+
+  e2e-server:
+    desc: Run server e2e tests
+    cmds:
+      - echo "{{.YELLOW}}Running server e2e tests...{{.NC}}"
+      - cmd: npx nx e2e server-e2e
+        silent: true
+
+  build:
+    desc: Build all projects
+    cmds:
+      - echo "{{.YELLOW}}Building all projects...{{.NC}}"
+      - cmd: npx nx run-many --target=build --all
+        silent: true
+
+  build-server:
+    desc: Build server
+    cmds:
+      - echo "{{.YELLOW}}Building server...{{.NC}}"
+      - cmd: npx nx build server
+        silent: true
+
+  build-client:
+    desc: Build client
+    cmds:
+      - echo "{{.YELLOW}}Building client...{{.NC}}"
+      - cmd: npx nx build client
+        silent: true
+
+  lint:
+    desc: Lint all projects
+    cmds:
+      - echo "{{.YELLOW}}Linting all projects...{{.NC}}"
+      - cmd: npx nx run-many --target=lint --all
+        silent: true
+
+  lint-server:
+    desc: Lint server
+    cmds:
+      - echo "{{.YELLOW}}Linting server...{{.NC}}"
+      - cmd: npx nx lint server
+        silent: true
+
+  lint-client:
+    desc: Lint client
+    cmds:
+      - echo "{{.YELLOW}}Linting client...{{.NC}}"
+      - cmd: npx nx lint client
+        silent: true
+
+  clean:
+    desc: Clean build artifacts
+    cmds:
+      - echo "{{.YELLOW}}Cleaning build artifacts...{{.NC}}"
+      - cmd: rm -rf dist
+        silent: true
+      - cmd: rm -rf node_modules/.cache
+        silent: true
+      - cmd: npx nx reset
+        silent: true
