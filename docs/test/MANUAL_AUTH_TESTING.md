@@ -37,10 +37,10 @@ Wait for: `Compiled successfully` and the URL `http://localhost:4200`
 If you want a fresh start:
 
 ```bash
-# Delete the database
-rm tmp/db.sqlite
+# Clear PostgreSQL database (if needed)
+docker exec full-stack-todo-postgres psql -U postgres -d fullstack_todo -c "TRUNCATE TABLE \"user\", todo CASCADE;"
 
-# The database will be recreated automatically on first server request
+# The database schema will be recreated automatically on first server request
 ```
 
 ## Test Cases

@@ -6,6 +6,54 @@
 
 [Learn more about this workspace setup and its capabilities](https://nx.dev/nx-api/nest?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
 
+## Prerequisites
+
+Before running the application, ensure you have:
+
+- **Node.js** (v20 or higher recommended)
+- **npm** or **yarn**
+- **Docker** and **Docker Compose** (for PostgreSQL database)
+
+## Getting Started
+
+### 1. Install Dependencies
+
+```sh
+npm install
+```
+
+### 2. Start PostgreSQL Database
+
+The application uses PostgreSQL as its database. Start it using Docker Compose:
+
+```sh
+docker-compose up -d
+```
+
+This will start a PostgreSQL 16 container with:
+- Database: `fullstack_todo`
+- User: `postgres`
+- Password: `postgres`
+- Port: `5432`
+
+To verify PostgreSQL is running:
+
+```sh
+docker-compose ps
+```
+
+### 3. Seed the Database (Optional)
+
+Populate the database with sample data:
+
+```sh
+npm run seed
+```
+
+### 4. Run the Application
+
+See the [Run tasks](#run-tasks) section below for details on running the server and client.
+
 ## Run tasks
 
 To run the dev server for your app, use:

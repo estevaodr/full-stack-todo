@@ -62,7 +62,7 @@
   - [x] 4.8 Verify schema synchronization works (tables created automatically)
   - [x] 4.9 Verify logging shows PostgreSQL queries
 
-- [ ] 5.0 Update seed script for PostgreSQL
+- [x] 5.0 Update seed script for PostgreSQL
   - [x] 5.1 Change DataSource `type` from `'better-sqlite3'` to `'postgres'` in `scripts/seed.ts`
   - [x] 5.2 Replace `getDatabasePath()` function with `getDatabaseUrl()` function
   - [x] 5.3 Update `getDatabaseUrl()` to read `DATABASE_URL` environment variable
@@ -79,10 +79,10 @@
   - [x] 5.14 Update documentation to remove SQLite-specific instructions
 
 - [ ] 6.0 Update gitignore and documentation
-  - [ ] 6.1 Add `postgres-data/` to `.gitignore` file
-  - [ ] 6.2 Verify `tmp/` remains in `.gitignore` (for any remaining SQLite files during transition)
-  - [ ] 6.3 Test that `postgres-data/` directory is not tracked by git
-  - [ ] 6.4 Verify no database files are committed to repository
-  - [ ] 6.5 Review and update any other documentation that references SQLite
-  - [ ] 6.6 Add Docker Compose usage instructions to README or relevant documentation
-  - [ ] 6.7 Update any setup/installation documentation to include Docker Compose step
+  - [x] 6.1 Add `postgres-data/` to `.gitignore` file
+  - [x] 6.2 Verify `tmp/` remains in `.gitignore` (for any remaining SQLite files during transition)
+  - [x] 6.3 Test that `postgres-data/` directory is not tracked by git
+  - [x] 6.4 Verify no database files are committed to repository
+  - [x] 6.5 Review and update any other documentation that references SQLite
+  - [x] 6.6 Add Docker Compose usage instructions to README or relevant documentation
+  - [x] 6.7 Update any setup/installation documentation to include Docker Compose step
