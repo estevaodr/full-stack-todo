@@ -54,12 +54,24 @@ This method runs the script directly without going through npm or Nx.
 
 ### Database Connection
 
-The script determines the database connection using the following priority:
+The script automatically loads environment variables from `.env` files and determines the database connection using the following priority:
 
-1. **Environment Variable**: If `DATABASE_URL` is set, it uses that value
-2. **Default URL**: Falls back to `postgresql://postgres:postgres@localhost:5432/fullstack_todo`
+1. **`.env` file**: Automatically loads `DATABASE_URL` from `.env` in the project root
+2. **`.env.development` file**: Falls back to `.env.development` if `DATABASE_URL` is not found in `.env`
+3. **Environment Variable**: If `DATABASE_URL` is exported in the shell, it uses that value
+4. **Default URL**: Falls back to `postgresql://postgres:postgres@localhost:5432/fullstack_todo`
 
 #### Setting a Custom Database URL
+
+**Recommended: Use `.env` file** (automatically loaded):
+
+```bash
+# Add to .env file in project root
+DATABASE_URL=postgresql://user:password@host:port/database
+npm run seed
+```
+
+**Alternative: Export environment variable**:
 
 ```bash
 # Using environment variable
@@ -69,6 +81,8 @@ DATABASE_URL=postgresql://user:password@host:port/database npm run seed
 export DATABASE_URL=postgresql://user:password@host:port/database
 npm run seed
 ```
+
+**Note**: The script automatically loads `.env` and `.env.development` files, so you typically don't need to export the variable manually.
 
 #### Starting PostgreSQL
 

@@ -14,13 +14,22 @@
 
 // Load environment variables from .env file
 import * as dotenv from 'dotenv';
-dotenv.config();
+import * as path from 'path';
+import * as fs from 'fs';
+
+// Explicitly load .env file from project root
+const envPath = path.resolve(process.cwd(), '.env');
+dotenv.config({ path: envPath });
+
+// Also try .env.development as fallback (common in development)
+const envDevelopmentPath = path.resolve(process.cwd(), '.env.development');
+if (!process.env.DATABASE_URL && fs.existsSync(envDevelopmentPath)) {
+  dotenv.config({ path: envDevelopmentPath });
+}
 
 import { DataSource } from 'typeorm';
 import { ToDoEntitySchema, UserEntitySchema } from '@full-stack-todo/server/data-access-todo';
 import { ITodo, IUser } from '@full-stack-todo/shared/domain';
-import * as path from 'path';
-import * as fs from 'fs';
 import * as yaml from 'js-yaml';
 import * as bcrypt from 'bcrypt';
 
