@@ -62,6 +62,7 @@ TypeOrmModule.forRootAsync({
 **Environment Variables**:
 - `DATABASE_PATH`: File path to SQLite database (default: `tmp/db.sqlite`)
 - Currently validated in `app.module.ts` with Joi schema
+- Will be replaced with `DATABASE_URL` for PostgreSQL connection string
 
 ### Seed Script
 
@@ -274,12 +275,14 @@ This ensures:
 
 ### Environment Variable Naming
 
-**Convention**: Use `DATABASE_*` prefix for all database-related variables
+**Convention**: Use `DATABASE_URL` for PostgreSQL connection string
 
 **Rationale**: 
-- Clear grouping
-- Easy to identify database configuration
-- Consistent with existing `DATABASE_PATH` naming
+- Standard format used by cloud platforms (Heroku, Railway, etc.)
+- Single variable instead of multiple (host, port, user, password, database)
+- TypeORM supports `url` property directly
+- Format: `postgresql://user:password@host:port/database`
+- More concise and easier to manage
 
 ## Implementation Notes
 
@@ -299,24 +302,24 @@ This ensures:
 
 ### Step 3: Update Environment Variables
 
-1. Update `.env.development` with PostgreSQL variables
+1. Update `.env.development` with `DATABASE_URL` connection string
 2. Update Joi validation schema in `app.module.ts`
 3. Remove `DATABASE_PATH` validation
-4. Add new PostgreSQL variable validations
+4. Add `DATABASE_URL` validation (string, required or with default)
 
 ### Step 4: Update TypeORM Configuration
 
 1. Change `type` to `'postgres'`
-2. Replace `database` with PostgreSQL connection config
+2. Replace `database` with `url` property using `DATABASE_URL`
 3. Update `useFactory` function in `app.module.ts`
 4. Test connection
 
 ### Step 5: Update Seed Script
 
 1. Change DataSource type to `'postgres'`
-2. Update connection configuration
+2. Update connection configuration to use `url` from `DATABASE_URL`
 3. Remove file path logic
-4. Update `getDatabasePath()` function (rename to `getDatabaseConfig()`)
+4. Update `getDatabasePath()` function (rename to `getDatabaseUrl()`)
 5. Test seed script
 
 ### Step 6: Update Git Ignore
@@ -422,11 +425,7 @@ services:
 
 ```env
 # PostgreSQL Configuration
-DATABASE_HOST=localhost
-DATABASE_PORT=5432
-DATABASE_USER=postgres
-DATABASE_PASSWORD=postgres
-DATABASE_NAME=fullstack_todo
+DATABASE_URL=postgresql://postgres:postgres@localhost:5432/fullstack_todo
 ```
 
 ### Example TypeORM Configuration
@@ -435,11 +434,7 @@ DATABASE_NAME=fullstack_todo
 TypeOrmModule.forRootAsync({
   useFactory: (config: ConfigService) => ({
     type: 'postgres',
-    host: config.get('DATABASE_HOST'),
-    port: config.get('DATABASE_PORT'),
-    username: config.get('DATABASE_USER'),
-    password: config.get('DATABASE_PASSWORD'),
-    database: config.get('DATABASE_NAME'),
+    url: config.get('DATABASE_URL'),
     synchronize: true,
     logging: true,
     autoLoadEntities: true,

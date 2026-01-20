@@ -35,7 +35,7 @@
   - [x] 1.8 Verify PostgreSQL container starts successfully and health check passes
   - [x] 1.9 Verify data persistence by stopping and restarting container
 
-- [ ] 2.0 Update npm dependencies (remove SQLite, add PostgreSQL)
+- [x] 2.0 Update npm dependencies (remove SQLite, add PostgreSQL)
   - [x] 2.1 Remove `better-sqlite3` from dependencies in `package.json`
   - [x] 2.2 Remove `@types/better-sqlite3` from devDependencies in `package.json`
   - [x] 2.3 Add `pg` to dependencies in `package.json`
@@ -45,48 +45,38 @@
   - [x] 2.7 Verify PostgreSQL driver is available and can be imported
 
 - [ ] 3.0 Update environment variables and validation
-  - [ ] 3.1 Update `.env.development` template with new PostgreSQL variables (DATABASE_HOST, DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME)
-  - [ ] 3.2 Update Joi validation schema in `apps/server/src/app/app.module.ts` to replace `DATABASE_PATH` validation
-  - [ ] 3.3 Add validation for `DATABASE_HOST` (string, default: 'localhost')
-  - [ ] 3.4 Add validation for `DATABASE_PORT` (number, default: 5432)
-  - [ ] 3.5 Add validation for `DATABASE_USER` (string, default: 'postgres')
-  - [ ] 3.6 Add validation for `DATABASE_PASSWORD` (string, default: 'postgres')
-  - [ ] 3.7 Add validation for `DATABASE_NAME` (string, default: 'fullstack_todo')
-  - [ ] 3.8 Remove `DATABASE_PATH` from validation schema
-  - [ ] 3.9 Test environment variable validation at application startup
+  - [x] 3.1 Update `.env.development` template with `DATABASE_URL` connection string
+  - [x] 3.2 Update Joi validation schema in `apps/server/src/app/app.module.ts` to replace `DATABASE_PATH` validation
+  - [x] 3.3 Add validation for `DATABASE_URL` (string, default: 'postgresql://postgres:postgres@localhost:5432/fullstack_todo')
+  - [x] 3.4 Remove `DATABASE_PATH` from validation schema
+  - [x] 3.5 Test environment variable validation at application startup
 
 - [ ] 4.0 Update TypeORM configuration for PostgreSQL
   - [ ] 4.1 Change `type` from `'better-sqlite3'` to `'postgres'` in `apps/server/src/app/app.module.ts`
-  - [ ] 4.2 Replace `database` property with PostgreSQL connection configuration object
-  - [ ] 4.3 Add `host` property using `config.get('DATABASE_HOST')`
-  - [ ] 4.4 Add `port` property using `config.get('DATABASE_PORT')`
-  - [ ] 4.5 Add `username` property using `config.get('DATABASE_USER')`
-  - [ ] 4.6 Add `password` property using `config.get('DATABASE_PASSWORD')`
-  - [ ] 4.7 Add `database` property using `config.get('DATABASE_NAME')`
-  - [ ] 4.8 Keep `synchronize: true` for development
-  - [ ] 4.9 Keep `logging: true` for development
-  - [ ] 4.10 Keep `autoLoadEntities: true`
-  - [ ] 4.11 Update code comments to reflect PostgreSQL instead of SQLite
-  - [ ] 4.12 Test TypeORM connection to PostgreSQL on application startup
-  - [ ] 4.13 Verify schema synchronization works (tables created automatically)
-  - [ ] 4.14 Verify logging shows PostgreSQL queries
+  - [ ] 4.2 Replace `database` property with `url` property using `config.get('DATABASE_URL')`
+  - [ ] 4.3 Keep `synchronize: true` for development
+  - [ ] 4.4 Keep `logging: true` for development
+  - [ ] 4.5 Keep `autoLoadEntities: true`
+  - [ ] 4.6 Update code comments to reflect PostgreSQL instead of SQLite
+  - [ ] 4.7 Test TypeORM connection to PostgreSQL on application startup
+  - [ ] 4.8 Verify schema synchronization works (tables created automatically)
+  - [ ] 4.9 Verify logging shows PostgreSQL queries
 
 - [ ] 5.0 Update seed script for PostgreSQL
   - [ ] 5.1 Change DataSource `type` from `'better-sqlite3'` to `'postgres'` in `scripts/seed.ts`
-  - [ ] 5.2 Replace `getDatabasePath()` function with `getDatabaseConfig()` function
-  - [ ] 5.3 Update `getDatabaseConfig()` to return PostgreSQL connection configuration object
-  - [ ] 5.4 Read PostgreSQL environment variables (DATABASE_HOST, DATABASE_PORT, DATABASE_USER, DATABASE_PASSWORD, DATABASE_NAME)
-  - [ ] 5.5 Provide default values matching Docker Compose configuration
-  - [ ] 5.6 Update DataSource configuration to use PostgreSQL connection config instead of file path
-  - [ ] 5.7 Remove file path logic and directory creation code (no longer needed)
-  - [ ] 5.8 Update console log messages to reflect PostgreSQL connection instead of file path
-  - [ ] 5.9 Update error messages to reference PostgreSQL instead of SQLite
-  - [ ] 5.10 Test seed script connects to PostgreSQL successfully
-  - [ ] 5.11 Test seed script creates users and todos successfully
-  - [ ] 5.12 Test seed script handles duplicate data gracefully
-  - [ ] 5.13 Update `docs/scripts/SEED_SCRIPT.md` to reflect PostgreSQL usage
-  - [ ] 5.14 Update documentation to reference Docker Compose requirement
-  - [ ] 5.15 Update documentation to remove SQLite-specific instructions
+  - [ ] 5.2 Replace `getDatabasePath()` function with `getDatabaseUrl()` function
+  - [ ] 5.3 Update `getDatabaseUrl()` to read `DATABASE_URL` environment variable
+  - [ ] 5.4 Provide default value matching Docker Compose configuration (postgresql://postgres:postgres@localhost:5432/fullstack_todo)
+  - [ ] 5.5 Update DataSource configuration to use `url` property instead of file path
+  - [ ] 5.6 Remove file path logic and directory creation code (no longer needed)
+  - [ ] 5.7 Update console log messages to reflect PostgreSQL connection instead of file path
+  - [ ] 5.8 Update error messages to reference PostgreSQL instead of SQLite
+  - [ ] 5.9 Test seed script connects to PostgreSQL successfully
+  - [ ] 5.10 Test seed script creates users and todos successfully
+  - [ ] 5.11 Test seed script handles duplicate data gracefully
+  - [ ] 5.12 Update `docs/scripts/SEED_SCRIPT.md` to reflect PostgreSQL usage
+  - [ ] 5.13 Update documentation to reference Docker Compose requirement
+  - [ ] 5.14 Update documentation to remove SQLite-specific instructions
 
 - [ ] 6.0 Update gitignore and documentation
   - [ ] 6.1 Add `postgres-data/` to `.gitignore` file

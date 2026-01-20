@@ -81,7 +81,7 @@ import { AppService } from './app.service';
        * Better to fail at startup than crash later when trying to connect to DB or authenticate users.
        */
       validationSchema: Joi.object({
-        DATABASE_PATH: Joi.string().default('tmp/db.sqlite'),
+        DATABASE_URL: Joi.string().default('postgresql://postgres:postgres@localhost:5432/fullstack_todo'),
         // JWT configuration
         JWT_SECRET: Joi.string().required(), // Required: Secret key for signing JWT tokens
         JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().default('600s'), // Optional: Token expiration time (defaults to 10 minutes)
