@@ -1,0 +1,94 @@
+---
+alwaysApply: true
+---
+
+# Context7 MCP Usage Rule
+
+## Automatic Context7 Usage
+
+When working with external libraries, frameworks, or third-party dependencies, **automatically use Context7 MCP** to retrieve up-to-date documentation and code examples.
+
+## When to Use Context7
+
+Use Context7 MCP in the following scenarios:
+
+1. **External Library Usage**: When implementing features using external libraries (e.g., Angular, NestJS, TypeORM, RxJS, bcrypt, axios, etc.)
+2. **Framework Features**: When using framework-specific features, APIs, or patterns
+3. **API Documentation**: When you need current API documentation, method signatures, or usage examples
+4. **Version-Specific Features**: When working with version-specific features or breaking changes
+5. **Best Practices**: When following framework or library best practices and patterns
+6. **Migration/Upgrade**: When upgrading dependencies or migrating between versions
+7. **Unfamiliar APIs**: When encountering unfamiliar APIs or methods
+
+## How to Use Context7
+
+1. **Automatic Invocation**: Before generating code that uses external libraries, automatically invoke Context7 MCP tools:
+   - Use `resolve-library-id` to identify the correct library ID
+   - Use `query-docs` to fetch relevant documentation and code examples
+
+2. **Integration in Responses**: 
+   - Include relevant documentation snippets from Context7 in your responses
+   - Reference official documentation when providing code examples
+   - Note version-specific information when relevant
+
+3. **Error Prevention**: 
+   - Use Context7 to verify current API signatures before suggesting code
+   - Check for breaking changes or deprecated methods
+   - Ensure code examples match the current library version
+
+## Examples
+
+### Before Writing Code with External Libraries
+
+**Bad**: Generate code based on training data alone
+```typescript
+// Don't assume API without checking
+import { something } from 'library';
+```
+
+**Good**: Use Context7 first, then generate code
+```typescript
+// After querying Context7 for current library documentation
+import { something } from 'library'; // Verified via Context7
+```
+
+### When User Asks About Libraries
+
+**User**: "How do I use Angular signals?"
+
+**Response Process**:
+1. Automatically invoke Context7 to get current Angular signals documentation
+2. Provide code examples based on the latest official documentation
+3. Include version-specific notes if relevant
+
+### When Implementing Features
+
+**User**: "Add authentication using NestJS Passport"
+
+**Response Process**:
+1. Query Context7 for NestJS Passport documentation
+2. Retrieve current best practices and code examples
+3. Implement using verified, up-to-date patterns
+
+## Priority
+
+- **Always prioritize Context7 documentation** over training data when available
+- **Verify against Context7** when unsure about current API usage
+- **Include Context7 findings** in explanations to show source of information
+
+## Exceptions
+
+You may skip Context7 usage for:
+- Well-established, stable APIs you're certain about
+- Internal project code (not external libraries)
+- Standard JavaScript/TypeScript language features
+- Code that doesn't involve external dependencies
+
+## Integration with Other Rules
+
+This rule complements the developer rules by ensuring:
+- Code uses current best practices (from Context7)
+- Dependencies are used correctly (verified documentation)
+- Implementation follows official patterns (up-to-date examples)
+
+Remember: When in doubt about external library usage, **always query Context7 first** to ensure accuracy and prevent outdated code suggestions.
