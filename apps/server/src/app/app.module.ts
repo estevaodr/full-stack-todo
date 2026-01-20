@@ -81,7 +81,14 @@ import { AppService } from './app.service';
        * Better to fail at startup than crash later when trying to connect to DB or authenticate users.
        */
       validationSchema: Joi.object({
-        DATABASE_URL: Joi.string().default('postgresql://postgres:postgres@localhost:5432/fullstack_todo'),
+        DATABASE_URL: Joi.string()
+          .pattern(/^postgresql:\/\/[^:]+:[^@]+@[^:]+:\d+\/[^/]+$/)
+          .required()
+          .messages({
+            'string.pattern.base': 'DATABASE_URL must be a valid PostgreSQL connection string (postgresql://user:password@host:port/database)',
+  // checkov:skip=CKV_SECRET_4: ADD REASON
+            'any.required': 'DATABASE_URL is required. Please set it in your .env file (e.g., postgresql://user:password@host:port/database)',
+          }),
         // Logging configuration
         LOG_LEVEL: Joi.string().valid('INFO', 'DEBUG').default('INFO'), // Optional: Logging level (INFO=clean logs, DEBUG=includes SQL queries)
         // JWT configuration

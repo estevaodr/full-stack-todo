@@ -51,15 +51,19 @@ interface SeedData {
 }
 
 /**
- * Get the database URL from environment variable or use default
+ * Get the database URL from environment variable
  */
 function getDatabaseUrl(): string {
   const envUrl = process.env.DATABASE_URL;
-  if (envUrl) {
-    return envUrl;
+  if (!envUrl) {
+    throw new Error(
+      'DATABASE_URL environment variable is not set.\n' +
+      'Please set it in your .env file.\n' +
+      'Example: DATABASE_URL=postgresql://user:password@host:port/database'
+  // checkov:skip=CKV_SECRET_4: ADD REASON
+    );
   }
-  // Default URL matching Docker Compose configuration
-  return 'postgresql://postgres:postgres@localhost:5432/fullstack_todo';
+  return envUrl;
 }
 
 /**
