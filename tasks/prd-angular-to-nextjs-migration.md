@@ -2,544 +2,994 @@
 
 ## 1. Introduction/Overview
 
-### Problem Statement
-The current frontend is built with Angular 21, which works well but presents challenges for team scalability and ecosystem alignment. The React/Next.js ecosystem offers broader developer availability, a more extensive component library ecosystem (Shadcn UI, Radix), and better alignment with modern full-stack patterns like Server Components.
+This document outlines the migration of the existing Angular 21 client application to Next.js 15 with Tailwind CSS. The migration aims to modernize the frontend stack while maintaining feature parity with the current application, leveraging Next.js's App Router, React Server Components, and modern authentication patterns.
 
-### Solution
-Migrate the Angular client application to Next.js 15 with App Router, adopting:
-- **Tailwind CSS** for utility-first styling
-- **Shadcn UI** for accessible, customizable components
-- **React Query (TanStack Query)** for server state management
-- **Zustand** for client state (theme, modals)
-- **Zod** for runtime validation
-- **Playwright** for E2E testing
+**Current Stack:** Angular 21, SCSS, RxJS, Nx Monorepo
+**Target Stack:** Next.js 15 (App Router), Tailwind CSS, shadcn/ui, React Query, React Hook Form
 
-### Migration Approach
-Incremental removal of Angular code after each feature is verified in the new Next.js application, ensuring zero downtime and feature parity.
+The migration will replace the Angular client in `apps/client/` with a Next.js application while keeping the NestJS backend unchanged.
 
 ---
 
-## 2. Current State Analysis
+## 2. Goals
 
-### Angular Application Structure
-
-| Layer | Location | Purpose |
-|-------|----------|---------|
-| App Shell | `apps/client/src/app/app.ts` | Root component with auth state, header, logout |
-| Routes | `apps/client/src/app/app.routes.ts` | `/login`, `/register`, `/dashboard` |
-| Auth Service | `libs/client/data-access/src/lib/auth.ts` | JWT handling, localStorage, BehaviorSubject |
-| API Service | `libs/client/data-access/src/lib/api.ts` | Todo CRUD operations |
-| Auth Guard | `libs/client/data-access/src/lib/guards/auth-guard.ts` | Route protection |
-| User Service | `libs/client/data-access/src/lib/user.ts` | User registration |
-| Login Feature | `libs/client/feature-login/` | Login form with validation |
-| Register Feature | `libs/client/feature-register/` | Registration with password matching |
-| Dashboard Feature | `libs/client/feature-dashboard/` | Todo list with edit dialog |
-| UI Components | `libs/client/ui-components/` | `ToDoComponent`, `ThemeToggle`, `EditTodoDialog` |
-| Styles | `libs/client/ui-style/` | SCSS with Nord theme, custom properties |
-
-### Shared Libraries (To Be Preserved)
-
-```
-libs/shared/domain/src/lib/models/
-├── todo.interface.ts      # ITodo, ICreateTodo, IUpdateTodo
-├── user.interface.ts      # IUser, ICreateUser, IPublicUserData
-├── jwt-payload.interface.ts   # IAccessTokenPayload
-├── login-payload.interface.ts # ILoginPayload
-└── token-response.interface.ts # ITokenResponse
-```
-
-These shared types will continue to be imported by the Next.js app to maintain type consistency with the NestJS backend.
-
-### API Endpoints (No Changes Required)
-
-| Method | Endpoint | Purpose |
-|--------|----------|---------|
-| POST | `/api/v1/auth/login` | User login, returns JWT |
-| POST | `/api/v1/users` | User registration |
-| GET | `/api/v1/todos` | Get all todos for authenticated user |
-| POST | `/api/v1/todos` | Create new todo |
-| PATCH | `/api/v1/todos/:id` | Partial update todo |
-| PUT | `/api/v1/todos/:id` | Full update/upsert todo |
-| DELETE | `/api/v1/todos/:id` | Delete todo |
-
-### Current Testing Setup
-- **E2E**: Cypress (`apps/client-e2e/`) - Will be replaced by Playwright
-- **Unit**: Jest with `jest-preset-angular`
-- **Stories**: Storybook with `@storybook/angular`
+1. **Migrate to Next.js 15** with App Router for improved performance, SEO, and developer experience
+2. **Implement Tailwind CSS** with shadcn/ui for a modern, accessible component library
+3. **Improve security** by moving from localStorage JWT storage to HTTP-only cookies with middleware protection
+4. **Maintain feature parity** with the current Angular application (MVP scope)
+5. **Preserve monorepo structure** by replacing the Angular client in place within the Nx workspace
+6. **Establish patterns** for future feature development on the new stack
 
 ---
 
-## 3. Goals & Success Metrics
-
-### Goals
-
-1. **Feature Parity**: All Angular functionality reproduced in Next.js
-2. **Modern Stack**: Next.js 15 App Router with React 19 features
-3. **Fresh Design**: New UI using Tailwind CSS and Shadcn UI
-4. **Type Safety**: Zod schemas matching backend DTOs
-5. **Testing Coverage**: Playwright E2E tests covering all user flows
-6. **Clean Removal**: Angular code removed incrementally after verification
-
-### Success Metrics
-
-| Metric | Target |
-|--------|--------|
-| Feature parity | 100% of Angular features working in Next.js |
-| E2E test coverage | All critical paths (auth, CRUD) covered |
-| Build success | `nx build client-next` passes |
-| Lighthouse Performance | Score ≥ 90 |
-| Bundle size | < 200KB initial JS |
-| Angular removal | All Angular client code removed after migration |
-
----
-
-## 4. User Stories
+## 3. User Stories
 
 ### Authentication
-- **US-1**: As a user, I want to register with my email and password so I can create an account.
-- **US-2**: As a user, I want to log in with my credentials so I can access my todos.
-- **US-3**: As a user, I want to stay logged in after refreshing the page so I don't have to re-authenticate.
-- **US-4**: As a user, I want to log out so I can secure my session.
+- **US-1:** As a user, I want to register for an account with my email and password so that I can access the application
+- **US-2:** As a user, I want to log in with my email and password so that I can access my todos
+- **US-3:** As a user, I want to remain logged in across page refreshes until my session expires
+- **US-4:** As a user, I want to be redirected to the login page when my session expires
+- **US-5:** As a user, I want to log out so that I can end my session securely
 
 ### Todo Management
-- **US-5**: As a user, I want to view my todos separated by completion status (incomplete vs completed).
-- **US-6**: As a user, I want to create a new todo with a title and description.
-- **US-7**: As a user, I want to toggle a todo's completion status.
-- **US-8**: As a user, I want to edit a todo's title and description.
-- **US-9**: As a user, I want to delete a todo I no longer need.
+- **US-6:** As a user, I want to see all my todos organized by completion status (incomplete/complete columns)
+- **US-7:** As a user, I want to toggle the completion status of a todo by clicking on it
+- **US-8:** As a user, I want to edit a todo's title and description (only for incomplete todos)
+- **US-9:** As a user, I want to delete a todo
 
-### UI/UX
-- **US-10**: As a user, I want to toggle between light and dark themes.
-- **US-11**: As a user, I want the app to be responsive on mobile devices.
+### Theme
+- **US-10:** As a user, I want to toggle between light and dark themes
+
+---
+
+## 4. Current State Analysis
+
+### Existing Angular Architecture
+
+**Routes (from `apps/client/src/app/app.routes.ts`):**
+```typescript
+{ path: 'login', children: featureLoginRoutes },
+{ path: 'register', children: featureRegisterRoutes },
+{ path: 'dashboard', children: featureDashboardRoutes },
+{ path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+```
+
+**Feature Libraries (from `libs/client/`):**
+| Library | Purpose | Key Files |
+|---------|---------|-----------|
+| `feature-dashboard` | Main todo list page | `FeatureDashboard.ts`, `FeatureDashboard.html` |
+| `feature-login` | Login form | `client-feature-login.component.ts` |
+| `feature-register` | Registration form | `feature-register.ts` |
+| `ui-components` | Reusable components | `to-do.ts`, `edit-todo-dialog.ts`, `theme-toggle.ts` |
+| `data-access` | API services | `api.ts`, `auth.ts`, `user.ts`, `auth-guard.ts` |
+| `ui-style` | SCSS design system | `_custom-properties.scss`, `_button.scss` |
+
+**Shared Domain Models (from `libs/shared/domain/`):**
+- `ITodo`, `ICreateTodo`, `IUpdateTodo`, `IUpsertTodo`
+- `IUser`, `ICreateUser`, `IPublicUserData`
+- `ILoginPayload`, `ITokenResponse`, `IAccessTokenPayload`
+
+**Backend API Endpoints (NestJS - unchanged):**
+| Method | Endpoint | Auth | Description |
+|--------|----------|------|-------------|
+| POST | `/api/v1/auth/login` | Public | User login, returns JWT |
+| POST | `/api/v1/users` | Public | User registration |
+| GET | `/api/v1/users/:id` | Protected | Get user by ID |
+| GET | `/api/v1/todos` | Protected | Get all user's todos |
+| POST | `/api/v1/todos` | Protected | Create todo |
+| PATCH | `/api/v1/todos/:id` | Protected | Update todo |
+| DELETE | `/api/v1/todos/:id` | Protected | Delete todo |
+
+**Current Styling:**
+- SCSS with BEM methodology
+- Nord color palette via CSS custom properties
+- Dark/light theme support via `[data-theme]` attribute
 
 ---
 
 ## 5. Functional Requirements
 
-### 5.1 Authentication
+### FR-1: Project Setup
+- **FR-1.1:** Initialize Next.js 15 application with App Router in `apps/client/`
+- **FR-1.2:** Configure Tailwind CSS with custom theme matching Nord color palette
+- **FR-1.3:** Install and configure shadcn/ui components
+- **FR-1.4:** Configure TypeScript with strict mode
+- **FR-1.5:** Set up ESLint and Prettier matching existing project configuration
+- **FR-1.6:** Configure environment variables for API URL (server-only `API_URL`, not exposed to client)
 
-| ID | Requirement | Reference |
-|----|-------------|-----------|
-| FR-1.1 | Login form with email and password fields | `libs/client/feature-login/` |
-| FR-1.2 | Email validation (required, valid format) | Uses `Validators.email` in Angular |
-| FR-1.3 | Password validation (required) | Uses `Validators.required` |
-| FR-1.4 | Display server error messages on failed login | `errorMessage$` in login component |
-| FR-1.5 | Show loading state during form submission | `isSubmitting$` in login component |
-| FR-1.6 | Redirect to `/dashboard` on successful login | `router.navigate(['/dashboard'])` |
-| FR-1.7 | Store JWT in localStorage | `TOKEN_STORAGE_KEY` constant |
-| FR-1.8 | Load JWT from localStorage on app init | `auth.loadToken()` in `app.ts` |
+### FR-2: Authentication
+- **FR-2.1:** Create login page at `/login` with email and password form
+- **FR-2.2:** Create registration page at `/register` with email, password, and confirm password
+- **FR-2.3:** Implement Next.js API routes for session management:
+  - `POST /api/auth/login` - Proxy to backend, set HTTP-only cookie
+  - `POST /api/auth/logout` - Clear session cookie
+  - `GET /api/auth/session` - Validate and return session data
+- **FR-2.4:** Implement middleware for route protection (`middleware.ts`)
+- **FR-2.5:** Store JWT in HTTP-only, secure, SameSite cookie
+- **FR-2.6:** Implement AuthContext for client-side auth state
 
-| ID | Requirement | Reference |
-|----|-------------|-----------|
-| FR-2.1 | Registration form with email, password, confirm password | `libs/client/feature-register/` |
-| FR-2.2 | Password matching validation | `matchingPasswordsValidator` |
-| FR-2.3 | Redirect to `/login` on successful registration | `router.navigate(['/login'])` |
+### FR-3: Todo Dashboard
+- **FR-3.1:** Create dashboard page at `/dashboard` (protected route)
+- **FR-3.2:** Display todos in two-column layout: "Incomplete" and "Completed"
+- **FR-3.3:** Implement TodoCard component with:
+  - Title display
+  - Description display
+  - Completion toggle button
+  - Edit button (disabled for completed todos)
+  - Delete button
+- **FR-3.4:** Implement EditTodoDialog modal for editing title and description
+- **FR-3.5:** Use React Query for data fetching and cache management
 
-| ID | Requirement | Reference |
-|----|-------------|-----------|
-| FR-3.1 | Protect `/dashboard` route from unauthenticated users | `authGuard` |
-| FR-3.2 | Redirect to `/login` if token is expired or missing | `isTokenExpired()` check |
-| FR-3.3 | Logout clears token and redirects to `/login` | `auth.logoutUser()` |
+### FR-4: Theme Toggle
+- **FR-4.1:** Implement ThemeToggle component using `next-themes`
+- **FR-4.2:** Persist theme preference in localStorage
+- **FR-4.3:** Support system preference detection
+- **FR-4.4:** Implement dark/light themes in Tailwind config
 
-### 5.2 Todo Management
+### FR-5: Form Handling
+- **FR-5.1:** Use React Hook Form for all forms
+- **FR-5.2:** Use Zod for schema validation
+- **FR-5.3:** Display validation errors using shadcn/ui Form components
+- **FR-5.4:** Show loading states during form submission
 
-| ID | Requirement | Reference |
-|----|-------------|-----------|
-| FR-4.1 | Fetch all todos on dashboard load | `apiService.getAllToDoItems()` |
-| FR-4.2 | Display todos in two columns: Incomplete and Completed | `FeatureDashboard.html` |
-| FR-4.3 | Each todo shows title, description, completion indicator | `ToDoComponent` |
-| FR-4.4 | Toggle completion status via checkbox/indicator | `toggleComplete()` |
-| FR-4.5 | Edit todo via modal dialog | `EditTodoDialogComponent` |
-| FR-4.6 | Delete todo with immediate removal from list | `deleteTodo()` |
-| FR-4.7 | Prevent editing completed todos | `if (todo.completed) return` |
-| FR-4.8 | Refresh list after any mutation | `refreshItems()` |
+### FR-6: API Integration
+- **FR-6.1:** Create API client using fetch with base URL from server-only environment variable
+- **FR-6.2:** Implement automatic cookie inclusion for authenticated requests
+- **FR-6.3:** Create React Query hooks for:
+  - `useTodos()` - Fetch all todos
+  - `useCreateTodo()` - Create mutation
+  - `useUpdateTodo()` - Update mutation
+  - `useDeleteTodo()` - Delete mutation
+- **FR-6.4:** Implement optimistic updates where appropriate
 
-### 5.3 UI/UX
+### FR-7: Security Hardening
+- **FR-7.1:** Configure security headers in `next.config.js`:
+  - `Strict-Transport-Security` (HSTS)
+  - `X-Frame-Options`
+  - `X-Content-Type-Options`
+  - `Referrer-Policy`
+  - `Permissions-Policy`
+- **FR-7.2:** Implement secure cookie settings:
+  - `httpOnly: true` - Prevent JavaScript access
+  - `secure: true` (production) - HTTPS only
+  - `sameSite: 'lax'` - CSRF protection
+  - `maxAge: 604800` - 7 day expiration
+- **FR-7.3:** Validate `SESSION_SECRET` is at least 32 characters on application startup
+- **FR-7.4:** Implement secure error handling:
+  - Return generic error messages to clients (e.g., "Invalid credentials")
+  - Log detailed errors server-side only
+  - Never expose stack traces in production
+  - Prevent user enumeration (same error for invalid email vs wrong password)
+- **FR-7.5:** Implement session expiration with configurable timeout (default: 7 days)
+- **FR-7.6:** Use server-only environment variable for `API_URL` (not `NEXT_PUBLIC_`)
 
-| ID | Requirement | Reference |
-|----|-------------|-----------|
-| FR-5.1 | App header with title, user greeting, logout button | `app.html` |
-| FR-5.2 | Theme toggle (light/dark) | `ThemeToggleComponent` |
-| FR-5.3 | Responsive layout for mobile/tablet/desktop | Current SCSS media queries |
-| FR-5.4 | Form validation error messages displayed inline | Current form templates |
+### FR-8: Database Documentation
+- **FR-8.1:** Create comprehensive database schema documentation in `docs/database/`:
+  - Entity Relationship Diagram (ERD) showing all tables and relationships
+  - Document all entities: `User`, `Todo`, and any related entities
+  - Include field descriptions, data types, and constraints
+- **FR-8.2:** Document entity definitions:
+  - `User` entity: fields, validations, indexes, and relationships
+  - `Todo` entity: fields, validations, indexes, and relationships to User
+- **FR-8.3:** Document database design decisions:
+  - Primary key strategy (UUID vs auto-increment)
+  - Timestamp handling (created_at, updated_at)
+  - Soft delete vs hard delete approach (if applicable)
+  - Index strategy for query optimization
+- **FR-8.4:** Create data model reference:
+  - Map TypeORM entities to PostgreSQL schema
+  - Document migration strategy and versioning
+  - Include sample queries for common operations
+- **FR-8.5:** Document data relationships:
+  - User-to-Todo relationship (one-to-many)
+  - Cascade behaviors (on delete, on update)
+  - Foreign key constraints
+
+### FR-9: Test-Driven Development (TDD)
+- **FR-9.1:** Follow TDD methodology for all new implementations:
+  - Write failing tests first (Red phase)
+  - Implement minimal code to pass tests (Green phase)
+  - Refactor while keeping tests passing (Refactor phase)
+- **FR-9.2:** Unit tests for core logic:
+  - `lib/session.ts` - Session encryption/decryption tests
+  - `lib/validations.ts` - Zod schema validation tests
+  - `lib/api-client.ts` - API client function tests
+  - `hooks/use-todos.ts` - React Query hook tests
+  - `hooks/use-auth.ts` - Authentication hook tests
+- **FR-9.3:** Component tests:
+  - `components/todo-card.tsx` - Todo card rendering and interactions
+  - `components/edit-todo-dialog.tsx` - Dialog behavior and form submission
+  - `components/login-form.tsx` - Form validation and submission
+  - `components/register-form.tsx` - Registration flow and validation
+  - `components/theme-toggle.tsx` - Theme switching behavior
+- **FR-9.4:** API route tests:
+  - `api/auth/login/route.ts` - Login endpoint tests (success, failure, validation)
+  - `api/auth/logout/route.ts` - Logout endpoint tests
+  - `api/auth/session/route.ts` - Session validation tests
+- **FR-9.5:** Integration tests:
+  - Authentication flow (register → login → access protected route → logout)
+  - Todo CRUD operations (create, read, update, delete)
+  - Error handling and edge cases
+- **FR-9.6:** Test configuration:
+  - Configure Vitest or Jest for Next.js 15
+  - Set up React Testing Library for component tests
+  - Configure MSW (Mock Service Worker) for API mocking
+  - Set up test coverage reporting (minimum 80% coverage target)
+
+### FR-10: E2E Testing with Playwright (Cypress Migration)
+- **FR-10.1:** Replace Cypress with Playwright for E2E testing:
+  - Remove Cypress configuration and dependencies
+  - Set up Playwright with Next.js integration
+  - Configure multiple browser support (Chromium, Firefox, WebKit)
+- **FR-10.2:** Migrate existing E2E test scenarios:
+  - Authentication flow tests (login, register, logout)
+  - Todo CRUD operation tests
+  - Theme toggle functionality tests
+  - Protected route access tests
+- **FR-10.3:** Playwright configuration:
+  - Configure `playwright.config.ts` with Next.js dev server
+  - Set up test fixtures for authenticated/unauthenticated states
+  - Configure screenshot and video capture on failure
+  - Set up parallel test execution
+- **FR-10.4:** E2E test structure:
+  - `e2e/auth.spec.ts` - Authentication flow tests
+  - `e2e/todo.spec.ts` - Todo management tests
+  - `e2e/theme.spec.ts` - Theme switching tests
+  - `e2e/navigation.spec.ts` - Route protection and navigation tests
+- **FR-10.5:** Page Object Model (POM):
+  - Create page objects for reusable test interactions
+  - `e2e/pages/login.page.ts` - Login page interactions
+  - `e2e/pages/register.page.ts` - Register page interactions
+  - `e2e/pages/dashboard.page.ts` - Dashboard page interactions
+- **FR-10.6:** CI/CD integration:
+  - Configure Playwright to run in CI pipeline
+  - Set up test sharding for faster execution
+  - Configure artifact storage for test reports
 
 ---
 
 ## 6. Non-Goals (Out of Scope)
 
-- **Backend changes**: The NestJS API remains unchanged
-- **New features**: No new functionality beyond current Angular app
-- **Mobile app**: Web only
-- **SSR for authenticated routes**: Dashboard will be client-rendered (protected route)
-- **Database migrations**: No schema changes
-- **User profile editing**: Not in current app
+The following are explicitly **NOT** part of this MVP migration:
+
+1. **Create Todo Form** - Users cannot create new todos (only view, edit, delete existing)
+2. **User Profile/Settings** - No profile page or user settings
+3. **Password Reset** - No forgot password functionality
+4. **Email Verification** - No email verification flow
+5. **Storybook Migration** - Component documentation will be added later
+6. **Angular Unit Test Migration** - Existing Angular Jest tests will not be migrated (new TDD tests for Next.js are in scope)
+8. **Animation/Transitions** - Micro-interactions will be added later
+9. **Responsive Design Enhancements** - Basic mobile support only
+10. **SEO Optimization** - Metadata and SEO will be enhanced later
+11. **Performance Optimization** - Core Web Vitals optimization deferred
+12. **Internationalization (i18n)** - No multi-language support
 
 ---
 
-## 7. Technical Architecture
+## 7. Design Considerations
 
-### 7.1 Next.js 15 App Router Structure
+### UI Components (shadcn/ui)
+The following shadcn/ui components will be used:
+
+| Component | Usage |
+|-----------|-------|
+| `Button` | Primary, secondary, danger, icon-only variants |
+| `Input` | Text and email inputs |
+| `Form` | Form wrapper with validation |
+| `Card` | Todo card container |
+| `Dialog` | Edit todo modal |
+| `Label` | Form field labels |
+| `Separator` | Visual dividers |
+
+### Color Palette (Tailwind Theme)
+Migrate Nord colors to Tailwind CSS custom properties:
+
+```javascript
+// tailwind.config.js colors (based on Nord palette)
+colors: {
+  background: 'hsl(var(--background))',
+  foreground: 'hsl(var(--foreground))',
+  primary: {
+    DEFAULT: 'hsl(var(--primary))', // Nord10 - #5E81AC
+    foreground: 'hsl(var(--primary-foreground))',
+  },
+  destructive: {
+    DEFAULT: 'hsl(var(--destructive))', // Nord11 - #BF616A
+    foreground: 'hsl(var(--destructive-foreground))',
+  },
+  // ... etc
+}
+```
+
+### Layout
+- Two-column grid on desktop (incomplete | complete)
+- Single column stack on mobile
+- Header with title and theme toggle
+- Max-width container (1400px)
+
+### Accessibility
+- WCAG 2.1 AA compliance
+- Keyboard navigation support
+- Focus indicators
+- ARIA labels on interactive elements
+- Semantic HTML structure
+
+---
+
+## 8. Technical Considerations
+
+### Directory Structure
 
 ```
-apps/client-next/
+apps/client/
+├── public/
+│   └── favicon.ico
 ├── src/
 │   ├── app/
-│   │   ├── layout.tsx          # Root layout with providers
-│   │   ├── page.tsx            # Redirect to /dashboard
-│   │   ├── login/
-│   │   │   └── page.tsx        # Login page
-│   │   ├── register/
-│   │   │   └── page.tsx        # Register page
-│   │   └── dashboard/
-│   │       └── page.tsx        # Dashboard (protected)
-│   ├── components/
-│   │   ├── ui/                 # Shadcn UI components
-│   │   ├── forms/
-│   │   │   ├── login-form.tsx
-│   │   │   └── register-form.tsx
-│   │   ├── todo/
-│   │   │   ├── todo-item.tsx
-│   │   │   ├── todo-list.tsx
-│   │   │   ├── add-todo-dialog.tsx
-│   │   │   └── edit-todo-dialog.tsx
-│   │   ├── layout/
-│   │   │   ├── header.tsx
-│   │   │   └── theme-toggle.tsx
-│   │   └── providers/
-│   │       ├── query-provider.tsx
-│   │       └── theme-provider.tsx
-│   ├── lib/
+│   │   ├── (auth)/
+│   │   │   ├── login/
+│   │   │   │   └── page.tsx
+│   │   │   ├── register/
+│   │   │   │   └── page.tsx
+│   │   │   └── layout.tsx
+│   │   ├── (protected)/
+│   │   │   ├── dashboard/
+│   │   │   │   └── page.tsx
+│   │   │   └── layout.tsx
 │   │   ├── api/
-│   │   │   ├── client.ts       # Axios instance
-│   │   │   ├── auth.ts         # Auth API calls
-│   │   │   ├── todos.ts        # Todo API calls
-│   │   │   └── users.ts        # User API calls
-│   │   ├── hooks/
-│   │   │   ├── use-auth.ts     # Auth React Query hooks
-│   │   │   └── use-todos.ts    # Todo React Query hooks
-│   │   ├── stores/
-│   │   │   ├── auth-store.ts   # Zustand auth state
-│   │   │   └── theme-store.ts  # Zustand theme state
-│   │   ├── schemas/
-│   │   │   ├── auth.schema.ts  # Zod schemas for login/register
-│   │   │   └── todo.schema.ts  # Zod schemas for todo CRUD
-│   │   └── utils/
-│   │       └── constants.ts    # TOKEN_STORAGE_KEY, etc.
-│   └── middleware.ts           # Route protection
-├── tailwind.config.ts
-├── postcss.config.js
+│   │   │   └── auth/
+│   │   │       ├── login/
+│   │   │       │   └── route.ts
+│   │   │       ├── logout/
+│   │   │       │   └── route.ts
+│   │   │       └── session/
+│   │   │           └── route.ts
+│   │   ├── layout.tsx
+│   │   ├── page.tsx
+│   │   └── globals.css
+│   ├── components/
+│   │   ├── ui/           # shadcn/ui components
+│   │   ├── todo-card.tsx
+│   │   ├── todo-list.tsx
+│   │   ├── edit-todo-dialog.tsx
+│   │   ├── theme-toggle.tsx
+│   │   ├── login-form.tsx
+│   │   └── register-form.tsx
+│   ├── lib/
+│   │   ├── api-client.ts
+│   │   ├── auth.ts
+│   │   ├── session.ts
+│   │   ├── utils.ts
+│   │   └── validations.ts
+│   ├── hooks/
+│   │   ├── use-todos.ts
+│   │   └── use-auth.ts
+│   ├── providers/
+│   │   ├── query-provider.tsx
+│   │   ├── theme-provider.tsx
+│   │   └── auth-provider.tsx
+│   └── types/
+│       └── index.ts      # Re-export from shared/domain
+├── middleware.ts
 ├── next.config.js
-├── project.json                # Nx project config
-└── tsconfig.json
+├── tailwind.config.js
+├── postcss.config.js
+├── tsconfig.json
+├── project.json
+└── package.json
 ```
 
-### 7.2 State Management
+### Authentication Flow
 
-| State Type | Tool | Purpose |
-|------------|------|---------|
-| Server State | React Query | Todos fetching, mutations, caching, optimistic updates |
-| Auth State | Zustand | JWT token, user data, login/logout actions |
-| Theme State | Zustand + next-themes | Dark/light mode persistence |
-| Form State | React Hook Form | Form handling with Zod validation |
+```
+┌─────────────┐     ┌──────────────────┐     ┌─────────────────┐
+│   Browser   │────▶│  Next.js API     │────▶│  NestJS Backend │
+│             │     │  Route Handler   │     │                 │
+└─────────────┘     └──────────────────┘     └─────────────────┘
+      │                      │                        │
+      │  1. POST /api/auth/login                      │
+      │  (email, password)   │                        │
+      │─────────────────────▶│                        │
+      │                      │  2. POST /api/v1/auth/login
+      │                      │─────────────────────────────▶│
+      │                      │                        │
+      │                      │  3. Return JWT token   │
+      │                      │◀─────────────────────────────│
+      │                      │                        │
+      │  4. Set HTTP-only    │                        │
+      │     cookie with JWT  │                        │
+      │◀─────────────────────│                        │
+      │                      │                        │
+      │  5. Redirect to      │                        │
+      │     /dashboard       │                        │
+      │─────────────────────▶│                        │
+```
 
-### 7.3 Key Dependencies
+### Middleware Pattern (from Context7)
+
+```typescript
+// middleware.ts
+import { NextRequest, NextResponse } from 'next/server'
+import { decrypt } from '@/lib/session'
+import { cookies } from 'next/headers'
+
+const protectedRoutes = ['/dashboard']
+const publicRoutes = ['/login', '/register', '/']
+
+export default async function middleware(req: NextRequest) {
+  const path = req.nextUrl.pathname
+  const isProtectedRoute = protectedRoutes.some(route => path.startsWith(route))
+  const isPublicRoute = publicRoutes.includes(path)
+
+  const cookie = (await cookies()).get('session')?.value
+  const session = await decrypt(cookie)
+
+  if (isProtectedRoute && !session?.userId) {
+    return NextResponse.redirect(new URL('/login', req.nextUrl))
+  }
+
+  if (isPublicRoute && session?.userId && !path.startsWith('/dashboard')) {
+    return NextResponse.redirect(new URL('/dashboard', req.nextUrl))
+  }
+
+  return NextResponse.next()
+}
+
+export const config = {
+  matcher: ['/((?!api|_next/static|_next/image|.*\\.png$).*)'],
+}
+```
+
+### React Query Setup (from Context7)
+
+```typescript
+// providers/query-provider.tsx
+'use client'
+
+import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+
+function makeQueryClient() {
+  return new QueryClient({
+    defaultOptions: {
+      queries: {
+        staleTime: 60 * 1000,
+      },
+    },
+  })
+}
+
+let browserQueryClient: QueryClient | undefined = undefined
+
+function getQueryClient() {
+  if (isServer) {
+    return makeQueryClient()
+  } else {
+    if (!browserQueryClient) browserQueryClient = makeQueryClient()
+    return browserQueryClient
+  }
+}
+
+export function QueryProvider({ children }: { children: React.ReactNode }) {
+  const queryClient = getQueryClient()
+  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+}
+```
+
+### Form Validation with shadcn/ui (from Context7)
+
+```typescript
+// lib/validations.ts - Centralized validation schemas
+import { z } from 'zod'
+
+// Login schema - validates existing user credentials
+export const loginSchema = z.object({
+  email: z.string()
+    .email('Please enter a valid email')
+    .toLowerCase()
+    .trim(),
+  password: z.string()
+    .min(1, 'Password is required'),
+})
+
+// Registration schema - enforces password requirements for new accounts
+export const registerSchema = z.object({
+  email: z.string()
+    .email('Please enter a valid email')
+    .toLowerCase()
+    .trim(),
+  password: z.string()
+    .min(8, 'Password must be at least 8 characters')
+    .regex(/[A-Z]/, 'Password must contain at least one uppercase letter')
+    .regex(/[a-z]/, 'Password must contain at least one lowercase letter')
+    .regex(/[0-9]/, 'Password must contain at least one number'),
+  confirmPassword: z.string(),
+}).refine((data) => data.password === data.confirmPassword, {
+  message: "Passwords don't match",
+  path: ['confirmPassword'],
+})
+
+export type LoginFormData = z.infer<typeof loginSchema>
+export type RegisterFormData = z.infer<typeof registerSchema>
+```
+
+```typescript
+// Example login form structure
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { Button } from '@/components/ui/button'
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
+import { Input } from '@/components/ui/input'
+import { loginSchema, type LoginFormData } from '@/lib/validations'
+
+export function LoginForm() {
+  const form = useForm<LoginFormData>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { email: '', password: '' },
+  })
+
+  async function onSubmit(values: LoginFormData) {
+    // Call login API
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Email</FormLabel>
+              <FormControl>
+                <Input type="email" placeholder="Enter your email" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {/* Password field... */}
+        <Button type="submit">Login</Button>
+      </form>
+    </Form>
+  )
+}
+```
+
+### Dependencies
 
 ```json
 {
   "dependencies": {
-    "next": "^15.0.0",
+    "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "@tanstack/react-query": "^5.0.0",
-    "zustand": "^5.0.0",
-    "axios": "^1.6.0",
-    "zod": "^3.23.0",
-    "react-hook-form": "^7.53.0",
+    "@tanstack/react-query": "^5.60.0",
+    "react-hook-form": "^7.54.0",
     "@hookform/resolvers": "^3.9.0",
+    "zod": "^3.24.0",
     "next-themes": "^0.4.0",
-    "jwt-decode": "^4.0.0",
+    "jose": "^5.9.0",
+    "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "tailwind-merge": "^2.5.0",
-    "lucide-react": "^0.400.0"
+    "lucide-react": "^0.460.0"
   },
   "devDependencies": {
-    "@nx/next": "22.3.3",
-    "@playwright/test": "^1.48.0",
+    "typescript": "^5.7.0",
     "tailwindcss": "^3.4.0",
     "postcss": "^8.4.0",
-    "autoprefixer": "^10.4.0"
+    "autoprefixer": "^10.4.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "vitest": "^2.1.0",
+    "@vitejs/plugin-react": "^4.3.0",
+    "@testing-library/react": "^16.0.0",
+    "@testing-library/jest-dom": "^6.6.0",
+    "@testing-library/user-event": "^14.5.0",
+    "msw": "^2.6.0",
+    "@vitest/coverage-v8": "^2.1.0",
+    "jsdom": "^25.0.0",
+    "@playwright/test": "^1.49.0"
   }
 }
 ```
 
-### 7.4 Shared Library Integration
+### Environment Variables
 
-The Next.js app will import types from `@full-stack-todo/shared/domain`:
+```env
+# .env.local
+
+# Server-only variables (NOT exposed to browser)
+API_URL=http://localhost:3000
+
+# Session encryption secret - MUST be at least 32 characters
+# Generate with: openssl rand -base64 32
+SESSION_SECRET=your-32-character-secret-key-here
+```
+
+**Important Security Notes:**
+- `API_URL` is server-only (no `NEXT_PUBLIC_` prefix) - backend URL is never exposed to client
+- `SESSION_SECRET` must be at least 32 characters for secure encryption
+- Never commit `.env.local` to version control
+- Use different secrets for each environment (development, staging, production)
+
+### Session Encryption Implementation
 
 ```typescript
-import { ITodo, ICreateTodo, IUpdateTodo } from '@full-stack-todo/shared/domain';
-import { ILoginPayload, IAccessTokenPayload } from '@full-stack-todo/shared/domain';
+// lib/session.ts
+import { SignJWT, jwtVerify } from 'jose'
+import { cookies } from 'next/headers'
+
+// Session payload interface
+export interface SessionPayload {
+  userId: string
+  email: string
+  expiresAt: Date
+}
+
+// Validate secret on module load
+const SESSION_SECRET = process.env.SESSION_SECRET
+if (!SESSION_SECRET || SESSION_SECRET.length < 32) {
+  throw new Error('SESSION_SECRET must be at least 32 characters')
+}
+
+const secretKey = new TextEncoder().encode(SESSION_SECRET)
+const SESSION_DURATION = 7 * 24 * 60 * 60 * 1000 // 7 days in ms
+
+export async function encrypt(payload: SessionPayload): Promise<string> {
+  return new SignJWT({ ...payload })
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('7d')
+    .sign(secretKey)
+}
+
+export async function decrypt(token: string | undefined): Promise<SessionPayload | null> {
+  if (!token) return null
+  try {
+    const { payload } = await jwtVerify(token, secretKey, {
+      algorithms: ['HS256'],
+    })
+    return payload as SessionPayload
+  } catch {
+    // Token invalid or expired - return null, don't expose error details
+    return null
+  }
+}
+
+export async function createSession(userId: string, email: string): Promise<void> {
+  const expiresAt = new Date(Date.now() + SESSION_DURATION)
+  const session = await encrypt({ userId, email, expiresAt })
+
+  const cookieStore = await cookies()
+  cookieStore.set('session', session, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'lax',
+    path: '/',
+    expires: expiresAt,
+  })
+}
+
+export async function deleteSession(): Promise<void> {
+  const cookieStore = await cookies()
+  cookieStore.delete('session')
+}
+
+export async function getSession(): Promise<SessionPayload | null> {
+  const cookieStore = await cookies()
+  const cookie = cookieStore.get('session')?.value
+  return decrypt(cookie)
+}
 ```
 
-This requires updating `tsconfig.base.json` paths to ensure the Next.js app can resolve these imports.
-
----
-
-## 8. UI/UX Requirements
-
-### 8.1 Design System
-
-| Element | Specification |
-|---------|---------------|
-| Color Scheme | Shadcn UI default (neutral grays) with custom accent |
-| Dark Mode | `next-themes` with system preference detection |
-| Typography | Tailwind defaults (Inter or system fonts) |
-| Spacing | Tailwind spacing scale |
-| Border Radius | Shadcn UI defaults (rounded-md, rounded-lg) |
-| Shadows | Tailwind shadow utilities |
-
-### 8.2 Components (Shadcn UI)
-
-| Component | Usage |
-|-----------|-------|
-| `Button` | Submit buttons, action buttons |
-| `Input` | Form text inputs |
-| `Label` | Form labels |
-| `Card` | Todo items, form containers |
-| `Dialog` | Edit todo modal, add todo modal |
-| `Checkbox` | Todo completion toggle |
-| `Form` | Form wrapper with validation |
-| `Alert` | Error messages |
-| `DropdownMenu` | Theme toggle, user menu |
-
-### 8.3 Responsive Breakpoints
-
-| Breakpoint | Layout |
-|------------|--------|
-| Mobile (< 640px) | Single column, stacked todo lists |
-| Tablet (640px - 1024px) | Two columns side by side |
-| Desktop (> 1024px) | Two columns with max-width container |
-
----
-
-## 9. Testing Strategy
-
-### 9.1 Playwright E2E Tests
-
-Location: `apps/client-next-e2e/`
-
-| Test Suite | Coverage |
-|------------|----------|
-| `auth.spec.ts` | Register, login, logout, session persistence |
-| `todos.spec.ts` | Create, read, update, delete, toggle completion |
-| `navigation.spec.ts` | Route protection, redirects |
-| `theme.spec.ts` | Dark/light mode toggle, persistence |
-
-### 9.2 Test Scenarios
-
-**Authentication Flow:**
-1. User can register with valid credentials
-2. User cannot register with invalid email
-3. User cannot register with mismatched passwords
-4. User can login with valid credentials
-5. User sees error on invalid credentials
-6. User is redirected to dashboard after login
-7. User session persists after page refresh
-8. User can logout and is redirected to login
-9. Unauthenticated user is redirected from /dashboard to /login
-
-**Todo Management:**
-1. User sees empty state when no todos exist
-2. User can create a new todo
-3. New todo appears in incomplete column
-4. User can toggle todo completion
-5. Completed todo moves to completed column
-6. User can edit todo title and description
-7. User cannot edit completed todos
-8. User can delete a todo
-9. Deleted todo is removed from list
-
-### 9.3 Cypress Removal
-
-After Playwright tests are verified, remove:
-- `apps/client-e2e/` directory
-- `cypress` from `package.json` devDependencies
-- Any Cypress-related configs
-
----
-
-## 10. Migration & Cleanup Plan
-
-### Phase 1: Setup (No Angular Changes)
-1. Install `@nx/next` plugin
-2. Generate `client-next` application
-3. Configure Tailwind CSS, Shadcn UI
-4. Set up providers (React Query, Theme)
-5. Configure shared library imports
-
-### Phase 2: Core Features
-1. Implement auth store and API client
-2. Build login page and form
-3. Build register page and form
-4. Implement route protection middleware
-5. **Verify**: Login/register flows work
-
-### Phase 3: Todo Features
-1. Implement todo API hooks with React Query
-2. Build todo list and item components
-3. Build add/edit dialogs
-4. Implement dashboard page
-5. **Verify**: All CRUD operations work
-
-### Phase 4: UI Polish
-1. Implement theme toggle
-2. Add responsive styles
-3. Polish animations and transitions
-4. **Verify**: UI matches requirements
-
-### Phase 5: Testing
-1. Set up Playwright
-2. Write E2E tests for auth flow
-3. Write E2E tests for todo CRUD
-4. **Verify**: All tests pass
-
-### Phase 6: Angular Removal (Incremental)
-
-After each verification step, remove corresponding Angular code:
-
-| After Verifying | Remove |
-|-----------------|--------|
-| Login works | `libs/client/feature-login/` |
-| Register works | `libs/client/feature-register/` |
-| Dashboard works | `libs/client/feature-dashboard/` |
-| All UI works | `libs/client/ui-components/`, `libs/client/ui-style/` |
-| All features work | `libs/client/data-access/`, `libs/client/util/` |
-| E2E tests pass | `apps/client-e2e/` (Cypress) |
-| Final verification | `apps/client/`, Angular deps from `package.json` |
-
-### Angular Dependencies to Remove (Final Phase)
-
-```
-@angular/common
-@angular/compiler
-@angular/core
-@angular/forms
-@angular/platform-browser
-@angular/router
-@angular-devkit/build-angular
-@angular-devkit/core
-@angular-devkit/schematics
-@angular/build
-@angular/cli
-@angular/compiler-cli
-@angular/language-service
-@angular/platform-browser-dynamic
-@schematics/angular
-@storybook/angular
-jest-preset-angular
-angular-eslint
-zone.js
-@nx/angular
-```
-
----
-
-## 11. Implementation Notes
-
-### 11.1 Nx Workspace Integration
-
-The new application will be generated using:
-```bash
-npx nx add @nx/next
-npx nx g @nx/next:app client-next --directory=apps/client-next
-```
-
-### 11.2 Proxy Configuration
-
-The Next.js app needs to proxy API requests to the NestJS backend. Configure in `next.config.js`:
+### Security Headers Configuration
 
 ```javascript
+// next.config.js
+const securityHeaders = [
+  {
+    key: 'X-DNS-Prefetch-Control',
+    value: 'on',
+  },
+  {
+    key: 'Strict-Transport-Security',
+    value: 'max-age=63072000; includeSubDomains; preload',
+  },
+  {
+    key: 'X-Frame-Options',
+    value: 'SAMEORIGIN',
+  },
+  {
+    key: 'X-Content-Type-Options',
+    value: 'nosniff',
+  },
+  {
+    key: 'Referrer-Policy',
+    value: 'origin-when-cross-origin',
+  },
+  {
+    key: 'Permissions-Policy',
+    value: 'camera=(), microphone=(), geolocation=()',
+  },
+]
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
+  async headers() {
     return [
       {
-        source: '/api/:path*',
-        destination: 'http://localhost:3000/api/:path*',
+        source: '/:path*',
+        headers: securityHeaders,
       },
-    ];
+    ]
   },
-};
+}
+
+module.exports = nextConfig
 ```
 
-### 11.3 Environment Variables
+### Shared Types Integration
 
-Create `.env.local` for Next.js:
-```
-NEXT_PUBLIC_API_URL=http://localhost:3000
-```
-
-### 11.4 Zod Schemas (Matching Backend DTOs)
+The existing shared domain types from `libs/shared/domain/` will be imported:
 
 ```typescript
-// schemas/auth.schema.ts
-import { z } from 'zod';
-
-export const loginSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-});
-
-export const registerSchema = z.object({
-  email: z.string().email('Invalid email address'),
-  password: z.string().min(1, 'Password is required'),
-  confirmPassword: z.string().min(1, 'Please confirm your password'),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: 'Passwords do not match',
-  path: ['confirmPassword'],
-});
-
-// schemas/todo.schema.ts
-export const createTodoSchema = z.object({
-  title: z.string().min(1, 'Title is required'),
-  description: z.string().optional(),
-});
-
-export const updateTodoSchema = z.object({
-  title: z.string().min(1, 'Title is required').optional(),
-  description: z.string().optional(),
-  completed: z.boolean().optional(),
-});
+// types/index.ts
+export type {
+  ITodo,
+  ICreateTodo,
+  IUpdateTodo,
+  IUser,
+  ICreateUser,
+  ILoginPayload,
+  ITokenResponse,
+  IAccessTokenPayload,
+} from '@full-stack-todo/shared/domain'
 ```
 
-### 11.5 File Mapping (Angular → Next.js)
-
-| Angular File | Next.js Equivalent |
-|--------------|-------------------|
-| `apps/client/src/app/app.ts` | `apps/client-next/src/app/layout.tsx` |
-| `apps/client/src/app/app.routes.ts` | File-based routing in `app/` |
-| `libs/client/data-access/src/lib/auth.ts` | `lib/stores/auth-store.ts` + `lib/api/auth.ts` |
-| `libs/client/data-access/src/lib/api.ts` | `lib/api/todos.ts` + `lib/hooks/use-todos.ts` |
-| `libs/client/data-access/src/lib/guards/auth-guard.ts` | `middleware.ts` |
-| `libs/client/feature-login/` | `app/login/page.tsx` + `components/forms/login-form.tsx` |
-| `libs/client/feature-register/` | `app/register/page.tsx` + `components/forms/register-form.tsx` |
-| `libs/client/feature-dashboard/` | `app/dashboard/page.tsx` |
-| `libs/client/ui-components/src/lib/to-do.ts` | `components/todo/todo-item.tsx` |
-| `libs/client/ui-components/src/lib/theme-toggle/` | `components/layout/theme-toggle.tsx` |
-| `libs/client/ui-components/src/lib/edit-todo-dialog/` | `components/todo/edit-todo-dialog.tsx` |
+Update `tsconfig.json` to include path mapping:
+```json
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"],
+      "@full-stack-todo/shared/domain": ["../../libs/shared/domain/src/index.ts"]
+    }
+  }
+}
+```
 
 ---
 
-## 12. Risks & Mitigations
+## 9. Success Metrics
 
-| Risk | Mitigation |
-|------|------------|
-| Shared lib import issues | Test imports early in Phase 1 |
-| JWT handling differences | Mirror Angular logic exactly in Zustand store |
-| API proxy configuration | Test all endpoints before feature work |
-| Tailwind conflicts with existing styles | Next.js app is isolated in separate directory |
-| E2E test flakiness | Use Playwright best practices, proper waits |
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| Feature Parity | 100% MVP features working | Manual testing checklist |
+| Build Success | Zero build errors | CI pipeline |
+| Type Safety | Zero TypeScript errors | `tsc --noEmit` |
+| Linting | Zero ESLint errors | `eslint --max-warnings 0` |
+| Authentication | Secure cookie-based auth | Security review checklist |
+| Responsiveness | Works on mobile/tablet/desktop | Manual testing |
+| Security Headers | All headers configured | Browser DevTools verification |
+| Dependency Security | No high/critical vulnerabilities | `npm audit` |
+| Database Documentation | All entities documented with ERD | Documentation review checklist |
+| Test Coverage | Minimum 80% code coverage | `vitest --coverage` |
+| TDD Compliance | Tests written before implementation | Code review verification |
+| E2E Tests | All critical user flows covered | `npx playwright test` |
+| Cross-Browser | Tests pass on Chromium, Firefox, WebKit | Playwright multi-browser run |
 
 ---
 
-*This PRD provides a complete specification for a junior developer to implement the Angular to Next.js migration with feature parity and incremental Angular removal.*
+## 10. Implementation Notes
+
+### Key Files to Create/Modify
+
+#### New Files (Next.js App)
+| File | Purpose |
+|------|---------|
+| `apps/client/next.config.js` | Next.js configuration |
+| `apps/client/tailwind.config.js` | Tailwind CSS configuration |
+| `apps/client/middleware.ts` | Route protection |
+| `apps/client/src/app/layout.tsx` | Root layout with providers |
+| `apps/client/src/app/(auth)/login/page.tsx` | Login page |
+| `apps/client/src/app/(auth)/register/page.tsx` | Register page |
+| `apps/client/src/app/(protected)/dashboard/page.tsx` | Dashboard page |
+| `apps/client/src/app/api/auth/login/route.ts` | Login API route |
+| `apps/client/src/app/api/auth/logout/route.ts` | Logout API route |
+| `apps/client/src/lib/session.ts` | Session encryption/decryption with jose |
+| `apps/client/src/lib/validations.ts` | Zod schemas for form validation |
+| `apps/client/src/lib/api-client.ts` | API client wrapper |
+| `apps/client/src/components/todo-card.tsx` | Todo item component |
+| `apps/client/src/components/edit-todo-dialog.tsx` | Edit modal |
+| `apps/client/src/hooks/use-todos.ts` | React Query hooks |
+
+#### New Files (Database Documentation)
+| File | Purpose |
+|------|---------|
+| `docs/database/README.md` | Database documentation overview and index |
+| `docs/database/SCHEMA.md` | Complete database schema documentation |
+| `docs/database/ENTITIES.md` | TypeORM entity definitions and mappings |
+| `docs/database/ERD.md` | Entity Relationship Diagram (Mermaid format) |
+| `docs/database/MIGRATIONS.md` | Migration strategy and versioning guide |
+
+#### New Files (Tests - TDD)
+| File | Purpose |
+|------|---------|
+| `apps/client/vitest.config.ts` | Vitest configuration for Next.js |
+| `apps/client/src/lib/__tests__/session.test.ts` | Session encryption/decryption tests |
+| `apps/client/src/lib/__tests__/validations.test.ts` | Zod schema validation tests |
+| `apps/client/src/lib/__tests__/api-client.test.ts` | API client tests |
+| `apps/client/src/hooks/__tests__/use-todos.test.ts` | Todo hooks tests |
+| `apps/client/src/hooks/__tests__/use-auth.test.ts` | Auth hooks tests |
+| `apps/client/src/components/__tests__/todo-card.test.tsx` | Todo card component tests |
+| `apps/client/src/components/__tests__/edit-todo-dialog.test.tsx` | Edit dialog tests |
+| `apps/client/src/components/__tests__/login-form.test.tsx` | Login form tests |
+| `apps/client/src/components/__tests__/register-form.test.tsx` | Register form tests |
+| `apps/client/src/app/api/auth/__tests__/login.test.ts` | Login API route tests |
+| `apps/client/src/app/api/auth/__tests__/logout.test.ts` | Logout API route tests |
+| `apps/client/src/__tests__/integration/auth-flow.test.ts` | Auth flow integration tests |
+| `apps/client/src/__tests__/integration/todo-crud.test.ts` | Todo CRUD integration tests |
+| `apps/client/src/mocks/handlers.ts` | MSW request handlers |
+| `apps/client/src/mocks/server.ts` | MSW server setup |
+
+#### New Files (E2E Tests - Playwright)
+| File | Purpose |
+|------|---------|
+| `apps/client/playwright.config.ts` | Playwright configuration |
+| `apps/client/e2e/auth.spec.ts` | Authentication E2E tests |
+| `apps/client/e2e/todo.spec.ts` | Todo CRUD E2E tests |
+| `apps/client/e2e/theme.spec.ts` | Theme toggle E2E tests |
+| `apps/client/e2e/navigation.spec.ts` | Route protection E2E tests |
+| `apps/client/e2e/pages/login.page.ts` | Login page object |
+| `apps/client/e2e/pages/register.page.ts` | Register page object |
+| `apps/client/e2e/pages/dashboard.page.ts` | Dashboard page object |
+| `apps/client/e2e/fixtures/auth.fixture.ts` | Authentication test fixtures |
+
+#### Files to Delete (Angular)
+All files in `apps/client/src/` will be replaced with Next.js structure.
+
+#### Files to Delete (Cypress - replaced by Playwright)
+| File/Directory | Reason |
+|----------------|--------|
+| `apps/ui-components-e2e/` | Cypress E2E tests replaced by Playwright |
+| `apps/ui-components-e2e/cypress.config.ts` | Cypress configuration |
+| `apps/ui-components-e2e/src/` | Cypress test files and support |
+
+#### Files to Modify
+| File | Changes |
+|------|---------|
+| `apps/client/project.json` | Update for Next.js targets |
+| `apps/client/tsconfig.json` | Next.js TypeScript config |
+| `package.json` | Add Next.js and related dependencies |
+
+### Testing Strategy
+
+**Manual Testing Checklist (MVP):**
+
+*Authentication:*
+- [ ] User can register a new account
+- [ ] User can log in with valid credentials
+- [ ] Invalid login shows generic error message (no user enumeration)
+- [ ] Weak password rejected during registration (min 8 chars, uppercase, lowercase, number)
+- [ ] Unauthenticated users are redirected to login
+- [ ] Authenticated users are redirected from login to dashboard
+- [ ] Logout clears session and redirects to login
+- [ ] Session persists across page refresh
+
+*Todo Management:*
+- [ ] Dashboard loads with user's todos
+- [ ] Todos are separated into incomplete/complete columns
+- [ ] Clicking completion toggle updates todo status
+- [ ] Edit button opens modal with pre-filled data
+- [ ] Save edit updates todo and closes modal
+- [ ] Delete button removes todo from list
+
+*Theme:*
+- [ ] Theme toggle switches between light/dark
+- [ ] Theme persists across page refresh
+
+**Playwright E2E Testing Checklist:**
+- [ ] `npx playwright test` passes on all browsers (Chromium, Firefox, WebKit)
+- [ ] Authentication flow E2E tests pass
+- [ ] Todo CRUD E2E tests pass
+- [ ] Theme toggle E2E tests pass
+- [ ] Route protection E2E tests pass
+- [ ] Test reports generated successfully
+- [ ] Screenshots captured on test failure
+
+**Security Testing Checklist:**
+- [ ] Session cookie has `httpOnly` flag (check in DevTools > Application > Cookies)
+- [ ] Session cookie has `secure` flag in production
+- [ ] Session cookie has `sameSite` attribute set to `lax`
+- [ ] Security headers are present (check in DevTools > Network > Response Headers)
+- [ ] `API_URL` is not exposed in client-side JavaScript
+- [ ] Error messages don't reveal sensitive information
+- [ ] Invalid/expired tokens redirect to login without errors
+- [ ] `npm audit` shows no high or critical vulnerabilities
+
+### Migration Approach
+
+1. **Phase 1:** Create Next.js app alongside Angular (development)
+2. **Phase 2:** Verify all MVP features work
+3. **Phase 3:** Remove Angular files and configuration
+4. **Phase 4:** Update Nx project configuration
+
+---
+
+## 11. Open Questions (Resolved)
+
+| Question | Decision |
+|----------|----------|
+| App Router vs Pages Router? | **App Router** - Modern RSC-first approach |
+| State management? | **Context API + React Query** - Minimal dependencies |
+| Authentication storage? | **HTTP-only cookies with middleware** - More secure |
+| Styling approach? | **Tailwind + shadcn/ui** - Accessible, customizable |
+| Backend integration? | **Direct API calls with server-only environment variable** |
+| Monorepo structure? | **Replace Angular in place** (`apps/client/`) |
+| Feature scope? | **Minimal MVP first** - Auth + basic todo CRUD |
+| Form handling? | **React Hook Form + Zod** - Similar to Angular reactive forms |
+
+---
+
+## 12. Security Considerations
+
+### Password Requirements
+| Requirement | Rule |
+|-------------|------|
+| Minimum length | 8 characters |
+| Uppercase | At least one uppercase letter (A-Z) |
+| Lowercase | At least one lowercase letter (a-z) |
+| Numbers | At least one digit (0-9) |
+
+### Cookie Security Settings
+| Setting | Value | Purpose |
+|---------|-------|---------|
+| `httpOnly` | `true` | Prevent JavaScript access (XSS protection) |
+| `secure` | `true` (production) | HTTPS-only transmission |
+| `sameSite` | `'lax'` | CSRF protection |
+| `path` | `'/'` | Available site-wide |
+| `maxAge` | `604800` (7 days) | Session expiration |
+
+### Error Handling Guidelines
+- **Client-facing errors:** Always use generic messages
+  - "Invalid email or password" (not "User not found" or "Wrong password")
+  - "Something went wrong. Please try again." (not stack traces)
+- **Server-side logging:** Log detailed errors with correlation IDs for debugging
+- **Production:** Never expose stack traces or internal error details
+
+### Security Headers
+| Header | Value | Purpose |
+|--------|-------|---------|
+| `Strict-Transport-Security` | `max-age=63072000; includeSubDomains; preload` | Force HTTPS |
+| `X-Frame-Options` | `SAMEORIGIN` | Prevent clickjacking |
+| `X-Content-Type-Options` | `nosniff` | Prevent MIME sniffing |
+| `Referrer-Policy` | `origin-when-cross-origin` | Control referrer information |
+| `Permissions-Policy` | `camera=(), microphone=(), geolocation=()` | Disable unused APIs |
+
+### Dependency Security
+- Run `npm audit` before each deployment
+- Pin major versions to prevent unexpected breaking changes
+- Review and update dependencies quarterly
+
+---
+
+## References
+
+- [Next.js 15 Documentation](https://nextjs.org/docs)
+- [shadcn/ui Documentation](https://ui.shadcn.com/)
+- [TanStack Query Documentation](https://tanstack.com/query/latest)
+- [React Hook Form Documentation](https://react-hook-form.com/)
+- [Tailwind CSS Documentation](https://tailwindcss.com/docs)
+- Current Angular implementation: `libs/client/`
+- Shared domain models: `libs/shared/domain/`
+- Backend API: `libs/server/feature-*`
+
+---
+
+**Document Version:** 1.4  
+**Created:** January 21, 2026  
+**Updated:** January 21, 2026  
+**Status:** Ready for Implementation  
+**Security Review:** Completed

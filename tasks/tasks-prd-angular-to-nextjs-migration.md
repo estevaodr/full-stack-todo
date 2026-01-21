@@ -2,191 +2,243 @@
 
 ## Relevant Files
 
-### New Files to Create
+### Project Configuration
+- `apps/client/next.config.js` - Next.js configuration with security headers
+- `apps/client/tailwind.config.js` - Tailwind CSS configuration with Nord color palette
+- `apps/client/postcss.config.js` - PostCSS configuration for Tailwind
+- `apps/client/tsconfig.json` - TypeScript configuration for Next.js
+- `apps/client/project.json` - Nx project configuration for Next.js targets
+- `apps/client/.env.local` - Environment variables (API_URL, SESSION_SECRET)
+- `apps/client/middleware.ts` - Route protection middleware
 
-- `apps/client-next/` - Next.js 15 application root
-- `apps/client-next/src/app/layout.tsx` - Root layout with providers (QueryClient, Theme)
-- `apps/client-next/src/app/page.tsx` - Home page (redirects to dashboard)
-- `apps/client-next/src/app/login/page.tsx` - Login page
-- `apps/client-next/src/app/register/page.tsx` - Registration page
-- `apps/client-next/src/app/dashboard/page.tsx` - Protected dashboard page
-- `apps/client-next/src/middleware.ts` - Route protection middleware
-- `apps/client-next/src/components/ui/` - Shadcn UI components (button, input, card, dialog, etc.)
-- `apps/client-next/src/components/forms/login-form.tsx` - Login form with React Hook Form + Zod
-- `apps/client-next/src/components/forms/register-form.tsx` - Register form with password matching
-- `apps/client-next/src/components/todo/todo-item.tsx` - Single todo display component
-- `apps/client-next/src/components/todo/todo-list.tsx` - Todo list with columns
-- `apps/client-next/src/components/todo/add-todo-dialog.tsx` - Dialog for creating todos
-- `apps/client-next/src/components/todo/edit-todo-dialog.tsx` - Dialog for editing todos
-- `apps/client-next/src/components/layout/header.tsx` - App header with user info, logout
-- `apps/client-next/src/components/layout/theme-toggle.tsx` - Dark/light mode toggle
-- `apps/client-next/src/components/providers/query-provider.tsx` - React Query provider wrapper
-- `apps/client-next/src/components/providers/theme-provider.tsx` - Theme provider wrapper
-- `apps/client-next/src/lib/api/client.ts` - Axios instance with interceptors
-- `apps/client-next/src/lib/api/auth.ts` - Auth API functions (login)
-- `apps/client-next/src/lib/api/users.ts` - User API functions (register)
-- `apps/client-next/src/lib/api/todos.ts` - Todo CRUD API functions
-- `apps/client-next/src/lib/hooks/use-auth.ts` - Auth mutation hooks
-- `apps/client-next/src/lib/hooks/use-todos.ts` - Todo query and mutation hooks
-- `apps/client-next/src/lib/stores/auth-store.ts` - Zustand store for auth state
-- `apps/client-next/src/lib/stores/theme-store.ts` - Zustand store for theme (optional, next-themes may suffice)
-- `apps/client-next/src/lib/schemas/auth.schema.ts` - Zod schemas for login/register
-- `apps/client-next/src/lib/schemas/todo.schema.ts` - Zod schemas for todo CRUD
-- `apps/client-next/src/lib/utils/constants.ts` - TOKEN_STORAGE_KEY and other constants
-- `apps/client-next/src/lib/utils/cn.ts` - Tailwind class merge utility
-- `apps/client-next/tailwind.config.ts` - Tailwind configuration
-- `apps/client-next/postcss.config.js` - PostCSS configuration
-- `apps/client-next/next.config.js` - Next.js configuration with API rewrites
-- `apps/client-next/project.json` - Nx project configuration
-- `apps/client-next-e2e/` - Playwright E2E test directory
-- `apps/client-next-e2e/src/auth.spec.ts` - Auth flow E2E tests
-- `apps/client-next-e2e/src/todos.spec.ts` - Todo CRUD E2E tests
-- `apps/client-next-e2e/playwright.config.ts` - Playwright configuration
+### Core Libraries
+- `apps/client/src/lib/session.ts` - Session encryption/decryption with jose
+- `apps/client/src/lib/__tests__/session.test.ts` - Session library tests
+- `apps/client/src/lib/validations.ts` - Zod validation schemas
+- `apps/client/src/lib/__tests__/validations.test.ts` - Validation schema tests
+- `apps/client/src/lib/api-client.ts` - API client wrapper with fetch
+- `apps/client/src/lib/__tests__/api-client.test.ts` - API client tests
+- `apps/client/src/lib/utils.ts` - Utility functions (cn helper)
 
-### Existing Files to Modify
+### App Structure
+- `apps/client/src/app/layout.tsx` - Root layout with providers
+- `apps/client/src/app/page.tsx` - Home page (redirect to dashboard)
+- `apps/client/src/app/globals.css` - Global styles with Tailwind and CSS variables
+- `apps/client/src/app/(auth)/layout.tsx` - Auth pages layout
+- `apps/client/src/app/(auth)/login/page.tsx` - Login page
+- `apps/client/src/app/(auth)/register/page.tsx` - Register page
+- `apps/client/src/app/(protected)/layout.tsx` - Protected pages layout
+- `apps/client/src/app/(protected)/dashboard/page.tsx` - Dashboard page
 
-- `package.json` - Add Next.js, React, Tailwind, and other dependencies
-- `tsconfig.base.json` - Ensure paths work for shared libs in Next.js app
-- `nx.json` - May need @nx/next plugin configuration
+### API Routes
+- `apps/client/src/app/api/auth/login/route.ts` - Login API route
+- `apps/client/src/app/api/auth/__tests__/login.test.ts` - Login API route tests
+- `apps/client/src/app/api/auth/logout/route.ts` - Logout API route
+- `apps/client/src/app/api/auth/__tests__/logout.test.ts` - Logout API route tests
+- `apps/client/src/app/api/auth/session/route.ts` - Session validation API route
 
-### Files to Remove (Phase 6)
+### Components
+- `apps/client/src/components/ui/` - shadcn/ui components directory
+- `apps/client/src/components/login-form.tsx` - Login form component
+- `apps/client/src/components/__tests__/login-form.test.tsx` - Login form tests
+- `apps/client/src/components/register-form.tsx` - Register form component
+- `apps/client/src/components/__tests__/register-form.test.tsx` - Register form tests
+- `apps/client/src/components/todo-card.tsx` - Todo card component
+- `apps/client/src/components/__tests__/todo-card.test.tsx` - Todo card tests
+- `apps/client/src/components/todo-list.tsx` - Todo list with columns
+- `apps/client/src/components/edit-todo-dialog.tsx` - Edit todo modal
+- `apps/client/src/components/__tests__/edit-todo-dialog.test.tsx` - Edit dialog tests
+- `apps/client/src/components/theme-toggle.tsx` - Theme toggle component
+- `apps/client/src/components/__tests__/theme-toggle.test.tsx` - Theme toggle tests
 
-- `apps/client/` - Angular application
-- `apps/client-e2e/` - Cypress E2E tests
-- `libs/client/data-access/` - Angular data access library
-- `libs/client/feature-login/` - Angular login feature
-- `libs/client/feature-register/` - Angular register feature
-- `libs/client/feature-dashboard/` - Angular dashboard feature
-- `libs/client/ui-components/` - Angular UI components
-- `libs/client/ui-style/` - Angular SCSS styles
-- `libs/client/util/` - Angular utilities
+### Hooks
+- `apps/client/src/hooks/use-todos.ts` - React Query hooks for todos
+- `apps/client/src/hooks/__tests__/use-todos.test.ts` - Todo hooks tests
+- `apps/client/src/hooks/use-auth.ts` - Authentication hooks
+- `apps/client/src/hooks/__tests__/use-auth.test.ts` - Auth hooks tests
+
+### Providers
+- `apps/client/src/providers/query-provider.tsx` - React Query provider
+- `apps/client/src/providers/theme-provider.tsx` - Theme provider (next-themes)
+- `apps/client/src/providers/auth-provider.tsx` - Auth context provider
+
+### Types
+- `apps/client/src/types/index.ts` - Re-exports from shared/domain
+
+### Test Infrastructure
+- `apps/client/vitest.config.ts` - Vitest configuration
+- `apps/client/src/mocks/handlers.ts` - MSW request handlers
+- `apps/client/src/mocks/server.ts` - MSW server setup
+- `apps/client/src/__tests__/integration/auth-flow.test.ts` - Auth integration tests
+- `apps/client/src/__tests__/integration/todo-crud.test.ts` - Todo CRUD integration tests
+
+### E2E Tests (Playwright)
+- `apps/client/playwright.config.ts` - Playwright configuration
+- `apps/client/e2e/auth.spec.ts` - Authentication E2E tests
+- `apps/client/e2e/todo.spec.ts` - Todo CRUD E2E tests
+- `apps/client/e2e/theme.spec.ts` - Theme toggle E2E tests
+- `apps/client/e2e/navigation.spec.ts` - Route protection E2E tests
+- `apps/client/e2e/pages/login.page.ts` - Login page object
+- `apps/client/e2e/pages/register.page.ts` - Register page object
+- `apps/client/e2e/pages/dashboard.page.ts` - Dashboard page object
+- `apps/client/e2e/fixtures/auth.fixture.ts` - Authentication test fixtures
+
+### Database Documentation
+- `docs/database/README.md` - Database documentation overview
+- `docs/database/SCHEMA.md` - Complete database schema documentation
+- `docs/database/ENTITIES.md` - TypeORM entity definitions and mappings
+- `docs/database/ERD.md` - Entity Relationship Diagram (Mermaid)
+- `docs/database/MIGRATIONS.md` - Migration strategy guide
+
+### Files to Delete
+- `apps/client/src/` (Angular files) - Will be replaced with Next.js structure
+- `apps/ui-components-e2e/` - Cypress E2E tests (replaced by Playwright)
 
 ### Notes
 
-- Use `npx nx serve client-next` to run the Next.js development server
-- Use `npx nx build client-next` to build the application
-- Use `npx nx e2e client-next-e2e` to run Playwright E2E tests
-- Shared types from `@full-stack-todo/shared/domain` will be reused
-- Angular code will be removed incrementally after each feature is verified
-- Run the NestJS backend with `npx nx serve server` (required for API calls)
+- All implementation follows TDD methodology: write failing tests first (Red), implement minimal code to pass (Green), refactor (Refactor)
+- Unit tests should be placed in `__tests__/` directories alongside the code files they test
+- E2E tests use Playwright and are located in `apps/client/e2e/`
+- Use `npx nx` for all Nx commands
+- Shared domain types from `libs/shared/domain/` will be reused in the Next.js client
+- The NestJS backend remains unchanged - only the frontend is being migrated
 
 ---
 
 ## Tasks
 
-- [ ] 1.0 Project Setup & Infrastructure
-  - [ ] 1.1 Install `@nx/next` plugin: `npm install -D @nx/next@22.3.3`
-  - [ ] 1.2 Generate Next.js application: `npx nx g @nx/next:app client-next --directory=apps/client-next --appDir=true`
-  - [ ] 1.3 Install core dependencies: `next`, `react`, `react-dom` (should be auto-installed by generator)
-  - [ ] 1.4 Install state management: `npm install @tanstack/react-query zustand`
-  - [ ] 1.5 Install form handling: `npm install react-hook-form @hookform/resolvers zod`
-  - [ ] 1.6 Install utilities: `npm install axios jwt-decode clsx tailwind-merge lucide-react next-themes`
-  - [ ] 1.7 Configure Tailwind CSS in `apps/client-next/tailwind.config.ts`
-  - [ ] 1.8 Initialize Shadcn UI: `npx shadcn@latest init` (in apps/client-next directory)
-  - [ ] 1.9 Add Shadcn components: Button, Input, Label, Card, Dialog, Checkbox, Form, Alert
-  - [ ] 1.10 Create `cn()` utility in `src/lib/utils/cn.ts` for Tailwind class merging
-  - [ ] 1.11 Create `constants.ts` with `TOKEN_STORAGE_KEY` matching Angular app
-  - [ ] 1.12 Configure API proxy in `next.config.js` to forward `/api/*` to backend
-  - [ ] 1.13 Verify shared lib imports work: test importing from `@full-stack-todo/shared/domain`
-  - [ ] 1.14 Create `QueryProvider` component wrapping `QueryClientProvider`
-  - [ ] 1.15 Create `ThemeProvider` component using `next-themes`
-  - [ ] 1.16 Update root `layout.tsx` to include both providers
-  - [ ] 1.17 Verify dev server runs: `npx nx serve client-next`
+- [ ] 1.0 Project Setup & Configuration
+  - [ ] 1.1 Back up existing Angular client files (create a git branch or copy to backup directory)
+  - [ ] 1.2 Remove Angular-specific files from `apps/client/src/` (keep `public/` folder)
+  - [ ] 1.3 Initialize Next.js 15 application with App Router in `apps/client/`
+  - [ ] 1.4 Configure `tsconfig.json` with strict mode and path mappings for `@/*` and `@full-stack-todo/shared/domain`
+  - [ ] 1.5 Install Tailwind CSS dependencies (`tailwindcss`, `postcss`, `autoprefixer`)
+  - [ ] 1.6 Create `tailwind.config.js` with Nord color palette CSS custom properties
+  - [ ] 1.7 Create `postcss.config.js` for Tailwind processing
+  - [ ] 1.8 Create `globals.css` with Tailwind directives and CSS variables for light/dark themes
+  - [ ] 1.9 Initialize shadcn/ui with `npx shadcn@latest init` and configure for Next.js
+  - [ ] 1.10 Install required shadcn/ui components: Button, Input, Form, Card, Dialog, Label, Separator
+  - [ ] 1.11 Create `.env.local` with `API_URL` and `SESSION_SECRET` (generate 32+ char secret)
+  - [ ] 1.12 Update `apps/client/project.json` with Next.js Nx targets (dev, build, start, lint)
+  - [ ] 1.13 Install core dependencies: `next`, `react`, `react-dom`, `@tanstack/react-query`, `react-hook-form`, `@hookform/resolvers`, `zod`, `next-themes`, `jose`, `clsx`, `tailwind-merge`, `lucide-react`, `class-variance-authority`
+  - [ ] 1.14 Verify project builds successfully with `npx nx build client`
 
-- [ ] 2.0 Authentication Module
-  - [ ] 2.1 Create Axios client in `src/lib/api/client.ts` with base URL and interceptors
-  - [ ] 2.2 Create Zustand auth store in `src/lib/stores/auth-store.ts` with token management
-  - [ ] 2.3 Implement `setToken()`, `clearToken()`, `loadToken()`, `isTokenExpired()` in auth store
-  - [ ] 2.4 Add JWT interceptor to Axios client to attach Authorization header
-  - [ ] 2.5 Create Zod schemas in `src/lib/schemas/auth.schema.ts` for login and register
-  - [ ] 2.6 Create auth API functions in `src/lib/api/auth.ts` (loginUser)
-  - [ ] 2.7 Create user API functions in `src/lib/api/users.ts` (createUser)
-  - [ ] 2.8 Create `useLogin` mutation hook in `src/lib/hooks/use-auth.ts`
-  - [ ] 2.9 Create `useRegister` mutation hook in `src/lib/hooks/use-auth.ts`
-  - [ ] 2.10 Build `LoginForm` component with React Hook Form + Zod validation
-  - [ ] 2.11 Add error message display and loading state to LoginForm
-  - [ ] 2.12 Build `RegisterForm` component with password matching validation
-  - [ ] 2.13 Add error message display and loading state to RegisterForm
-  - [ ] 2.14 Create `/login/page.tsx` using LoginForm component
-  - [ ] 2.15 Create `/register/page.tsx` using RegisterForm component
-  - [ ] 2.16 Add link from login page to register page and vice versa
-  - [ ] 2.17 Create `middleware.ts` for route protection (check token, redirect to /login)
-  - [ ] 2.18 Configure middleware matcher for `/dashboard` route
-  - [ ] 2.19 Implement logout in Header component (clear token, redirect to /login)
-  - [ ] 2.20 Load token from localStorage on app initialization (in layout or auth store)
-  - [ ] 2.21 **Verify**: Test complete auth flow (register → login → session persistence → logout)
+- [ ] 2.0 Testing Infrastructure Setup
+  - [ ] 2.1 Install Vitest and testing dependencies: `vitest`, `@vitejs/plugin-react`, `@vitest/coverage-v8`, `jsdom`
+  - [ ] 2.2 Install React Testing Library: `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`
+  - [ ] 2.3 Install MSW for API mocking: `msw`
+  - [ ] 2.4 Create `vitest.config.ts` with React plugin, jsdom environment, and coverage configuration
+  - [ ] 2.5 Create `src/mocks/handlers.ts` with MSW request handlers for auth and todo endpoints
+  - [ ] 2.6 Create `src/mocks/server.ts` with MSW server setup for tests
+  - [ ] 2.7 Create test setup file that extends jest-dom matchers and configures MSW
+  - [ ] 2.8 Add test scripts to `project.json`: `test`, `test:coverage`, `test:watch`
+  - [ ] 2.9 Verify test infrastructure works by creating and running a simple test
 
-- [ ] 3.0 Todo Feature Implementation
-  - [ ] 3.1 Create Zod schemas in `src/lib/schemas/todo.schema.ts` for create/update
-  - [ ] 3.2 Create todo API functions in `src/lib/api/todos.ts` (getAll, create, update, delete)
-  - [ ] 3.3 Create `useTodos` query hook for fetching todos
-  - [ ] 3.4 Create `useCreateTodo` mutation hook with cache invalidation
-  - [ ] 3.5 Create `useUpdateTodo` mutation hook with optimistic updates
-  - [ ] 3.6 Create `useDeleteTodo` mutation hook with optimistic updates
-  - [ ] 3.7 Build `TodoItem` component with title, description, completion indicator
-  - [ ] 3.8 Add toggle completion button to TodoItem
-  - [ ] 3.9 Add edit button to TodoItem (disabled for completed todos)
-  - [ ] 3.10 Add delete button to TodoItem
-  - [ ] 3.11 Build `TodoList` component with two columns (Incomplete/Completed)
-  - [ ] 3.12 Build `AddTodoDialog` component using Shadcn Dialog + Form
-  - [ ] 3.13 Build `EditTodoDialog` component using Shadcn Dialog + Form
-  - [ ] 3.14 Create `Header` component with app title, user greeting, logout button
-  - [ ] 3.15 Create `/dashboard/page.tsx` composing Header, TodoList, AddTodoDialog
-  - [ ] 3.16 Add empty state message when no todos exist
-  - [ ] 3.17 Ensure completed todos cannot be edited (button disabled or hidden)
-  - [ ] 3.18 **Verify**: Test complete CRUD flow (create → read → update → toggle → delete)
+- [ ] 3.0 Core Libraries & Utilities (TDD)
+  - [ ] 3.1 Create `src/lib/utils.ts` with `cn()` helper function for Tailwind class merging
+  - [ ] 3.2 Create `src/types/index.ts` to re-export types from `@full-stack-todo/shared/domain`
+  - [ ] 3.3 Write tests for `lib/validations.ts`: loginSchema and registerSchema validation
+  - [ ] 3.4 Implement `lib/validations.ts` with Zod schemas matching PRD password requirements
+  - [ ] 3.5 Write tests for `lib/session.ts`: encrypt, decrypt, createSession, deleteSession, getSession
+  - [ ] 3.6 Implement `lib/session.ts` with jose for JWT encryption and secure cookie handling
+  - [ ] 3.7 Add SESSION_SECRET validation (minimum 32 characters) on module load
+  - [ ] 3.8 Write tests for `lib/api-client.ts`: fetch wrapper with error handling
+  - [ ] 3.9 Implement `lib/api-client.ts` with base URL from server-only environment variable
+  - [ ] 3.10 Verify all core library tests pass with `npx nx test client`
 
-- [ ] 4.0 UI Polish & Theme
-  - [ ] 4.1 Build `ThemeToggle` component using Shadcn DropdownMenu
-  - [ ] 4.2 Add ThemeToggle to Header component
-  - [ ] 4.3 Configure Tailwind dark mode (class strategy)
-  - [ ] 4.4 Style login and register pages with Card container, centered layout
-  - [ ] 4.5 Style dashboard with responsive two-column layout
-  - [ ] 4.6 Add mobile breakpoint: single column stacked layout
-  - [ ] 4.7 Add tablet/desktop breakpoint: side-by-side columns
-  - [ ] 4.8 Add hover states and focus rings for accessibility
-  - [ ] 4.9 Add loading spinners/skeletons during data fetching
-  - [ ] 4.10 Add transition animations for todo state changes
-  - [ ] 4.11 **Verify**: Test responsive design on mobile, tablet, desktop viewports
+- [ ] 4.0 Authentication System (TDD)
+  - [ ] 4.1 Write tests for `api/auth/login/route.ts`: successful login, invalid credentials, validation errors
+  - [ ] 4.2 Implement `api/auth/login/route.ts`: proxy to backend, set HTTP-only cookie on success
+  - [ ] 4.3 Write tests for `api/auth/logout/route.ts`: successful logout, clear session
+  - [ ] 4.4 Implement `api/auth/logout/route.ts`: delete session cookie
+  - [ ] 4.5 Implement `api/auth/session/route.ts`: validate and return session data
+  - [ ] 4.6 Write tests for `middleware.ts`: protected route redirect, public route access, authenticated redirect
+  - [ ] 4.7 Implement `middleware.ts` for route protection with session validation
+  - [ ] 4.8 Create `providers/auth-provider.tsx` with AuthContext for client-side auth state
+  - [ ] 4.9 Write tests for `hooks/use-auth.ts`: useAuth hook for session state
+  - [ ] 4.10 Implement `hooks/use-auth.ts` with login, logout, and session refresh functions
+  - [ ] 4.11 Write tests for `components/login-form.tsx`: form rendering, validation, submission
+  - [ ] 4.12 Implement `components/login-form.tsx` with React Hook Form and shadcn/ui Form components
+  - [ ] 4.13 Write tests for `components/register-form.tsx`: form rendering, password validation, submission
+  - [ ] 4.14 Implement `components/register-form.tsx` with password confirmation and validation
+  - [ ] 4.15 Create `app/(auth)/layout.tsx` for auth pages (centered layout, no header)
+  - [ ] 4.16 Create `app/(auth)/login/page.tsx` with LoginForm component
+  - [ ] 4.17 Create `app/(auth)/register/page.tsx` with RegisterForm component
+  - [ ] 4.18 Write integration tests for auth flow: register → login → access dashboard → logout
+  - [ ] 4.19 Verify all authentication tests pass
 
-- [ ] 5.0 E2E Testing with Playwright
-  - [ ] 5.1 Install Playwright: `npm install -D @playwright/test`
-  - [ ] 5.2 Create `apps/client-next-e2e/` directory structure
-  - [ ] 5.3 Create `playwright.config.ts` with base URL and project settings
-  - [ ] 5.4 Create Nx project.json for client-next-e2e with e2e target
-  - [ ] 5.5 Write auth tests: user can register with valid credentials
-  - [ ] 5.6 Write auth tests: user cannot register with invalid email
-  - [ ] 5.7 Write auth tests: user cannot register with mismatched passwords
-  - [ ] 5.8 Write auth tests: user can login with valid credentials
-  - [ ] 5.9 Write auth tests: user sees error on invalid credentials
-  - [ ] 5.10 Write auth tests: user is redirected to dashboard after login
-  - [ ] 5.11 Write auth tests: user session persists after page refresh
-  - [ ] 5.12 Write auth tests: user can logout and is redirected to login
-  - [ ] 5.13 Write auth tests: unauthenticated user is redirected from /dashboard
-  - [ ] 5.14 Write todo tests: user sees empty state when no todos
-  - [ ] 5.15 Write todo tests: user can create a new todo
-  - [ ] 5.16 Write todo tests: user can toggle todo completion
-  - [ ] 5.17 Write todo tests: user can edit a todo
-  - [ ] 5.18 Write todo tests: user cannot edit completed todos
-  - [ ] 5.19 Write todo tests: user can delete a todo
-  - [ ] 5.20 **Verify**: All E2E tests pass with `npx nx e2e client-next-e2e`
+- [ ] 5.0 Todo Dashboard (TDD)
+  - [ ] 5.1 Write tests for `hooks/use-todos.ts`: useTodos query, useUpdateTodo, useDeleteTodo mutations
+  - [ ] 5.2 Implement `hooks/use-todos.ts` with React Query hooks for todo operations
+  - [ ] 5.3 Write tests for `components/todo-card.tsx`: rendering, toggle completion, edit button, delete button
+  - [ ] 5.4 Implement `components/todo-card.tsx` with shadcn/ui Card and action buttons
+  - [ ] 5.5 Write tests for `components/edit-todo-dialog.tsx`: dialog open/close, form pre-fill, save
+  - [ ] 5.6 Implement `components/edit-todo-dialog.tsx` with shadcn/ui Dialog and Form
+  - [ ] 5.7 Implement `components/todo-list.tsx` with two-column layout (incomplete/complete)
+  - [ ] 5.8 Create `app/(protected)/layout.tsx` with header, theme toggle, and logout button
+  - [ ] 5.9 Create `app/(protected)/dashboard/page.tsx` with TodoList component
+  - [ ] 5.10 Implement optimistic updates for toggle completion and delete operations
+  - [ ] 5.11 Write integration tests for todo CRUD operations
+  - [ ] 5.12 Verify all dashboard tests pass
 
-- [ ] 6.0 Angular Cleanup & Removal
-  - [ ] 6.1 **After 2.21 verified**: Remove `libs/client/feature-login/` directory
-  - [ ] 6.2 **After 2.21 verified**: Remove `libs/client/feature-register/` directory
-  - [ ] 6.3 **After 3.18 verified**: Remove `libs/client/feature-dashboard/` directory
-  - [ ] 6.4 **After 4.11 verified**: Remove `libs/client/ui-components/` directory
-  - [ ] 6.5 **After 4.11 verified**: Remove `libs/client/ui-style/` directory
-  - [ ] 6.6 **After 5.20 verified**: Remove `libs/client/data-access/` directory
-  - [ ] 6.7 **After 5.20 verified**: Remove `libs/client/util/` directory
-  - [ ] 6.8 **After 5.20 verified**: Remove `apps/client/` directory
-  - [ ] 6.9 **After 5.20 verified**: Remove `apps/client-e2e/` directory (Cypress)
-  - [ ] 6.10 Remove Angular dependencies from `package.json` (see list in PRD section 10)
-  - [ ] 6.11 Remove `@storybook/angular` and related Angular Storybook configs
-  - [ ] 6.12 Remove `cypress` from devDependencies
-  - [ ] 6.13 Remove Angular-specific entries from `nx.json` generators and targets
-  - [ ] 6.14 Run `npm install` to clean up node_modules
-  - [ ] 6.15 Run `npx nx build client-next` to verify build still works
-  - [ ] 6.16 Run `npx nx e2e client-next-e2e` to verify all tests still pass
-  - [ ] 6.17 Update README.md to reflect new Next.js client
-  - [ ] 6.18 **Final Verify**: Full application works end-to-end with no Angular code remaining
+- [ ] 6.0 Theme Toggle & Providers
+  - [ ] 6.1 Create `providers/query-provider.tsx` with React Query client configuration
+  - [ ] 6.2 Create `providers/theme-provider.tsx` wrapping next-themes ThemeProvider
+  - [ ] 6.3 Write tests for `components/theme-toggle.tsx`: toggle between light/dark, system preference
+  - [ ] 6.4 Implement `components/theme-toggle.tsx` with next-themes useTheme hook
+  - [ ] 6.5 Create `app/layout.tsx` root layout with all providers (Query, Theme, Auth)
+  - [ ] 6.6 Create `app/page.tsx` with redirect to /dashboard
+  - [ ] 6.7 Add theme CSS variables for light and dark modes in `globals.css`
+  - [ ] 6.8 Verify theme persistence works across page refreshes
+
+- [ ] 7.0 Security Hardening
+  - [ ] 7.1 Create `next.config.js` with security headers (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
+  - [ ] 7.2 Verify secure cookie settings in session.ts (httpOnly, secure in production, sameSite: lax)
+  - [ ] 7.3 Implement generic error messages in login/register (prevent user enumeration)
+  - [ ] 7.4 Add server-side error logging with generic client responses
+  - [ ] 7.5 Verify API_URL is not exposed to client-side JavaScript
+  - [ ] 7.6 Run `npm audit` and fix any high/critical vulnerabilities
+  - [ ] 7.7 Verify all security headers are present using browser DevTools
+  - [ ] 7.8 Test session expiration behavior (redirect to login when expired)
+
+- [ ] 8.0 Database Documentation
+  - [ ] 8.1 Create `docs/database/` directory structure
+  - [ ] 8.2 Create `docs/database/README.md` with overview and navigation links
+  - [ ] 8.3 Create `docs/database/ERD.md` with Mermaid diagram showing User and Todo entities
+  - [ ] 8.4 Create `docs/database/ENTITIES.md` documenting User entity (id, email, password, todos relation)
+  - [ ] 8.5 Add Todo entity documentation to `ENTITIES.md` (id, title, description, completed, user relation)
+  - [ ] 8.6 Create `docs/database/SCHEMA.md` with PostgreSQL schema details and column types
+  - [ ] 8.7 Document unique constraints (UNIQUE_TITLE_USER) and indexes
+  - [ ] 8.8 Create `docs/database/MIGRATIONS.md` with migration strategy and TypeORM synchronize notes
+  - [ ] 8.9 Document cascade behaviors (User deletion cascades to Todos)
+  - [ ] 8.10 Review documentation for completeness and accuracy
+
+- [ ] 9.0 E2E Testing with Playwright
+  - [ ] 9.1 Install Playwright: `@playwright/test`
+  - [ ] 9.2 Create `playwright.config.ts` with Next.js dev server, multi-browser support, and screenshot on failure
+  - [ ] 9.3 Create `e2e/fixtures/auth.fixture.ts` with authenticated/unauthenticated test fixtures
+  - [ ] 9.4 Create `e2e/pages/login.page.ts` page object with form interactions
+  - [ ] 9.5 Create `e2e/pages/register.page.ts` page object with form interactions
+  - [ ] 9.6 Create `e2e/pages/dashboard.page.ts` page object with todo interactions
+  - [ ] 9.7 Create `e2e/auth.spec.ts` with login, register, logout E2E tests
+  - [ ] 9.8 Create `e2e/todo.spec.ts` with toggle completion, edit, delete E2E tests
+  - [ ] 9.9 Create `e2e/theme.spec.ts` with theme toggle E2E tests
+  - [ ] 9.10 Create `e2e/navigation.spec.ts` with route protection E2E tests
+  - [ ] 9.11 Add Playwright scripts to `project.json`: `e2e`, `e2e:ui`, `e2e:report`
+  - [ ] 9.12 Run all E2E tests across Chromium, Firefox, and WebKit browsers
+  - [ ] 9.13 Verify test reports and screenshots are generated correctly
+
+- [ ] 10.0 Cleanup & Migration Finalization
+  - [ ] 10.1 Delete `apps/ui-components-e2e/` directory (Cypress tests replaced by Playwright)
+  - [ ] 10.2 Remove Cypress dependencies from root `package.json`
+  - [ ] 10.3 Remove Angular-related dependencies from root `package.json`
+  - [ ] 10.4 Delete Angular client libraries from `libs/client/` if no longer needed (keep shared domain)
+  - [ ] 10.5 Update root `nx.json` to remove Angular-related configuration if present
+  - [ ] 10.6 Run `npm install` to clean up node_modules
+  - [ ] 10.7 Run full test suite: `npx nx test client` and `npx nx e2e client`
+  - [ ] 10.8 Run linting: `npx nx lint client`
+  - [ ] 10.9 Run type checking: `npx nx run client:typecheck` or `tsc --noEmit`
+  - [ ] 10.10 Verify production build: `npx nx build client --configuration=production`
+  - [ ] 10.11 Manual testing: complete the Testing Strategy checklist from PRD
+  - [ ] 10.12 Update project README.md with new Next.js client instructions
+  - [ ] 10.13 Create git commit with migration changes
