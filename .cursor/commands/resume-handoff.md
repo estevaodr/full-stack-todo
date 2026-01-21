@@ -1,11 +1,12 @@
 ---
 description: Resume work from handoff document with context analysis and validation. Reads handoff documents, verifies current state, and proposes next steps for continuing work.
-alwaysApply: false
 ---
 
-# Resume work from a handoff document
+# Resume Handoff
 
-You are tasked with resuming work from a handoff document through an interactive process. These handoffs contain critical context, learnings, and next steps from previous work sessions that need to be understood and continued.
+## Overview
+
+Resume work from a handoff document through an interactive process. These handoffs contain critical context, learnings, and next steps from previous work sessions that need to be understood and continued.
 
 ## Initial Response
 
@@ -43,7 +44,7 @@ or using a task identifier to find the most recent handoff for that task.
 
 Then wait for the user's input.
 
-## Process Steps
+## Steps
 
 ### Step 1: Read and Analyze Handoff
 
@@ -199,7 +200,7 @@ Then wait for the user's input.
    - Use TodoWrite to maintain task continuity
    - Reference the handoff document in commits
    - Document any deviations from original plan
-   - Consider creating a new handoff when done (using create_handoff command)
+   - Consider creating a new handoff when done (using create-handoff command)
 
 5. **Validate Before Acting**:
    - Never assume handoff state matches current state
@@ -251,7 +252,7 @@ Then wait for the user's input.
 
 ## Integration with Other Commands
 
-- **create_handoff**: Creates handoff documents that this command resumes from
+- **create-handoff**: Creates handoff documents that this command resumes from
 - **research-codebase**: Can be used to understand current state if handoff is stale
 - **codebase-analyzer**: Can verify learnings and patterns from handoff
 - **process-task-list**: Can convert handoff action items into structured task lists
@@ -276,12 +277,12 @@ I've analyzed the handoff from 2025-01-20. Here's the current situation...
 - Add password hashing: completed → Verified: Present in codebase
 
 **Key Learnings Validated:**
-- bcrypt pattern in `libs/server/feature-auth/src/lib/server-feature-auth.service.ts:45` - Still valid
-- JWT secret configuration pattern - Still applicable
+- [Pattern name] in `path/to/file.ext:45` - Still valid
+- [Configuration pattern] - Still applicable
 
 **Recent Changes Status:**
-- `libs/server/feature-auth/src/lib/server-feature-auth.service.ts:45-67` - Verified present
-- `apps/server/src/app/app.module.ts:12` - Verified present
+- `path/to/file.ext:45-67` - Verified present
+- `path/to/another/file.ext:12` - Verified present
 
 **Artifacts Reviewed:**
 - `docs/test/MANUAL_AUTH_TESTING.md`: Auth testing procedures documented

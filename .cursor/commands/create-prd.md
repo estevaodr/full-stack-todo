@@ -3,11 +3,11 @@ description: Create detailed Product Requirements Documents (PRD) through intera
 alwaysApply: false
 ---
 
-# Rule: Generating a Product Requirements Document (PRD)
+# Create PRD
 
-## Goal
+## Overview
 
-To guide an AI assistant in creating a detailed Product Requirements Document (PRD) in Markdown format through an interactive, research-driven process. The PRD should be clear, actionable, and suitable for a junior developer to understand and implement the feature. The process leverages ALL existing codebase analysis commands to understand current patterns before defining new requirements.
+Create a detailed Product Requirements Document (PRD) in Markdown format through an interactive, research-driven process. The PRD should be clear, actionable, and suitable for a junior developer to understand and implement the feature. The process leverages ALL existing codebase analysis commands to understand current patterns before defining new requirements.
 
 ## Initial Response
 
@@ -33,7 +33,7 @@ Tip: You can also invoke this command with a feature description directly.
 
 Then wait for the user's input.
 
-## Process
+## Steps
 
 ### Step 1: Context Gathering & Comprehensive Research
 
@@ -66,7 +66,7 @@ Then wait for the user's input.
 
    **Phase 3: External Research (If needed for external dependencies)**
    - Use **web-search-researcher** for external libraries/frameworks that will be used
-     - Example: "Research latest Angular 21 [specific feature] API" or "Find NestJS [library] best practices"
+     - Example: "Research latest [framework] [specific feature] API" or "Find [library] best practices"
      - Only use when working with external dependencies or unfamiliar APIs
      - Leverage Context7 MCP when available (per context7-usage rule)
      - Use for version-specific features, breaking changes, or current best practices

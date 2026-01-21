@@ -1,11 +1,12 @@
 ---
 description: Validate implementation against plan (PRD or task list), verify success criteria, identify issues, and check if completed tasks are actually implemented.
-alwaysApply: false
 ---
 
 # Validate Plan
 
-You are tasked with validating that an implementation plan (PRD or task list) was correctly executed, verifying all success criteria and identifying any deviations or issues.
+## Overview
+
+Validate that an implementation plan (PRD or task list) was correctly executed, verifying all success criteria and identifying any deviations or issues.
 
 ## Initial Setup
 
@@ -30,10 +31,50 @@ When invoked:
    git diff HEAD~N..HEAD  # Where N covers implementation commits
 
    # Run comprehensive checks
-   make test
-   make build
-   make lint
+   # First, determine project commands (see "Determining Project Commands" section below)
+   # Then run: [test command], [build command], [lint command]
    ```
+
+## Determining Project Commands
+
+Before running tests, builds, or linting, determine the correct commands:
+
+1. **Check Memory First**:
+   - Use MCP memory tools to search for existing "Project Commands" or "Build Configuration" entity
+   - If found and commands are stored, use those commands
+   - If not found or incomplete, proceed to step 2
+
+2. **Check for Makefile or Taskfile.yml**:
+   - Look for `Makefile` or `Taskfile.yml` in the project root
+   - Read the file to find test, build, and lint targets/commands
+   - Extract the actual commands (e.g., `make test`, `task test`, or specific commands)
+
+3. **If found, extract commands**:
+   - Test command: Look for targets like `test`, `test:all`, `test-all`
+   - Build command: Look for targets like `build`, `build:all`, `build-all`
+   - Lint command: Look for targets like `lint`, `lint:all`, `lint-all`
+   - Store these commands in memory using MCP memory tools
+
+4. **If not found, ask the user**:
+   - "I couldn't find a Makefile or Taskfile.yml. What commands should I use to run tests, build, and lint?"
+   - Wait for user response
+   - Store the user's response in memory using MCP memory tools
+
+5. **Store in Memory Using MCP**:
+   - Use `mcp_memory_create_entities` or `mcp_memory_add_observations` to store:
+     - Entity name: "Project Commands" or use project name + " Build Configuration"
+     - Entity type: "Build Configuration" or "Project Configuration"
+     - Observations:
+       - "Test command: [exact command]"
+       - "Build command: [exact command]"
+       - "Lint command: [exact command]"
+       - "Source: Makefile" or "Source: Taskfile.yml" or "Source: User provided"
+       - "Last verified: [current date]"
+
+6. **Use stored commands**:
+   - When commands are needed, first check memory using `mcp_memory_search_nodes` or `mcp_memory_open_nodes`
+   - If not in memory, follow steps 2-5 above
+   - Use the commands consistently throughout validation
 
 ## Validation Process
 
@@ -84,11 +125,12 @@ For each phase/task in the plan:
    - Check if parent tasks are marked complete only when all subtasks are done
 
 2. **Run automated verification**:
+   - First, determine project commands using the "Determining Project Commands" section above
    - Execute each command from plan's verification section
-   - Run standard checks:
-     - `make test` - All tests pass
-     - `make build` - Build succeeds
-     - `make lint` - No linting errors
+   - Run standard checks using the commands from memory or Makefile/Taskfile:
+     - Run test command (from memory/Makefile/Taskfile) - All tests pass
+     - Run build command (from memory/Makefile/Taskfile) - Build succeeds
+     - Run lint command (from memory/Makefile/Taskfile) - No linting errors
    - Document pass/fail status
    - If failures, investigate root cause
 
@@ -131,9 +173,9 @@ Create comprehensive validation summary:
 
 ### Automated Verification Results
 
-✓ Build passes: `make build`
-✓ Tests pass: `make test` (X tests, Y passed)
-⚠️ Linting: `make lint` (Z warnings, A errors)
+✓ Build passes: [determined build command from Makefile/Taskfile/memory]
+✓ Tests pass: [determined test command from Makefile/Taskfile/memory] (X tests, Y passed)
+⚠️ Linting: [determined lint command from Makefile/Taskfile/memory] (Z warnings, A errors)
 
 **Test Coverage**:
 - Unit tests: [Status]
@@ -143,31 +185,31 @@ Create comprehensive validation summary:
 ### Code Review Findings
 
 #### Matches Plan:
-- [Feature/Change 1] correctly implemented in `file.ts:line`
+- [Feature/Change 1] correctly implemented in `file.ext:line`
 - [Feature/Change 2] follows plan specifications
 - Error handling follows plan
 
 #### Deviations from Plan:
-- Used different approach in `file.ts:line` (improvement/issue)
-- Added extra validation in `file.ts:line` (improvement)
+- Used different approach in `file.ext:line` (improvement/issue)
+- Added extra validation in `file.ext:line` (improvement)
 - Missing [requirement] specified in plan
 
 #### Potential Issues:
 - [Issue 1]: Description and impact
 - [Issue 2]: Description and impact
-- Missing error handling in `file.ts:line`
+- Missing error handling in `file.ext:line`
 
 ### Task-by-Task Verification
 
 #### Task 1: [Task Name]
 - Status: ✓ Verified complete
-- Files changed: `file1.ts`, `file2.ts`
+- Files changed: `file1.ext`, `file2.ext`
 - Tests: ✓ Added/Updated
 - Matches plan: ✓ Yes
 
 #### Task 2: [Task Name]
 - Status: ⚠️ Partially complete
-- Files changed: `file1.ts` (missing `file2.ts`)
+- Files changed: `file1.ext` (missing `file2.ext`)
 - Tests: ⚠️ Missing test file
 - Matches plan: ⚠️ Missing [requirement]
 
@@ -192,7 +234,7 @@ Create comprehensive validation summary:
 - **Before Merge**:
   - Address linting warnings/errors
   - Add missing tests for [component/feature]
-  - Fix [issue] in `file.ts:line`
+  - Fix [issue] in `file.ext:line`
 
 - **Improvements**:
   - Consider adding integration test for [scenario]
@@ -256,9 +298,11 @@ If you were part of the implementation:
 Always verify:
 - [ ] All tasks marked `[x]` are actually implemented
 - [ ] All subtasks complete before parent task marked complete
-- [ ] Automated tests pass (`make test`)
-- [ ] Build succeeds (`make build`)
-- [ ] No linting errors (`make lint`)
+- [ ] Project commands determined (from Makefile/Taskfile or user)
+- [ ] Project commands stored in memory
+- [ ] Automated tests pass (using determined test command)
+- [ ] Build succeeds (using determined build command)
+- [ ] No linting errors (using determined lint command)
 - [ ] Code follows existing patterns
 - [ ] No regressions introduced
 - [ ] Error handling is robust
@@ -271,7 +315,7 @@ Always verify:
 
 - **process-task-list**: Validates task lists created by this command
 - **create-prd**: Validates implementations against PRDs
-- **create_handoff**: Can validate work described in handoffs
+- **create-handoff**: Can validate work described in handoffs
 - **research-codebase**: Can be used to understand current implementation
 - **codebase-analyzer**: Can verify implementation details
 - **create-pr**: Validation report can inform PR description
@@ -314,7 +358,7 @@ Assistant: Let me validate the implementation against the task list...
 [Checks git history]
 [Spawns verification tasks]
 [Waits for completion]
-[Runs make test, make build, make lint]
+[Runs determined test, build, and lint commands from Makefile/Taskfile/memory]
 
 ## Validation Report: Feature X Implementation
 
@@ -324,9 +368,9 @@ Assistant: Let me validate the implementation against the task list...
 ⚠️ Task 3: Tests - Partially implemented (missing integration tests)
 
 ### Automated Verification Results
-✓ Build passes: `make build`
-✓ Tests pass: `make test` (45 tests, 45 passed)
-⚠️ Linting: `make lint` (2 warnings)
+✓ Build passes: [determined build command] (e.g., `make build` or `task build`)
+✓ Tests pass: [determined test command] (e.g., `make test` or `task test`) (45 tests, 45 passed)
+⚠️ Linting: [determined lint command] (e.g., `make lint` or `task lint`) (2 warnings)
 
 ### Code Review Findings
 ...

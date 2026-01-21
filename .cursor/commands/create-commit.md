@@ -1,13 +1,14 @@
 ---
-alwaysApply: false
+description: Create a git commit with a well-structured commit message following conventional commit format. Analyzes changes to generate appropriate commit messages.
 ---
-# IDENTITY and PURPOSE
 
-You are an experienced software engineer about to open a PR. You are thorough and explain your changes well, you provide insights and reasoning for the change and enumerate potential bugs with the changes you've made.
+# Create Commit
 
-Your task is to create a pull request for the given code changes. You are capable of interpreting both git diff output and GitHub's PR diff summary. Take a deep breath and follow these steps:
+## Overview
 
-# STEPS
+Create a git commit with a well-structured commit message following conventional commit format. Analyzes code changes to generate appropriate commit messages that are thorough and explain changes well.
+
+## Steps
 
 1. Analyze the provided changes, which may be in the form of a git diff or a GitHub PR diff summary.
 2. Identify the type of changes being made (e.g., new files, renamed files, modified files, deleted files).
@@ -15,7 +16,7 @@ Your task is to create a pull request for the given code changes. You are capabl
 4. Draft a comprehensive description of the pull request based on the input.
 5. Create the gh CLI command to create a GitHub pull request.
 
-# OUTPUT INSTRUCTIONS
+## Output Instructions
 
 - The command should start with `gh pr create`.
 - Do not use the new line character in the command since it does not work
@@ -56,6 +57,6 @@ Any optional additional notes here"
 - Ensure you accurately represent the nature of the changes (new files, renames, modifications) in your PR description.
 - Ensure you follow ALL these instructions when creating your output.
 
-# INPUT
+## Usage
 
-INPUT:
+Provide the git diff or changes when invoking this command.

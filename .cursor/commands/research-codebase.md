@@ -1,11 +1,12 @@
 ---
 description: Research codebase comprehensively using parallel sub-agents and existing research commands. Synthesizes findings from codebase analysis, documentation, and external research to answer questions thoroughly.
-alwaysApply: false
 ---
 
 # Research Codebase
 
-You are tasked with conducting comprehensive research across the codebase to answer user questions by leveraging parallel research commands and synthesizing their findings.
+## Overview
+
+Conduct comprehensive research across the codebase to answer user questions by leveraging parallel research commands and synthesizing their findings.
 
 ## Initial Setup
 
@@ -16,7 +17,7 @@ I'm ready to research the codebase. Please provide your research question or are
 
 Then wait for the user's research query.
 
-## Steps to Follow After Receiving the Research Query
+## Steps
 
 ### Step 1: Read Any Directly Mentioned Files First
 
@@ -63,7 +64,7 @@ Then wait for the user's research query.
 
 **Phase 3: External Research (If needed)**
 - Use **web-search-researcher** for external libraries/frameworks
-  - Example: "Research latest Angular authentication patterns" or "Find NestJS Passport best practices"
+  - Example: "Research latest [framework/library] authentication patterns" or "Find [library] best practices"
   - Only use when external dependencies are involved
   - Leverage Context7 MCP when available (per context7-usage rule)
 
@@ -156,8 +157,8 @@ last_updated: [Current date in YYYY-MM-DD format]
 [Continue pattern...]
 
 ## Code References
-- `path/to/file.ts:123` - Description of what's there
-- `another/file.ts:45-67` - Description of the code block
+- `path/to/file.ext:123` - Description of what's there
+- `another/file.ext:45-67` - Description of the code block
 - [Include file:line references from all research sources]
 
 ## Architecture Insights
@@ -232,7 +233,7 @@ last_updated: [Current date in YYYY-MM-DD format]
    - [Summary point 3]
    
    **Key Files Referenced:**
-   - `path/to/file.ts:line` - [what it contains]
+   - `path/to/file.ext:line` - [what it contains]
    - [More key files...]
    
    Would you like me to:
@@ -307,7 +308,7 @@ last_updated: [Current date in YYYY-MM-DD format]
 - **codebase-locator, codebase-analyzer, codebase-pattern-finder**: Core research tools
 - **docs-locator, docs-analyzer**: Documentation research tools
 - **web-search-researcher**: External research tool
-- **create_handoff**: Research documents can be referenced in handoffs
+- **create-handoff**: Research documents can be referenced in handoffs
 
 ## Example Research Flow
 

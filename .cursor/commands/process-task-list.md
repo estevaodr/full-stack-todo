@@ -1,18 +1,61 @@
 ---
 description: Manages task lists in markdown files to track progress on completing a PRD. Integrates handoff creation for context preservation when pausing or completing milestones.
-alwaysApply: false
 ---
 
-# Task List Management
+# Process Task List
+
+## Overview
 
 Guidelines for managing task lists in markdown files to track progress on completing a PRD. Integrates handoff creation for context preservation.
+
+## Determining Project Commands
+
+Before running tests, builds, or linting, determine the correct commands:
+
+1. **Check Memory First**:
+   - Use MCP memory tools to search for existing "Project Commands" or "Build Configuration" entity
+   - If found and commands are stored, use those commands
+   - If not found or incomplete, proceed to step 2
+
+2. **Check for Makefile or Taskfile.yml**:
+   - Look for `Makefile` or `Taskfile.yml` in the project root
+   - Read the file to find test, build, and lint targets/commands
+   - Extract the actual commands (e.g., `make test`, `task test`, or specific commands)
+
+3. **If found, extract commands**:
+   - Test command: Look for targets like `test`, `test:all`, `test-all`
+   - Build command: Look for targets like `build`, `build:all`, `build-all`
+   - Lint command: Look for targets like `lint`, `lint:all`, `lint-all`
+   - Store these commands in memory using MCP memory tools
+
+4. **If not found, ask the user**:
+   - "I couldn't find a Makefile or Taskfile.yml. What commands should I use to run tests, build, and lint?"
+   - Wait for user response
+   - Store the user's response in memory using MCP memory tools
+
+5. **Store in Memory Using MCP**:
+   - Use `mcp_memory_create_entities` or `mcp_memory_add_observations` to store:
+     - Entity name: "Project Commands" or use project name + " Build Configuration"
+     - Entity type: "Build Configuration" or "Project Configuration"
+     - Observations:
+       - "Test command: [exact command]"
+       - "Build command: [exact command]"
+       - "Lint command: [exact command]"
+       - "Source: Makefile" or "Source: Taskfile.yml" or "Source: User provided"
+       - "Last verified: [current date]"
+
+6. **Use stored commands**:
+   - When commands are needed, first check memory using `mcp_memory_search_nodes` or `mcp_memory_open_nodes`
+   - If not in memory, follow steps 2-5 above
+   - Use the commands consistently throughout task execution
 
 ## Task Implementation
 - **One sub-task at a time:** Do **NOT** start the next sub‑task until you ask the user for permission and they say "yes" or "y"
 - **Completion protocol:**
   1. When you finish a **sub‑task**, immediately mark it as completed by changing `[ ]` to `[x]`.
   2. If **all** subtasks underneath a parent task are now `[x]`, follow this sequence:
-    - **First**: Run the full test suite (`npm run test:all` or `make test`)
+    - **First**: Determine project commands using the "Determining Project Commands" section above
+    - **Then**: Run the full test suite using the determined test command
     - **Only if all tests pass**: Stage changes (`git add .`)
     - **Clean up**: Remove any temporary files and temporary code before committing
     - **Commit**: Use a descriptive commit message that:
@@ -27,7 +70,7 @@ Guidelines for managing task lists in markdown files to track progress on comple
         ```
     - **Create handoff** (optional but recommended after major milestones):
       - After committing a parent task, consider creating a handoff document
-      - Use the **create_handoff** command to capture current state
+      - Use the **create-handoff** command to capture current state
       - Include the task list file path in the handoff's "Critical References"
       - Mark status as `in_progress` if more tasks remain, or `ready_for_review` if all tasks complete
   3. Once all the subtasks are marked completed and changes have been committed, mark the **parent task** as completed.
@@ -37,7 +80,7 @@ Guidelines for managing task lists in markdown files to track progress on comple
 
 ### When to Create Handoffs
 
-Create handoff documents using the **create_handoff** command in these scenarios:
+Create handoff documents using the **create-handoff** command in these scenarios:
 
 1. **After Completing Major Milestones**:
    - After completing a parent task and committing
@@ -168,7 +211,7 @@ When working with task lists, the AI must:
 5. Before starting work, check which sub‑task is next.
 6. After implementing a sub‑task, update the file and then pause for user approval.
 7. **When pausing or user requests handoff**:
-   - Immediately create a handoff using the **create_handoff** command
+   - Immediately create a handoff using the **create-handoff** command
    - Include current task list progress
    - Reference the task list file in handoff's "Critical References"
    - Provide the handoff path to the user
@@ -180,7 +223,7 @@ When working with task lists, the AI must:
 ## Integration with Other Commands
 
 - **resume-handoff**: **Use this first** when resuming work from a handoff that references a task list. It will analyze the handoff, verify current state, and prepare you to continue with the task list.
-- **create_handoff**: Use to create handoff documents at appropriate points (after milestones, when pausing, etc.)
+- **create-handoff**: Use to create handoff documents at appropriate points (after milestones, when pausing, etc.)
 - **create-prd**: The PRD that the task list is implementing
 - **generate-tasks**: The command that created the task list
 - **validate-plan**: Can validate task list completion and implementation status

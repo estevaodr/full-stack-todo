@@ -4,11 +4,14 @@ description: Creates a handoff document for transferring work context to another
 
 # Create Handoff
 
-You are tasked with writing a handoff document to transfer your work context. Create a handoff document that is thorough but concise. The goal is to compact and summarize your context without losing any key details of what you're working on.
+## Overview
 
-## Process
+Create a comprehensive handoff document to transfer work context between sessions. This document captures the current state, learnings, and next steps to enable seamless continuation of work.
+
+## Steps
 
 ### 1. Filepath & Metadata
+
 Create your file under `docs/handoffs/YYYY-MM-DD_HH-MM-SS_description.md`, where:
 - YYYY-MM-DD is today's date
 - HH-MM-SS is the current time in 24-hour format
@@ -19,13 +22,15 @@ Examples:
 - `docs/handoffs/2025-01-08_13-55-22_todo-feature-refactor.md`
 
 ### 2. Gather Context
+
 Before writing, collect:
 - Current git branch: `git branch --show-current`
 - Current commit: `git rev-parse HEAD`
 - Recent changes: `git diff --stat`
 - Modified files: `git status`
 
-### 3. Handoff Writing
+### 3. Write Handoff Document
+
 Use the following template structure:
 
 ```markdown
@@ -52,8 +57,8 @@ If working on an implementation plan, note which phase you are on.]
 
 ## Recent Changes
 [Describe recent changes made to the codebase in file:line syntax]
-- `apps/server/src/app/todo/todo.service.ts:45-67` - Added pagination logic
-- `libs/shared/domain/todo/src/lib/todo.interface.ts:12` - Updated interface
+- `path/to/file.ext:45-67` - Added pagination logic
+- `path/to/another/file.ext:12` - Updated interface
 
 ## Learnings
 [Describe important things you learned:
@@ -73,7 +78,11 @@ Consider listing explicit file paths.]
 ```
 
 ### 4. Save and Confirm
-After writing the document, confirm the handoff was created and provide the path.
+
+After writing the document:
+- Create the handoffs directory if it doesn't exist: `mkdir -p docs/handoffs`
+- Save the file
+- Confirm the handoff was created and provide the path
 
 ## Response Template
 
@@ -85,7 +94,8 @@ Handoff created! You can resume from this handoff in a new session by referencin
 docs/handoffs/[your-handoff-filename].md
 ```
 
-## Additional Notes & Instructions
+## Guidelines
+
 - **More information, not less**: This template defines the minimum of what a handoff should be. Include more information if necessary.
 - **Be thorough and precise**: Include both top-level objectives and lower-level details as necessary.
 - **Avoid excessive code snippets**: While a brief snippet to describe a key change is important, avoid large code blocks. Prefer using `path/to/file.ext:line` references that can be followed later.
