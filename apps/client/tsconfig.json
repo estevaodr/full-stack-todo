@@ -1,31 +1,39 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "isolatedModules": true,
-    "target": "es2022",
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "module": "ESNext",
     "moduleResolution": "bundler",
-    "emitDecoratorMetadata": false,
-    "module": "preserve"
-  },
-  "angularCompilerOptions": {
-    "enableI18nLegacyMessageIdFormat": false,
-    "strictInjectionParameters": true,
-    "strictInputAccessModifiers": true,
-    "strictTemplates": true
-  },
-  "files": [],
-  "include": [],
-  "references": [
-    {
-      "path": "./tsconfig.app.json"
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "strict": true,
+    "noEmit": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"],
+      "@full-stack-todo/shared/domain": ["../../libs/shared/domain/src/index.ts"]
     },
-    {
-      "path": "./tsconfig.spec.json"
-    }
-  ]
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
+  },
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": ["node_modules"]
 }

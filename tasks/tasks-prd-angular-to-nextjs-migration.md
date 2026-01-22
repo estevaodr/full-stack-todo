@@ -108,20 +108,20 @@
 ## Tasks
 
 - [ ] 1.0 Project Setup & Configuration
-  - [ ] 1.1 Back up existing Angular client files (create a git branch or copy to backup directory)
-  - [ ] 1.2 Remove Angular-specific files from `apps/client/src/` (keep `public/` folder)
-  - [ ] 1.3 Initialize Next.js 15 application with App Router in `apps/client/`
-  - [ ] 1.4 Configure `tsconfig.json` with strict mode and path mappings for `@/*` and `@full-stack-todo/shared/domain`
-  - [ ] 1.5 Install Tailwind CSS dependencies (`tailwindcss`, `postcss`, `autoprefixer`)
-  - [ ] 1.6 Create `tailwind.config.js` with Nord color palette CSS custom properties
-  - [ ] 1.7 Create `postcss.config.js` for Tailwind processing
-  - [ ] 1.8 Create `globals.css` with Tailwind directives and CSS variables for light/dark themes
-  - [ ] 1.9 Initialize shadcn/ui with `npx shadcn@latest init` and configure for Next.js
-  - [ ] 1.10 Install required shadcn/ui components: Button, Input, Form, Card, Dialog, Label, Separator
-  - [ ] 1.11 Create `.env.local` with `API_URL` and `SESSION_SECRET` (generate 32+ char secret)
-  - [ ] 1.12 Update `apps/client/project.json` with Next.js Nx targets (dev, build, start, lint)
-  - [ ] 1.13 Install core dependencies: `next`, `react`, `react-dom`, `@tanstack/react-query`, `react-hook-form`, `@hookform/resolvers`, `zod`, `next-themes`, `jose`, `clsx`, `tailwind-merge`, `lucide-react`, `class-variance-authority`
-  - [ ] 1.14 Verify project builds successfully with `npx nx build client`
+  - [x] 1.1 Back up existing Angular client files (create a git branch or copy to backup directory)
+  - [x] 1.2 Remove Angular-specific files from `apps/client/src/` (keep `public/` folder)
+  - [x] 1.3 Initialize Next.js 15 application with App Router in `apps/client/`
+  - [x] 1.4 Configure `tsconfig.json` with strict mode and path mappings for `@/*` and `@full-stack-todo/shared/domain`
+  - [x] 1.5 Install Tailwind CSS dependencies (`tailwindcss`, `postcss`, `autoprefixer`)
+  - [x] 1.6 Create `tailwind.config.js` with Nord color palette CSS custom properties
+  - [x] 1.7 Create `postcss.config.js` for Tailwind processing
+  - [x] 1.8 Create `globals.css` with Tailwind directives and CSS variables for light/dark themes
+  - [x] 1.9 Initialize shadcn/ui with `npx shadcn@latest init` and configure for Next.js
+  - [x] 1.10 Install required shadcn/ui components: Button, Input, Form, Card, Dialog, Label, Separator
+  - [x] 1.11 Create `.env.local` with `API_URL` and `SESSION_SECRET` (generate 32+ char secret)
+  - [x] 1.12 Update `apps/client/project.json` with Next.js Nx targets (dev, build, start, lint)
+  - [x] 1.13 Install core dependencies: `next`, `react`, `react-dom`, `@tanstack/react-query`, `react-hook-form`, `@hookform/resolvers`, `zod`, `next-themes`, `jose`, `clsx`, `tailwind-merge`, `lucide-react`, `class-variance-authority`
+  - [x] 1.14 Verify project builds successfully with `npx nx build client`
 
 - [ ] 2.0 Testing Infrastructure Setup
   - [ ] 2.1 Install Vitest and testing dependencies: `vitest`, `@vitejs/plugin-react`, `@vitest/coverage-v8`, `jsdom`

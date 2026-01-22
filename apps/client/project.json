@@ -2,86 +2,36 @@
   "name": "client",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
-  "prefix": "fse",
   "sourceRoot": "apps/client/src",
   "tags": ["type:app", "scope:client"],
   "targets": {
-    "build": {
-      "executor": "@angular/build:application",
-      "outputs": ["{options.outputPath}"],
+    "dev": {
+      "executor": "nx:run-commands",
       "options": {
-        "outputPath": "dist/apps/client",
-        "browser": "apps/client/src/main.ts",
-        "tsConfig": "apps/client/tsconfig.app.json",
-        "inlineStyleLanguage": "scss",
-        "assets": [
-          {
-            "glob": "**/*",
-            "input": "apps/client/public"
-          }
-        ],
-        "styles": ["apps/client/src/styles.scss"],
-        "stylePreprocessorOptions": {
-          "includePaths": [
-            "libs/client/ui-style/src/lib/scss"
-          ]
-        }
-      },
-      "configurations": {
-        "production": {
-          "budgets": [
-            {
-              "type": "initial",
-              "maximumWarning": "500kb",
-              "maximumError": "1mb"
-            },
-            {
-              "type": "anyComponentStyle",
-              "maximumWarning": "4kb",
-              "maximumError": "8kb"
-            }
-          ],
-          "outputHashing": "all"
-        },
-        "development": {
-          "optimization": false,
-          "extractLicenses": false,
-          "sourceMap": true
-        }
-      },
-      "defaultConfiguration": "production"
+        "command": "next dev",
+        "cwd": "apps/client"
+      }
     },
-    "serve": {
-      "continuous": true,
-      "executor": "@angular/build:dev-server",
-      "configurations": {
-        "production": {
-          "buildTarget": "client:build:production"
-        },
-        "development": {
-          "buildTarget": "client:build:development"
-        }
-      },
-      "defaultConfiguration": "development",
+    "build": {
+      "executor": "nx:run-commands",
+      "outputs": ["{projectRoot}/.next"],
       "options": {
-        "proxyConfig": "apps/client/proxy.conf.json"
+        "command": "next build",
+        "cwd": "apps/client"
+      }
+    },
+    "start": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "next start",
+        "cwd": "apps/client"
       }
     },
     "lint": {
-      "executor": "@nx/eslint:lint"
-    },
-    "test": {
-      "executor": "@angular/build:unit-test",
-      "options": {}
-    },
-    "serve-static": {
-      "continuous": true,
-      "executor": "@nx/web:file-server",
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"],
       "options": {
-        "buildTarget": "client:build",
-        "port": 4200,
-        "staticFilePath": "dist/apps/client/browser",
-        "spa": true
+        "lintFilePatterns": ["apps/client/**/*.{ts,tsx,js,jsx}"]
       }
     }
   }
