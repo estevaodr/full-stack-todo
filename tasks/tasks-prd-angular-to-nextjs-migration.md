@@ -107,7 +107,7 @@
 
 ## Tasks
 
-- [ ] 1.0 Project Setup & Configuration
+- [x] 1.0 Project Setup & Configuration
   - [x] 1.1 Back up existing Angular client files (create a git branch or copy to backup directory)
   - [x] 1.2 Remove Angular-specific files from `apps/client/src/` (keep `public/` folder)
   - [x] 1.3 Initialize Next.js 15 application with App Router in `apps/client/`
