@@ -3,6 +3,7 @@
 ## Relevant Files
 
 ### Project Configuration
+- `package.json` - Root workspace dependencies (Vitest, RTL, MSW added for client tests)
 - `apps/client/next.config.js` - Next.js configuration with security headers
 - `apps/client/tailwind.config.js` - Tailwind CSS configuration with Nord color palette
 - `apps/client/postcss.config.js` - PostCSS configuration for Tailwind
@@ -124,15 +125,15 @@
   - [x] 1.14 Verify project builds successfully with `npx nx build client`
 
 - [ ] 2.0 Testing Infrastructure Setup
-  - [ ] 2.1 Install Vitest and testing dependencies: `vitest`, `@vitejs/plugin-react`, `@vitest/coverage-v8`, `jsdom`
-  - [ ] 2.2 Install React Testing Library: `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`
-  - [ ] 2.3 Install MSW for API mocking: `msw`
-  - [ ] 2.4 Create `vitest.config.ts` with React plugin, jsdom environment, and coverage configuration
-  - [ ] 2.5 Create `src/mocks/handlers.ts` with MSW request handlers for auth and todo endpoints
-  - [ ] 2.6 Create `src/mocks/server.ts` with MSW server setup for tests
-  - [ ] 2.7 Create test setup file that extends jest-dom matchers and configures MSW
-  - [ ] 2.8 Add test scripts to `project.json`: `test`, `test:coverage`, `test:watch`
-  - [ ] 2.9 Verify test infrastructure works by creating and running a simple test
+  - [x] 2.1 Install Vitest and testing dependencies: `vitest`, `@vitejs/plugin-react`, `@vitest/coverage-v8`, `jsdom`
+  - [x] 2.2 Install React Testing Library: `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`
+  - [x] 2.3 Install MSW for API mocking: `msw`
+  - [x] 2.4 Create `vitest.config.ts` with React plugin, jsdom environment, and coverage configuration
+  - [x] 2.5 Create `src/mocks/handlers.ts` with MSW request handlers for auth and todo endpoints
+  - [x] 2.6 Create `src/mocks/server.ts` with MSW server setup for tests
+  - [x] 2.7 Create test setup file that extends jest-dom matchers and configures MSW
+  - [x] 2.8 Add test scripts to `project.json`: `test`, `test:coverage`, `test:watch`
+  - [x] 2.9 Verify test infrastructure works by creating and running a simple test
 
 - [ ] 3.0 Core Libraries & Utilities (TDD)
   - [ ] 3.1 Create `src/lib/utils.ts` with `cn()` helper function for Tailwind class merging
