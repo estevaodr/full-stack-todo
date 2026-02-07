@@ -68,8 +68,10 @@
 
 ### Test Infrastructure
 - `apps/client/vitest.config.ts` - Vitest configuration
+- `apps/client/src/setupTests.ts` - Test setup (jest-dom + MSW lifecycle)
 - `apps/client/src/mocks/handlers.ts` - MSW request handlers
 - `apps/client/src/mocks/server.ts` - MSW server setup
+- `apps/client/src/__tests__/setup-verification.test.ts` - Infrastructure verification test
 - `apps/client/src/__tests__/integration/auth-flow.test.ts` - Auth integration tests
 - `apps/client/src/__tests__/integration/todo-crud.test.ts` - Todo CRUD integration tests
 
@@ -124,7 +126,7 @@
   - [x] 1.13 Install core dependencies: `next`, `react`, `react-dom`, `@tanstack/react-query`, `react-hook-form`, `@hookform/resolvers`, `zod`, `next-themes`, `jose`, `clsx`, `tailwind-merge`, `lucide-react`, `class-variance-authority`
   - [x] 1.14 Verify project builds successfully with `npx nx build client`
 
-- [ ] 2.0 Testing Infrastructure Setup
+- [x] 2.0 Testing Infrastructure Setup
   - [x] 2.1 Install Vitest and testing dependencies: `vitest`, `@vitejs/plugin-react`, `@vitest/coverage-v8`, `jsdom`
   - [x] 2.2 Install React Testing Library: `@testing-library/react`, `@testing-library/jest-dom`, `@testing-library/user-event`
   - [x] 2.3 Install MSW for API mocking: `msw`
@@ -136,16 +138,16 @@
   - [x] 2.9 Verify test infrastructure works by creating and running a simple test
 
 - [ ] 3.0 Core Libraries & Utilities (TDD)
-  - [ ] 3.1 Create `src/lib/utils.ts` with `cn()` helper function for Tailwind class merging
-  - [ ] 3.2 Create `src/types/index.ts` to re-export types from `@full-stack-todo/shared/domain`
-  - [ ] 3.3 Write tests for `lib/validations.ts`: loginSchema and registerSchema validation
-  - [ ] 3.4 Implement `lib/validations.ts` with Zod schemas matching PRD password requirements
-  - [ ] 3.5 Write tests for `lib/session.ts`: encrypt, decrypt, createSession, deleteSession, getSession
-  - [ ] 3.6 Implement `lib/session.ts` with jose for JWT encryption and secure cookie handling
-  - [ ] 3.7 Add SESSION_SECRET validation (minimum 32 characters) on module load
-  - [ ] 3.8 Write tests for `lib/api-client.ts`: fetch wrapper with error handling
-  - [ ] 3.9 Implement `lib/api-client.ts` with base URL from server-only environment variable
-  - [ ] 3.10 Verify all core library tests pass with `npx nx test client`
+  - [x] 3.1 Create `src/lib/utils.ts` with `cn()` helper function for Tailwind class merging
+  - [x] 3.2 Create `src/types/index.ts` to re-export types from `@full-stack-todo/shared/domain`
+  - [x] 3.3 Write tests for `lib/validations.ts`: loginSchema and registerSchema validation
+  - [x] 3.4 Implement `lib/validations.ts` with Zod schemas matching PRD password requirements
+  - [x] 3.5 Write tests for `lib/session.ts`: encrypt, decrypt, createSession, deleteSession, getSession
+  - [x] 3.6 Implement `lib/session.ts` with jose for JWT encryption and secure cookie handling
+  - [x] 3.7 Add SESSION_SECRET validation (minimum 32 characters) on module load
+  - [x] 3.8 Write tests for `lib/api-client.ts`: fetch wrapper with error handling
+  - [x] 3.9 Implement `lib/api-client.ts` with base URL from server-only environment variable
+  - [x] 3.10 Verify all core library tests pass with `npx nx test client`
 
 - [ ] 4.0 Authentication System (TDD)
   - [ ] 4.1 Write tests for `api/auth/login/route.ts`: successful login, invalid credentials, validation errors
