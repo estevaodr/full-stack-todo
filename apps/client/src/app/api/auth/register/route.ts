@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     );
 
     const payload = decodeJwt(access_token) as { sub: string; email: string };
-    await createSession(payload.sub, payload.email);
+    await createSession(payload.sub, payload.email, access_token);
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch {

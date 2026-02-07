@@ -5,6 +5,8 @@ export interface SessionPayload {
   userId: string;
   email: string;
   expiresAt: Date;
+  /** Backend JWT for API proxy calls; set on login/register */
+  accessToken?: string;
 }
 
 const SESSION_SECRET = process.env.SESSION_SECRET;
@@ -16,11 +18,13 @@ const secretKey = new TextEncoder().encode(SESSION_SECRET);
 const SESSION_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
 
 export async function encrypt(payload: SessionPayload): Promise<string> {
-  return new SignJWT({
+  const claims: Record<string, unknown> = {
     userId: payload.userId,
     email: payload.email,
     expiresAt: payload.expiresAt.getTime(),
-  })
+  };
+  if (payload.accessToken != null) claims.accessToken = payload.accessToken;
+  return new SignJWT(claims)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt()
     .setExpirationTime('7d')
@@ -43,6 +47,7 @@ export async function decrypt(
         typeof expiresAt === 'number'
           ? new Date(expiresAt)
           : (expiresAt as Date),
+      accessToken: payload.accessToken as string | undefined,
     };
   } catch {
     return null;
@@ -51,10 +56,11 @@ export async function decrypt(
 
 export async function createSession(
   userId: string,
-  email: string
+  email: string,
+  accessToken?: string
 ): Promise<void> {
   const expiresAt = new Date(Date.now() + SESSION_DURATION_MS);
-  const session = await encrypt({ userId, email, expiresAt });
+  const session = await encrypt({ userId, email, expiresAt, accessToken });
 
   const cookieStore = await cookies();
   cookieStore.set('session', session, {

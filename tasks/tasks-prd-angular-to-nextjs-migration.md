@@ -170,19 +170,19 @@
   - [x] 4.18 Write integration tests for auth flow: register → login → access dashboard → logout
   - [x] 4.19 Verify all authentication tests pass
 
-- [ ] 5.0 Todo Dashboard (TDD)
-  - [ ] 5.1 Write tests for `hooks/use-todos.ts`: useTodos query, useUpdateTodo, useDeleteTodo mutations
-  - [ ] 5.2 Implement `hooks/use-todos.ts` with React Query hooks for todo operations
-  - [ ] 5.3 Write tests for `components/todo-card.tsx`: rendering, toggle completion, edit button, delete button
-  - [ ] 5.4 Implement `components/todo-card.tsx` with shadcn/ui Card and action buttons
-  - [ ] 5.5 Write tests for `components/edit-todo-dialog.tsx`: dialog open/close, form pre-fill, save
-  - [ ] 5.6 Implement `components/edit-todo-dialog.tsx` with shadcn/ui Dialog and Form
-  - [ ] 5.7 Implement `components/todo-list.tsx` with two-column layout (incomplete/complete)
-  - [ ] 5.8 Create `app/(protected)/layout.tsx` with header, theme toggle, and logout button
-  - [ ] 5.9 Create `app/(protected)/dashboard/page.tsx` with TodoList component
-  - [ ] 5.10 Implement optimistic updates for toggle completion and delete operations
-  - [ ] 5.11 Write integration tests for todo CRUD operations
-  - [ ] 5.12 Verify all dashboard tests pass
+- [x] 5.0 Todo Dashboard (TDD)
+  - [x] 5.1 Write tests for `hooks/use-todos.ts`: useTodos query, useUpdateTodo, useDeleteTodo mutations
+  - [x] 5.2 Implement `hooks/use-todos.ts` with React Query hooks for todo operations
+  - [x] 5.3 Write tests for `components/todo-card.tsx`: rendering, toggle completion, edit button, delete button
+  - [x] 5.4 Implement `components/todo-card.tsx` with shadcn/ui Card and action buttons
+  - [x] 5.5 Write tests for `components/edit-todo-dialog.tsx`: dialog open/close, form pre-fill, save
+  - [x] 5.6 Implement `components/edit-todo-dialog.tsx` with shadcn/ui Dialog and Form
+  - [x] 5.7 Implement `components/todo-list.tsx` with two-column layout (incomplete/complete)
+  - [x] 5.8 Create `app/(protected)/layout.tsx` with header, theme toggle, and logout button
+  - [x] 5.9 Create `app/(protected)/dashboard/page.tsx` with TodoList component
+  - [x] 5.10 Implement optimistic updates for toggle completion and delete operations
+  - [x] 5.11 Write integration tests for todo CRUD operations
+  - [x] 5.12 Verify all dashboard tests pass
 
 - [ ] 6.0 Theme Toggle & Providers
   - [ ] 6.1 Create `providers/query-provider.tsx` with React Query client configuration

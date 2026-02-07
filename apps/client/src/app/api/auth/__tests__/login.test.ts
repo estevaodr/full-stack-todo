@@ -62,7 +62,11 @@ describe('POST /api/auth/login', () => {
         headers: { 'Content-Type': 'application/json' },
       })
     );
-    expect(mockCreateSession).toHaveBeenCalledWith('user-123', 'user@example.com');
+    expect(mockCreateSession).toHaveBeenCalledWith(
+      'user-123',
+      'user@example.com',
+      token
+    );
   });
 
   it('returns 401 with generic message on invalid credentials', async () => {

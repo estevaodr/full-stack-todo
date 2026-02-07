@@ -25,3 +25,14 @@ export async function fetchApi<T>(path: string, init?: RequestInit): Promise<T> 
 
   return res.json() as Promise<T>;
 }
+
+/** Call backend with Bearer token (e.g. from session.accessToken). */
+export async function fetchApiWithAuth<T>(
+  path: string,
+  accessToken: string,
+  init?: RequestInit
+): Promise<T> {
+  const headers = new Headers(init?.headers);
+  headers.set('Authorization', `Bearer ${accessToken}`);
+  return fetchApi<T>(path, { ...init, headers });
+}
