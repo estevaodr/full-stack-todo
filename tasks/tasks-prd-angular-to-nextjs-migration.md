@@ -137,7 +137,7 @@
   - [x] 2.8 Add test scripts to `project.json`: `test`, `test:coverage`, `test:watch`
   - [x] 2.9 Verify test infrastructure works by creating and running a simple test
 
-- [ ] 3.0 Core Libraries & Utilities (TDD)
+- [x] 3.0 Core Libraries & Utilities (TDD)
   - [x] 3.1 Create `src/lib/utils.ts` with `cn()` helper function for Tailwind class merging
   - [x] 3.2 Create `src/types/index.ts` to re-export types from `@full-stack-todo/shared/domain`
   - [x] 3.3 Write tests for `lib/validations.ts`: loginSchema and registerSchema validation
@@ -149,26 +149,26 @@
   - [x] 3.9 Implement `lib/api-client.ts` with base URL from server-only environment variable
   - [x] 3.10 Verify all core library tests pass with `npx nx test client`
 
-- [ ] 4.0 Authentication System (TDD)
-  - [ ] 4.1 Write tests for `api/auth/login/route.ts`: successful login, invalid credentials, validation errors
-  - [ ] 4.2 Implement `api/auth/login/route.ts`: proxy to backend, set HTTP-only cookie on success
-  - [ ] 4.3 Write tests for `api/auth/logout/route.ts`: successful logout, clear session
-  - [ ] 4.4 Implement `api/auth/logout/route.ts`: delete session cookie
-  - [ ] 4.5 Implement `api/auth/session/route.ts`: validate and return session data
-  - [ ] 4.6 Write tests for `middleware.ts`: protected route redirect, public route access, authenticated redirect
-  - [ ] 4.7 Implement `middleware.ts` for route protection with session validation
-  - [ ] 4.8 Create `providers/auth-provider.tsx` with AuthContext for client-side auth state
-  - [ ] 4.9 Write tests for `hooks/use-auth.ts`: useAuth hook for session state
-  - [ ] 4.10 Implement `hooks/use-auth.ts` with login, logout, and session refresh functions
-  - [ ] 4.11 Write tests for `components/login-form.tsx`: form rendering, validation, submission
-  - [ ] 4.12 Implement `components/login-form.tsx` with React Hook Form and shadcn/ui Form components
-  - [ ] 4.13 Write tests for `components/register-form.tsx`: form rendering, password validation, submission
-  - [ ] 4.14 Implement `components/register-form.tsx` with password confirmation and validation
-  - [ ] 4.15 Create `app/(auth)/layout.tsx` for auth pages (centered layout, no header)
-  - [ ] 4.16 Create `app/(auth)/login/page.tsx` with LoginForm component
-  - [ ] 4.17 Create `app/(auth)/register/page.tsx` with RegisterForm component
-  - [ ] 4.18 Write integration tests for auth flow: register → login → access dashboard → logout
-  - [ ] 4.19 Verify all authentication tests pass
+- [x] 4.0 Authentication System (TDD)
+  - [x] 4.1 Write tests for `api/auth/login/route.ts`: successful login, invalid credentials, validation errors
+  - [x] 4.2 Implement `api/auth/login/route.ts`: proxy to backend, set HTTP-only cookie on success
+  - [x] 4.3 Write tests for `api/auth/logout/route.ts`: successful logout, clear session
+  - [x] 4.4 Implement `api/auth/logout/route.ts`: delete session cookie
+  - [x] 4.5 Implement `api/auth/session/route.ts`: validate and return session data
+  - [x] 4.6 Write tests for `middleware.ts`: protected route redirect, public route access, authenticated redirect
+  - [x] 4.7 Implement `middleware.ts` for route protection with session validation
+  - [x] 4.8 Create `providers/auth-provider.tsx` with AuthContext for client-side auth state
+  - [x] 4.9 Write tests for `hooks/use-auth.ts`: useAuth hook for session state
+  - [x] 4.10 Implement `hooks/use-auth.ts` with login, logout, and session refresh functions
+  - [x] 4.11 Write tests for `components/login-form.tsx`: form rendering, validation, submission
+  - [x] 4.12 Implement `components/login-form.tsx` with React Hook Form and shadcn/ui Form components
+  - [x] 4.13 Write tests for `components/register-form.tsx`: form rendering, password validation, submission
+  - [x] 4.14 Implement `components/register-form.tsx` with password confirmation and validation
+  - [x] 4.15 Create `app/(auth)/layout.tsx` for auth pages (centered layout, no header)
+  - [x] 4.16 Create `app/(auth)/login/page.tsx` with LoginForm component
+  - [x] 4.17 Create `app/(auth)/register/page.tsx` with RegisterForm component
+  - [x] 4.18 Write integration tests for auth flow: register → login → access dashboard → logout
+  - [x] 4.19 Verify all authentication tests pass
 
 - [ ] 5.0 Todo Dashboard (TDD)
   - [ ] 5.1 Write tests for `hooks/use-todos.ts`: useTodos query, useUpdateTodo, useDeleteTodo mutations
