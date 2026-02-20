@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   const parsed = loginSchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { errors: parsed.error.flatten().fieldErrors },
+      { message: 'Invalid email or password.' },
       { status: 400 }
     );
   }
@@ -38,9 +38,10 @@ export async function POST(request: NextRequest) {
     await createSession(payload.sub, payload.email, access_token);
 
     return NextResponse.json({ ok: true }, { status: 200 });
-  } catch {
+  } catch (err) {
+    console.error('[auth/login]', err);
     return NextResponse.json(
-      { message: 'Email or password is invalid' },
+      { message: 'Invalid email or password.' },
       { status: 401 }
     );
   }

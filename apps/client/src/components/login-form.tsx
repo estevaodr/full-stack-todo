@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 
 export function LoginForm() {
-  const { login } = useAuth();
+  const { login, error } = useAuth();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -34,6 +34,11 @@ export function LoginForm() {
         className="space-y-4"
         noValidate
       >
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        )}
         <FormField
           control={form.control}
           name="email"

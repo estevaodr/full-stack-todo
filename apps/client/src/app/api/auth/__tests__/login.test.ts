@@ -78,26 +78,30 @@ describe('POST /api/auth/login', () => {
     const data = await res.json();
 
     expect(res.status).toBe(401);
-    expect(data.message).toBe('Email or password is invalid');
+    expect(data.message).toBe('Invalid email or password.');
     expect(mockCreateSession).not.toHaveBeenCalled();
   });
 
-  it('returns 400 on validation error (invalid email)', async () => {
+  it('returns 400 with generic message on validation error (invalid email)', async () => {
     const res = await POST(
       jsonRequest({ email: 'not-an-email', password: 'password123' })
     );
+    const data = await res.json();
 
     expect(res.status).toBe(400);
+    expect(data.message).toBe('Invalid email or password.');
     expect(mockFetchApi).not.toHaveBeenCalled();
     expect(mockCreateSession).not.toHaveBeenCalled();
   });
 
-  it('returns 400 on validation error (empty password)', async () => {
+  it('returns 400 with generic message on validation error (empty password)', async () => {
     const res = await POST(
       jsonRequest({ email: 'user@example.com', password: '' })
     );
+    const data = await res.json();
 
     expect(res.status).toBe(400);
+    expect(data.message).toBe('Invalid email or password.');
     expect(mockFetchApi).not.toHaveBeenCalled();
     expect(mockCreateSession).not.toHaveBeenCalled();
   });

@@ -34,6 +34,15 @@ describe('middleware', () => {
     expect(res.headers.get('Location')).toBe('http://localhost:3000/login');
   });
 
+  it('redirects to /login when session is expired (getSession returns null)', async () => {
+    mockGetSession.mockResolvedValue(null);
+
+    const res = await middleware(request('/dashboard'));
+
+    expect(res.status).toBe(307);
+    expect(res.headers.get('Location')).toBe('http://localhost:3000/login');
+  });
+
   it('allows access to protected route when session exists', async () => {
     mockGetSession.mockResolvedValue({
       userId: 'user-1',

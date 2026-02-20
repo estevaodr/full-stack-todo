@@ -1,5 +1,6 @@
 /**
  * Server-side API client. Uses API_URL (server-only env); do not use in client components.
+ * Only imported by API route handlers (app/api/**) and tests. API_URL is never in the client bundle.
  */
 const API_BASE = (process.env.API_URL ?? '').replace(/\/$/, '');
 

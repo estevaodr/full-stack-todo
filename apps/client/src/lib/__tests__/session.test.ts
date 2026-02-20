@@ -2,6 +2,7 @@
  * @vitest-environment node
  * Session tests use jose (JWT); Node env ensures TextEncoder/Uint8Array work correctly.
  */
+import { SignJWT } from 'jose';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 const mockCookieStore = {
@@ -73,6 +74,23 @@ describe('decrypt', () => {
     const token = await encrypt(payload);
     const tampered = token.slice(0, -2) + 'xx';
     const result = await decrypt(tampered);
+    expect(result).toBeNull();
+  });
+
+  it('returns null when token is expired (middleware then redirects to /login)', async () => {
+    const secret =
+      process.env.SESSION_SECRET ?? 'test-secret-at-least-32-characters-long!!';
+    const expiredToken = await new SignJWT({
+      userId: 'user-1',
+      email: 'user@example.com',
+      expiresAt: Date.now() - 1000,
+    })
+      .setProtectedHeader({ alg: 'HS256' })
+      .setIssuedAt()
+      .setExpirationTime(Math.floor(Date.now() / 1000) - 60)
+      .sign(new TextEncoder().encode(secret));
+
+    const result = await decrypt(expiredToken);
     expect(result).toBeNull();
   });
 });

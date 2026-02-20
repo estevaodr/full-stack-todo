@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
   const parsed = registerBodySchema.safeParse(body);
   if (!parsed.success) {
     return NextResponse.json(
-      { errors: parsed.error.flatten().fieldErrors },
+      { message: 'Registration failed. Please check your details.' },
       { status: 400 }
     );
   }
@@ -46,9 +46,10 @@ export async function POST(request: NextRequest) {
     await createSession(payload.sub, payload.email, access_token);
 
     return NextResponse.json({ ok: true }, { status: 201 });
-  } catch {
+  } catch (err) {
+    console.error('[auth/register]', err);
     return NextResponse.json(
-      { message: 'Registration failed' },
+      { message: 'Registration failed. Please check your details.' },
       { status: 400 }
     );
   }

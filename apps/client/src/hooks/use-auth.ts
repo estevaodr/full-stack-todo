@@ -3,46 +3,64 @@
 import { useCallback } from 'react';
 import { useAuthContext } from '@/providers/auth-provider';
 
+const GENERIC_LOGIN_ERROR = 'Invalid email or password.';
+const GENERIC_REGISTER_ERROR = 'Registration failed. Please check your details.';
+
 export function useAuth() {
-  const { user, isLoading, refresh } = useAuthContext();
+  const { user, isLoading, error, setError, refresh } = useAuthContext();
 
   const login = useCallback(
     async (email: string, password: string) => {
-      await fetch('/api/auth/login', {
+      setError(null);
+      const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError((data.message as string) ?? GENERIC_LOGIN_ERROR);
+        return;
+      }
       await refresh();
     },
-    [refresh]
+    [refresh, setError]
   );
 
   const logout = useCallback(async () => {
+    setError(null);
     await fetch('/api/auth/logout', {
       method: 'POST',
       credentials: 'include',
     });
     await refresh();
-  }, [refresh]);
+  }, [refresh, setError]);
 
   const register = useCallback(
     async (email: string, password: string) => {
-      await fetch('/api/auth/register', {
+      setError(null);
+      const res = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
         credentials: 'include',
       });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError((data.message as string) ?? GENERIC_REGISTER_ERROR);
+        return;
+      }
       await refresh();
     },
-    [refresh]
+    [refresh, setError]
   );
 
   return {
     user,
     isLoading,
+    error,
+    setError,
     refresh,
     login,
     logout,

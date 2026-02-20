@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 
 export function RegisterForm() {
-  const { register: registerUser } = useAuth();
+  const { register: registerUser, error } = useAuth();
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -34,6 +34,11 @@ export function RegisterForm() {
         className="space-y-4"
         noValidate
       >
+        {error && (
+          <p role="alert" className="text-sm text-destructive">
+            {error}
+          </p>
+        )}
         <FormField
           control={form.control}
           name="email"

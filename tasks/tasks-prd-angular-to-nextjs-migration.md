@@ -194,15 +194,15 @@
   - [x] 6.7 Add theme CSS variables for light and dark modes in `globals.css`
   - [x] 6.8 Verify theme persistence works across page refreshes
 
-- [ ] 7.0 Security Hardening
-  - [ ] 7.1 Create `next.config.js` with security headers (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
-  - [ ] 7.2 Verify secure cookie settings in session.ts (httpOnly, secure in production, sameSite: lax)
-  - [ ] 7.3 Implement generic error messages in login/register (prevent user enumeration)
-  - [ ] 7.4 Add server-side error logging with generic client responses
-  - [ ] 7.5 Verify API_URL is not exposed to client-side JavaScript
-  - [ ] 7.6 Run `npm audit` and fix any high/critical vulnerabilities
-  - [ ] 7.7 Verify all security headers are present using browser DevTools
-  - [ ] 7.8 Test session expiration behavior (redirect to login when expired)
+- [x] 7.0 Security Hardening
+  - [x] 7.1 Create `next.config.js` with security headers (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)
+  - [x] 7.2 Verify secure cookie settings in session.ts (httpOnly, secure in production, sameSite: lax)
+  - [x] 7.3 Implement generic error messages in login/register (prevent user enumeration)
+  - [x] 7.4 Add server-side error logging with generic client responses
+  - [x] 7.5 Verify API_URL is not exposed to client-side JavaScript
+  - [x] 7.6 Run `npm audit` and fix any high/critical vulnerabilities
+  - [x] 7.7 Verify all security headers are present using browser DevTools
+  - [x] 7.8 Test session expiration behavior (redirect to login when expired)
 
 - [ ] 8.0 Database Documentation
   - [ ] 8.1 Create `docs/database/` directory structure
