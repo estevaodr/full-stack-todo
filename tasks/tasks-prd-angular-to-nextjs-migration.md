@@ -184,15 +184,15 @@
   - [x] 5.11 Write integration tests for todo CRUD operations
   - [x] 5.12 Verify all dashboard tests pass
 
-- [ ] 6.0 Theme Toggle & Providers
-  - [ ] 6.1 Create `providers/query-provider.tsx` with React Query client configuration
-  - [ ] 6.2 Create `providers/theme-provider.tsx` wrapping next-themes ThemeProvider
-  - [ ] 6.3 Write tests for `components/theme-toggle.tsx`: toggle between light/dark, system preference
-  - [ ] 6.4 Implement `components/theme-toggle.tsx` with next-themes useTheme hook
-  - [ ] 6.5 Create `app/layout.tsx` root layout with all providers (Query, Theme, Auth)
-  - [ ] 6.6 Create `app/page.tsx` with redirect to /dashboard
-  - [ ] 6.7 Add theme CSS variables for light and dark modes in `globals.css`
-  - [ ] 6.8 Verify theme persistence works across page refreshes
+- [x] 6.0 Theme Toggle & Providers
+  - [x] 6.1 Create `providers/query-provider.tsx` with React Query client configuration
+  - [x] 6.2 Create `providers/theme-provider.tsx` wrapping next-themes ThemeProvider
+  - [x] 6.3 Write tests for `components/theme-toggle.tsx`: toggle between light/dark, system preference
+  - [x] 6.4 Implement `components/theme-toggle.tsx` with next-themes useTheme hook
+  - [x] 6.5 Create `app/layout.tsx` root layout with all providers (Query, Theme, Auth)
+  - [x] 6.6 Create `app/page.tsx` with redirect to /dashboard
+  - [x] 6.7 Add theme CSS variables for light and dark modes in `globals.css`
+  - [x] 6.8 Verify theme persistence works across page refreshes
 
 - [ ] 7.0 Security Hardening
   - [ ] 7.1 Create `next.config.js` with security headers (HSTS, X-Frame-Options, X-Content-Type-Options, Referrer-Policy, Permissions-Policy)

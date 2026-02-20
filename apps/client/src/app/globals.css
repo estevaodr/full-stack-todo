@@ -5,37 +5,37 @@
 @layer base {
   :root {
     /* Nord Color Palette - Light Theme */
-    /* Background colors */
-    --background: 220 13% 18%; /* nord0 - #2E3440 */
-    --foreground: 220 16% 88%; /* nord4 - #D8DEE9 */
+    /* Background colors (nord6 #ECEFF4, nord5 #E5E9F0) */
+    --background: 220 16% 96%; /* nord6 */
+    --foreground: 220 13% 18%; /* nord0 - #2E3440 */
     
     /* Card colors */
-    --card: 220 14% 25%; /* nord1 - #3B4252 */
-    --card-foreground: 220 16% 88%; /* nord4 - #D8DEE9 */
+    --card: 220 14% 92%; /* nord5 - #E5E9F0 */
+    --card-foreground: 220 13% 18%; /* nord0 */
     
     /* Primary colors (Nord10 - #5E81AC) */
     --primary: 210 50% 52%; /* nord10 */
-    --primary-foreground: 220 16% 88%; /* nord4 */
+    --primary-foreground: 220 16% 96%; /* nord6 */
     
     /* Secondary colors */
-    --secondary: 220 14% 25%; /* nord1 */
-    --secondary-foreground: 220 16% 88%; /* nord4 */
+    --secondary: 220 14% 90%; /* nord5 */
+    --secondary-foreground: 220 13% 18%; /* nord0 */
     
     /* Destructive/Error colors (Nord11 - #BF616A) */
     --destructive: 354 42% 56%; /* nord11 */
-    --destructive-foreground: 220 16% 88%; /* nord4 */
+    --destructive-foreground: 220 16% 96%; /* nord6 */
     
     /* Muted colors */
-    --muted: 220 13% 28%; /* nord2 - #434C5E */
+    --muted: 220 10% 88%; /* nord4/5 */
     --muted-foreground: 220 9% 46%; /* nord3 - #4C566A */
     
     /* Accent colors */
-    --accent: 220 14% 25%; /* nord1 */
-    --accent-foreground: 220 16% 88%; /* nord4 */
+    --accent: 220 14% 90%; /* nord5 */
+    --accent-foreground: 220 13% 18%; /* nord0 */
     
     /* Border and input colors */
-    --border: 220 9% 46%; /* nord3 */
-    --input: 220 9% 46%; /* nord3 */
+    --border: 220 9% 80%; /* nord3 light */
+    --input: 220 9% 80%; /* nord3 light */
     --ring: 210 50% 52%; /* nord10 */
     
     /* Status colors */
@@ -44,7 +44,7 @@
     --warning: 40 71% 73%; /* nord13 - #EBCB8B */
     --warning-foreground: 220 13% 18%; /* nord0 */
     --info: 210 50% 52%; /* nord10 */
-    --info-foreground: 220 16% 88%; /* nord4 */
+    --info-foreground: 220 16% 96%; /* nord6 */
     
     /* Border radius */
     --radius: 0.5rem;
