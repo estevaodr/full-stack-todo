@@ -1,4 +1,7 @@
-/** @type {import('next').NextConfig} */
+// @ts-check
+const { composePlugins, withNx } = require('@nx/next');
+
+/** @type {import('@nx/next/plugins/with-nx').WithNxOptions} */
 const nextConfig = {
   async headers() {
     return [
@@ -31,4 +34,9 @@ const nextConfig = {
   },
 };
 
-module.exports = nextConfig;
+const plugins = [
+  // Add more Next.js plugins to this list if needed.
+  withNx,
+];
+
+module.exports = composePlugins(...plugins)(nextConfig);
