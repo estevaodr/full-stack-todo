@@ -76,15 +76,15 @@
 - `apps/client/src/__tests__/integration/todo-crud.test.ts` - Todo CRUD integration tests
 
 ### E2E Tests (Playwright)
-- `apps/client/playwright.config.ts` - Playwright configuration
-- `apps/client/e2e/auth.spec.ts` - Authentication E2E tests
-- `apps/client/e2e/todo.spec.ts` - Todo CRUD E2E tests
-- `apps/client/e2e/theme.spec.ts` - Theme toggle E2E tests
-- `apps/client/e2e/navigation.spec.ts` - Route protection E2E tests
-- `apps/client/e2e/pages/login.page.ts` - Login page object
-- `apps/client/e2e/pages/register.page.ts` - Register page object
-- `apps/client/e2e/pages/dashboard.page.ts` - Dashboard page object
-- `apps/client/e2e/fixtures/auth.fixture.ts` - Authentication test fixtures
+- `apps/client-e2e/playwright.config.ts` - Playwright configuration
+- `apps/client-e2e/e2e/auth.spec.ts` - Authentication E2E tests
+- `apps/client-e2e/e2e/todo.spec.ts` - Todo CRUD E2E tests
+- `apps/client-e2e/e2e/theme.spec.ts` - Theme toggle E2E tests
+- `apps/client-e2e/e2e/navigation.spec.ts` - Route protection E2E tests
+- `apps/client-e2e/e2e/pages/login.page.ts` - Login page object
+- `apps/client-e2e/e2e/pages/register.page.ts` - Register page object
+- `apps/client-e2e/e2e/pages/dashboard.page.ts` - Dashboard page object
+- `apps/client-e2e/e2e/fixtures/auth.fixture.ts` - Authentication test fixtures
 
 ### Database Documentation
 - `docs/database/README.md` - Database documentation overview
@@ -101,7 +101,7 @@
 
 - All implementation follows TDD methodology: write failing tests first (Red), implement minimal code to pass (Green), refactor (Refactor)
 - Unit tests should be placed in `__tests__/` directories alongside the code files they test
-- E2E tests use Playwright and are located in `apps/client/e2e/`
+- E2E tests use Playwright and are located in `apps/client-e2e/e2e/`
 - Use `npx nx` for all Nx commands
 - Shared domain types from `libs/shared/domain/` will be reused in the Next.js client
 - The NestJS backend remains unchanged - only the frontend is being migrated
@@ -204,44 +204,44 @@
   - [x] 7.7 Verify all security headers are present using browser DevTools
   - [x] 7.8 Test session expiration behavior (redirect to login when expired)
 
-- [ ] 8.0 Database Documentation
-  - [ ] 8.1 Create `docs/database/` directory structure
-  - [ ] 8.2 Create `docs/database/README.md` with overview and navigation links
-  - [ ] 8.3 Create `docs/database/ERD.md` with Mermaid diagram showing User and Todo entities
-  - [ ] 8.4 Create `docs/database/ENTITIES.md` documenting User entity (id, email, password, todos relation)
-  - [ ] 8.5 Add Todo entity documentation to `ENTITIES.md` (id, title, description, completed, user relation)
-  - [ ] 8.6 Create `docs/database/SCHEMA.md` with PostgreSQL schema details and column types
-  - [ ] 8.7 Document unique constraints (UNIQUE_TITLE_USER) and indexes
-  - [ ] 8.8 Create `docs/database/MIGRATIONS.md` with migration strategy and TypeORM synchronize notes
-  - [ ] 8.9 Document cascade behaviors (User deletion cascades to Todos)
-  - [ ] 8.10 Review documentation for completeness and accuracy
+- [x] 8.0 Database Documentation
+  - [x] 8.1 Create `docs/database/` directory structure
+  - [x] 8.2 Create `docs/database/README.md` with overview and navigation links
+  - [x] 8.3 Create `docs/database/ERD.md` with Mermaid diagram showing User and Todo entities
+  - [x] 8.4 Create `docs/database/ENTITIES.md` documenting User entity (id, email, password, todos relation)
+  - [x] 8.5 Add Todo entity documentation to `ENTITIES.md` (id, title, description, completed, user relation)
+  - [x] 8.6 Create `docs/database/SCHEMA.md` with PostgreSQL schema details and column types
+  - [x] 8.7 Document unique constraints (UNIQUE_TITLE_USER) and indexes
+  - [x] 8.8 Create `docs/database/MIGRATIONS.md` with migration strategy and TypeORM synchronize notes
+  - [x] 8.9 Document cascade behaviors (User deletion cascades to Todos)
+  - [x] 8.10 Review documentation for completeness and accuracy
 
-- [ ] 9.0 E2E Testing with Playwright
-  - [ ] 9.1 Install Playwright: `@playwright/test`
-  - [ ] 9.2 Create `playwright.config.ts` with Next.js dev server, multi-browser support, and screenshot on failure
-  - [ ] 9.3 Create `e2e/fixtures/auth.fixture.ts` with authenticated/unauthenticated test fixtures
-  - [ ] 9.4 Create `e2e/pages/login.page.ts` page object with form interactions
-  - [ ] 9.5 Create `e2e/pages/register.page.ts` page object with form interactions
-  - [ ] 9.6 Create `e2e/pages/dashboard.page.ts` page object with todo interactions
-  - [ ] 9.7 Create `e2e/auth.spec.ts` with login, register, logout E2E tests
-  - [ ] 9.8 Create `e2e/todo.spec.ts` with toggle completion, edit, delete E2E tests
-  - [ ] 9.9 Create `e2e/theme.spec.ts` with theme toggle E2E tests
-  - [ ] 9.10 Create `e2e/navigation.spec.ts` with route protection E2E tests
-  - [ ] 9.11 Add Playwright scripts to `project.json`: `e2e`, `e2e:ui`, `e2e:report`
-  - [ ] 9.12 Run all E2E tests across Chromium, Firefox, and WebKit browsers
-  - [ ] 9.13 Verify test reports and screenshots are generated correctly
+- [x] 9.0 E2E Testing with Playwright
+  - [x] 9.1 Install Playwright: `@playwright/test`
+  - [x] 9.2 Create `playwright.config.ts` with Next.js dev server, multi-browser support, and screenshot on failure
+  - [x] 9.3 Create `e2e/fixtures/auth.fixture.ts` with authenticated/unauthenticated test fixtures
+  - [x] 9.4 Create `e2e/pages/login.page.ts` page object with form interactions
+  - [x] 9.5 Create `e2e/pages/register.page.ts` page object with form interactions
+  - [x] 9.6 Create `e2e/pages/dashboard.page.ts` page object with todo interactions
+  - [x] 9.7 Create `e2e/auth.spec.ts` with login, register, logout E2E tests
+  - [x] 9.8 Create `e2e/todo.spec.ts` with toggle completion, edit, delete E2E tests
+  - [x] 9.9 Create `e2e/theme.spec.ts` with theme toggle E2E tests
+  - [x] 9.10 Create `e2e/navigation.spec.ts` with route protection E2E tests
+  - [x] 9.11 Add Playwright scripts to `project.json`: `e2e`, `e2e:ui`, `e2e:report`
+  - [x] 9.12 Run all E2E tests across Chromium, Firefox, and WebKit browsers
+  - [x] 9.13 Verify test reports and screenshots are generated correctly
 
-- [ ] 10.0 Cleanup & Migration Finalization
-  - [ ] 10.1 Delete `apps/ui-components-e2e/` directory (Cypress tests replaced by Playwright)
-  - [ ] 10.2 Remove Cypress dependencies from root `package.json`
-  - [ ] 10.3 Remove Angular-related dependencies from root `package.json`
-  - [ ] 10.4 Delete Angular client libraries from `libs/client/` if no longer needed (keep shared domain)
-  - [ ] 10.5 Update root `nx.json` to remove Angular-related configuration if present
-  - [ ] 10.6 Run `npm install` to clean up node_modules
-  - [ ] 10.7 Run full test suite: `npx nx test client` and `npx nx e2e client`
-  - [ ] 10.8 Run linting: `npx nx lint client`
-  - [ ] 10.9 Run type checking: `npx nx run client:typecheck` or `tsc --noEmit`
-  - [ ] 10.10 Verify production build: `npx nx build client --configuration=production`
+- [x] 10.0 Cleanup & Migration Finalization
+  - [x] 10.1 Delete `apps/ui-components-e2e/` directory (Cypress tests replaced by Playwright)
+  - [x] 10.2 Remove Cypress dependencies from root `package.json`
+  - [x] 10.3 Remove Angular-related dependencies from root `package.json`
+  - [x] 10.4 Delete Angular client libraries from `libs/client/` if no longer needed (keep shared domain)
+  - [x] 10.5 Update root `nx.json` to remove Angular-related configuration if present
+  - [x] 10.6 Run `npm install` to clean up node_modules
+  - [x] 10.7 Run full test suite: `npx nx test client` and `npx nx e2e client-e2e`
+  - [x] 10.8 Run linting: `npx nx lint client`
+  - [x] 10.9 Run type checking: `npx nx run client:typecheck` or `tsc --noEmit`
+  - [x] 10.10 Verify production build: `npx nx build client --configuration=production`
   - [ ] 10.11 Manual testing: complete the Testing Strategy checklist from PRD
-  - [ ] 10.12 Update project README.md with new Next.js client instructions
-  - [ ] 10.13 Create git commit with migration changes
+  - [x] 10.12 Update project README.md with new Next.js client instructions
+  - [x] 10.13 Create git commit with migration changes

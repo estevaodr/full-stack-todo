@@ -74,6 +74,8 @@ See the [Run tasks](#run-tasks) section below for details on running the server 
 
 ## Run tasks
 
+### Server (NestJS)
+
 To run the dev server for your app, use:
 
 ```sh
@@ -85,6 +87,24 @@ To create a production bundle:
 ```sh
 npx nx build server
 ```
+
+### Client (Next.js)
+
+The client is a Next.js 15+ app. To run it in development:
+
+```sh
+npx nx serve client
+# or from apps/client: npm run dev
+```
+
+To build for production and run E2E tests:
+
+```sh
+npx nx build client
+npx nx e2e client-e2e   # requires backend API running; uses Playwright
+```
+
+Unit tests use Vitest: `npx nx test client`.
 
 To see all available targets to run for a project, run:
 

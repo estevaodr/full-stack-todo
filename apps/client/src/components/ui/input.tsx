@@ -21,8 +21,8 @@ import { cn } from '@/lib/utils';
  * Input component props.
  * Extends all standard HTML input attributes.
  */
-export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+export type InputProps =
+  React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
  * Input component with consistent styling and accessibility.

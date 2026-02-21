@@ -51,4 +51,4 @@ __screenshots__/
 
 storybook-static
 
-postgres-data/
+postgres-data/*.tsbuildinfo

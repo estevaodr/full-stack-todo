@@ -5,7 +5,6 @@
  */
 import path from 'path';
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const nextConfig = require(path.resolve(__dirname, '../../next.config.js'));
 
 const EXPECTED_HEADERS = [
