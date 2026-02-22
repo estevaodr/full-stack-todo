@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nord Todo Login</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#5E81AC",
+                        "nord-bg": "#ECEFF4",
+                        "nord-card": "#E5E9F0",
+                        "nord-text-muted": "#4C566A",
+                        "nord-border": "#D8DEE9",
+                        "background-light": "#ECEFF4",
+                        "background-dark": "#2E3440",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem", // 16px per requirement
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    boxShadow: {
+                        'nord': '0 8px 30px rgba(76, 86, 106, 0.08)',
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .input-radius {
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark min-h-screen flex items-center justify-center p-4">
+<!-- Login Card Container -->
+<main class="w-full max-w-[400px] bg-nord-card dark:bg-slate-800 rounded-lg shadow-nord p-8 flex flex-col items-center">
+<!-- App Logo & Title -->
+<div class="flex flex-col items-center mb-8">
+<div class="text-primary mb-2">
+<span class="material-symbols-outlined text-4xl">task_alt</span>
+</div>
+<h1 class="text-[28px] font-bold text-primary tracking-tight">TodoApp</h1>
+<p class="text-base text-nord-text-muted dark:text-slate-400 mt-1">Welcome back</p>
+</div>
+<!-- Login Form -->
+<form class="w-full space-y-5">
+<!-- Email Field -->
+<div class="flex flex-col gap-1.5">
+<label class="text-[14px] font-medium text-nord-text-muted dark:text-slate-300 ml-1" for="email">
+                    Email
+                </label>
+<div class="relative">
+<input class="w-full h-12 px-4 bg-white dark:bg-slate-900 border border-nord-border dark:border-slate-700 input-radius text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" id="email" name="email" placeholder="Enter your email" type="email"/>
+</div>
+</div>
+<!-- Password Field -->
+<div class="flex flex-col gap-1.5">
+<div class="flex justify-between items-center">
+<label class="text-[14px] font-medium text-nord-text-muted dark:text-slate-300 ml-1" for="password">
+                        Password
+                    </label>
+<a class="text-[12px] text-primary hover:underline" href="#">Forgot?</a>
+</div>
+<div class="relative">
+<input class="w-full h-12 px-4 bg-white dark:bg-slate-900 border border-nord-border dark:border-slate-700 input-radius text-slate-900 dark:text-slate-100 placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all" id="password" name="password" placeholder="••••••••" type="password"/>
+</div>
+</div>
+<!-- Remember Me & Terms (Optional but good for UX) -->
+<div class="flex items-center gap-2 px-1">
+<input class="rounded border-nord-border text-primary focus:ring-primary/30" id="remember" type="checkbox"/>
+<label class="text-[13px] text-nord-text-muted dark:text-slate-400" for="remember">Keep me logged in</label>
+</div>
+<!-- Login Button -->
+<button class="w-full h-[40px] bg-primary hover:bg-[#4C7099] active:scale-[0.98] text-white font-bold rounded-lg transition-all flex items-center justify-center gap-2" type="submit">
+                Log In
+            </button>
+</form>
+<!-- Footer Section -->
+<div class="mt-8 text-center">
+<p class="text-[14px] text-nord-text-muted dark:text-slate-400">
+                Don't have an account? 
+                <a class="text-primary font-semibold hover:underline decoration-2 underline-offset-4" href="#">Sign up</a>
+</p>
+</div>
+<!-- Social Login Divider -->
+<div class="w-full flex items-center gap-4 my-6">
+<div class="h-[1px] flex-1 bg-nord-border dark:bg-slate-700"></div>
+<span class="text-[12px] uppercase tracking-widest text-nord-text-muted/60 dark:text-slate-500 font-bold">OR</span>
+<div class="h-[1px] flex-1 bg-nord-border dark:bg-slate-700"></div>
+</div>
+<!-- Social Buttons -->
+<div class="w-full flex gap-3">
+<button class="flex-1 h-10 border border-nord-border dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<img alt="Google" class="w-5 h-5" data-alt="Google brand logo icon for social login" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVPzOx6Ef8lGuPoMBNngOS2yPA2OQwTBuHkzDFdJSg_XWRCcI25kbOS5ULEufGkprBsVRf9xB4mdAA5watx7weWO5OvXLeLZ1gggzVmOvVZiGTyj7nF8jtRvkwa-1tMxprr0uHBDsTR4w4mrG4fFh7nkNPDirpHiHmHAIRbMCheazYeKCiiF_ZMs677dVBCu20RC8ckxmi9QwbK5MkzKSacIcK2qjJ1uZJA8exlE53_0etDqu0Nxe2DOqMa2p3kfNC3A7s7vFx5PEo"/>
+</button>
+<button class="flex-1 h-10 border border-nord-border dark:border-slate-700 bg-white dark:bg-slate-900 rounded-lg flex items-center justify-center hover:bg-slate-50 dark:hover:bg-slate-800 transition-colors">
+<img alt="Apple" class="w-5 h-5 dark:invert" data-alt="Apple brand logo icon for social login" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDixmSr2Od7Fk_KgPuUaMftO7KYYBd4d62OVblhgrdM-AEnTsYrRxzg2y9VndsNrRQKYX2EESdaq2OeISTooRqhVUgbe_I98JicQfv4Twi49F-NDRLj3fJdWV7hRgmJUlTxvqVvHXEmfoF45ifCouzCuuJ10RAHsxPC8AFaHh0aElbxJu88xvpTCjgwSO13fMFKugY8tiATDQbulNxHdLCwLKNTd4ULK3tN_IdOLaujkUooFgVJb5adH9-IdwiV07Gu1_BnIkxbjKbZ"/>
+</button>
+</div>
+</main>
+<!-- Background Decorative Elements -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
+<div class="absolute -top-[10%] -right-[10%] w-[40%] h-[40%] bg-primary/5 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-[10%] -left-[10%] w-[30%] h-[30%] bg-primary/5 rounded-full blur-3xl"></div>
+</div>
+</body></html>

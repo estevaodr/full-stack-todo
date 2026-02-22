@@ -1,9 +1,7 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import type { ITodo, IUpdateTodo } from '@full-stack-todo/shared/domain';
-import { useUpdateTodo } from '@/hooks/use-todos';
+import { useCreateTodo } from '@/hooks/use-todos';
 import {
   Dialog,
   DialogContent,
@@ -19,41 +17,31 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-export interface EditTodoDialogProps {
-  todo: ITodo;
+export interface AddTodoDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }
 
-interface EditTodoFormValues {
+interface AddTodoFormValues {
   title: string;
   description: string;
 }
 
-export function EditTodoDialog({
-  todo,
-  open,
-  onOpenChange,
-}: EditTodoDialogProps) {
-  const updateTodo = useUpdateTodo();
-  const form = useForm<EditTodoFormValues>({
-    defaultValues: { title: todo.title, description: todo.description ?? '' },
+export function AddTodoDialog({ open, onOpenChange }: AddTodoDialogProps) {
+  const createTodo = useCreateTodo();
+  const form = useForm<AddTodoFormValues>({
+    defaultValues: { title: '', description: '' },
   });
 
-  useEffect(() => {
-    if (open) {
-      form.reset({ title: todo.title, description: todo.description ?? '' });
-    }
-  }, [open, todo.id, todo.title, todo.description, form]);
-
-  function onSubmit(values: EditTodoFormValues) {
-    const data: IUpdateTodo = {
-      title: values.title,
-      description: values.description,
-    };
-    updateTodo.mutate(
-      { id: todo.id, data },
-      { onSuccess: () => onOpenChange(false) }
+  function onSubmit(values: AddTodoFormValues) {
+    createTodo.mutate(
+      { title: values.title, description: values.description || undefined },
+      {
+        onSuccess: () => {
+          form.reset();
+          onOpenChange(false);
+        },
+      }
     );
   }
 
@@ -65,7 +53,7 @@ export function EditTodoDialog({
       >
         <DialogHeader>
           <DialogTitle className="text-[22px] font-semibold tracking-tight">
-            Edit Todo
+            Add New Todo
           </DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -86,6 +74,7 @@ export function EditTodoDialog({
                   <FormControl>
                     <input
                       {...field}
+                      placeholder="e.g., Weekly Sync"
                       className="w-full h-12 px-4 rounded-lg bg-white dark:bg-slate-900 border border-border text-foreground placeholder:text-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                       aria-label="Title"
                     />
@@ -106,6 +95,7 @@ export function EditTodoDialog({
                     <textarea
                       {...field}
                       rows={4}
+                      placeholder="Enter task details..."
                       className="w-full p-4 rounded-lg bg-white dark:bg-slate-900 border border-border text-foreground placeholder:text-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none resize-none"
                       aria-label="Description"
                     />
@@ -124,10 +114,10 @@ export function EditTodoDialog({
               </button>
               <button
                 type="submit"
-                disabled={updateTodo.isPending}
+                disabled={createTodo.isPending}
                 className="h-10 px-8 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50"
               >
-                Save
+                Save Task
               </button>
             </div>
           </form>

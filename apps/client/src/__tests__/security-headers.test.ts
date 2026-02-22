@@ -17,10 +17,13 @@ const EXPECTED_HEADERS = [
 
 describe('Security headers (next.config.js)', () => {
   it('config defines headers() that returns security headers for all routes', async () => {
-    expect(nextConfig.headers).toBeDefined();
-    expect(typeof nextConfig.headers).toBe('function');
+    // Evaluate the Nx-wrapped next.config.js to get the actual config object
+    const evaluatedConfig = await nextConfig('phase-production-build', { defaultConfig: {} });
+    
+    expect(evaluatedConfig.headers).toBeDefined();
+    expect(typeof evaluatedConfig.headers).toBe('function');
 
-    const result = await nextConfig.headers();
+    const result = await evaluatedConfig.headers();
 
     expect(Array.isArray(result)).toBe(true);
     expect(result.length).toBeGreaterThan(0);
@@ -36,7 +39,8 @@ describe('Security headers (next.config.js)', () => {
   });
 
   it('each expected security header has a non-empty value', async () => {
-    const result = await nextConfig.headers();
+    const evaluatedConfig = await nextConfig('phase-production-build', { defaultConfig: {} });
+    const result = await evaluatedConfig.headers();
     const allRoutes = result.find((r: { source: string }) => r.source === '/(.*)');
 
     for (const expected of EXPECTED_HEADERS) {
@@ -46,3 +50,4 @@ describe('Security headers (next.config.js)', () => {
     }
   });
 });
+

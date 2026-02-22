@@ -61,19 +61,18 @@ describe('TodoCard', () => {
     expect(screen.getByText('From the store')).toBeInTheDocument();
   });
 
-  it('shows completed state (e.g. checked or strikethrough)', () => {
+  it('shows mark as complete button for incomplete todo', () => {
     render(<TodoCard todo={todo} />, { wrapper: createWrapper() });
 
-    const checkbox = screen.getByRole('checkbox', { name: /complete|toggle/i });
-    expect(checkbox).toBeInTheDocument();
-    expect(checkbox).not.toBeChecked();
+    const btn = screen.getByRole('button', { name: /mark as complete/i });
+    expect(btn).toBeInTheDocument();
   });
 
   it('toggle completion calls useUpdateTodo with inverted completed', async () => {
     const user = userEvent.setup();
     render(<TodoCard todo={todo} />, { wrapper: createWrapper() });
 
-    await user.click(screen.getByRole('checkbox', { name: /complete|toggle/i }));
+    await user.click(screen.getByRole('button', { name: /mark as complete/i }));
 
     expect(mockUpdateTodo).toHaveBeenCalledTimes(1);
     expect(mockUpdateTodo).toHaveBeenCalledWith({
@@ -89,7 +88,7 @@ describe('TodoCard', () => {
       { wrapper: createWrapper() }
     );
 
-    await user.click(screen.getByRole('checkbox', { name: /complete|toggle/i }));
+    await user.click(screen.getByRole('button', { name: /mark as incomplete/i }));
 
     expect(mockUpdateTodo).toHaveBeenCalledWith({
       id: 'todo-1',
@@ -97,8 +96,8 @@ describe('TodoCard', () => {
     });
   });
 
-  it('edit button is present and opens edit flow', () => {
-    render(<TodoCard todo={todo} />, { wrapper: createWrapper() });
+  it('edit button is present when onEdit is provided', () => {
+    render(<TodoCard todo={todo} onEdit={vi.fn()} />, { wrapper: createWrapper() });
 
     expect(
       screen.getByRole('button', { name: /edit/i })

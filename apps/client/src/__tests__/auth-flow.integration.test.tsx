@@ -142,7 +142,7 @@ describe('Auth flow integration', () => {
       within(loginSection).getByLabelText(/^password$/i),
       'password123'
     );
-    await user.click(within(loginSection).getByRole('button', { name: /sign in/i }));
+    await user.click(within(loginSection).getByRole('button', { name: /log in/i }));
 
     await waitFor(() => {
       expect(screen.getByTestId('dashboard')).toBeInTheDocument();

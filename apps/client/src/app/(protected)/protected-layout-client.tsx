@@ -16,11 +16,16 @@ export function ProtectedLayoutClient() {
 
   return (
     <header
-      className="flex flex-wrap items-center justify-between gap-4 border-b px-6 py-4"
+      className="h-16 bg-card dark:bg-slate-800 border-b border-border fixed top-0 w-full z-50 flex items-center justify-between px-8"
       role="banner"
     >
-      <h1 className="text-xl font-semibold">Todo Dashboard</h1>
       <div className="flex items-center gap-2">
+        <div className="bg-primary text-white p-1 rounded">
+          <span className="material-symbols-outlined block text-xl">check_circle</span>
+        </div>
+        <h1 className="text-xl font-bold tracking-tight">TodoApp</h1>
+      </div>
+      <div className="flex items-center gap-4">
         <ThemeToggle />
         <Button
           type="button"

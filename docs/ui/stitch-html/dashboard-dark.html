@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Nord Todo Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#88C0D0",
+                        "nord-dark": "#2E3440",
+                        "nord-surface": "#3B4252",
+                        "nord-text": "#ECEFF4",
+                        "nord-secondary": "#D8DEE9",
+                        "nord-success": "#A3BE8C",
+                        "nord-danger": "#BF616A",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#2E3440",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .filled-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-nord-text min-h-screen font-display">
+<!-- Navigation Bar -->
+<nav class="h-16 bg-white dark:bg-nord-surface border-b border-slate-200 dark:border-slate-700/50 flex items-center justify-between px-8 sticky top-0 z-50">
+<div class="flex items-center gap-3">
+<div class="bg-primary p-1.5 rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-nord-dark text-xl font-bold">check_circle</span>
+</div>
+<h1 class="text-xl font-bold tracking-tight text-slate-900 dark:text-nord-text">TodoApp</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full bg-slate-100 dark:bg-nord-dark hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors">
+<span class="material-symbols-outlined text-slate-600 dark:text-nord-secondary">dark_mode</span>
+</button>
+<div class="w-8 h-8 rounded-full bg-primary/20 overflow-hidden border border-primary/30">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="Portrait of a smiling professional person" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyIbYf8iSpc-n1udRqwtV_WqXxGus9aujc91gkzecI7bfur3PUxRnKjJmVyYHhbZljKiWzoKCa5_EPrDowzx0twx3YVwr8Nj_GfQHQGK9-dY-xnJKr0ljc7ry3vRxdqq54nChrLhwwP9zmhyJr2nwvdhdC1e8JjDMgVW7oOuKc7LCw-4Jt-Rlpsq-IDMO5wKU3cY2oBMj7wugIVB5jUkZ5QQvK1u5k13VkrFK2U_S915a_PPmykMYj5BRgMTSM5flx85OjknOUf6aK"/>
+</div>
+</div>
+</nav>
+<!-- Main Content Container -->
+<main class="max-w-[960px] mx-auto p-8">
+<header class="mb-10">
+<h2 class="text-3xl font-bold text-slate-900 dark:text-nord-text">Todo Dashboard</h2>
+<p class="text-slate-500 dark:text-nord-secondary mt-1">Manage your tasks in Nord dark mode</p>
+</header>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+<!-- Incomplete Column -->
+<section class="flex flex-col gap-6">
+<div class="flex items-center justify-between px-2">
+<h3 class="text-[22px] font-semibold text-slate-900 dark:text-nord-text flex items-center gap-2">
+                        Incomplete
+                        <span class="text-sm font-medium bg-slate-200 dark:bg-nord-surface px-2.5 py-0.5 rounded-full text-slate-600 dark:text-nord-secondary">3</span>
+</h3>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Task Card 1 -->
+<div class="group bg-white dark:bg-nord-surface p-5 rounded-2xl border border-slate-200 dark:border-transparent hover:border-primary/50 dark:hover:bg-nord-surface/80 transition-all shadow-sm">
+<div class="flex items-start gap-4">
+<button class="mt-1 w-6 h-6 rounded-full border-2 border-slate-300 dark:border-nord-secondary flex items-center justify-center hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 text-sm">check</span>
+</button>
+<div class="flex-1">
+<h4 class="text-lg font-semibold text-slate-900 dark:text-nord-text">Design System Update</h4>
+<p class="text-slate-500 dark:text-nord-secondary mt-1">Update the color palette to Nord theme across all modules</p>
+<div class="flex items-center gap-3 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">edit</span> Edit
+                                    </button>
+<button class="flex items-center gap-1.5 text-xs font-semibold text-nord-danger uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">delete</span> Delete
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Card 2 -->
+<div class="group bg-white dark:bg-nord-surface p-5 rounded-2xl border border-slate-200 dark:border-transparent hover:border-primary/50 dark:hover:bg-nord-surface/80 transition-all shadow-sm">
+<div class="flex items-start gap-4">
+<button class="mt-1 w-6 h-6 rounded-full border-2 border-slate-300 dark:border-nord-secondary flex items-center justify-center hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 text-sm">check</span>
+</button>
+<div class="flex-1">
+<h4 class="text-lg font-semibold text-slate-900 dark:text-nord-text">Refactor API logic</h4>
+<p class="text-slate-500 dark:text-nord-secondary mt-1">Optimize the task fetching mechanism for mobile latency</p>
+<div class="flex items-center gap-3 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">edit</span> Edit
+                                    </button>
+<button class="flex items-center gap-1.5 text-xs font-semibold text-nord-danger uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">delete</span> Delete
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Card 3 -->
+<div class="group bg-white dark:bg-nord-surface p-5 rounded-2xl border border-slate-200 dark:border-transparent hover:border-primary/50 dark:hover:bg-nord-surface/80 transition-all shadow-sm">
+<div class="flex items-start gap-4">
+<button class="mt-1 w-6 h-6 rounded-full border-2 border-slate-300 dark:border-nord-secondary flex items-center justify-center hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-primary opacity-0 group-hover:opacity-100 text-sm">check</span>
+</button>
+<div class="flex-1">
+<h4 class="text-lg font-semibold text-slate-900 dark:text-nord-text">Dark Mode Testing</h4>
+<p class="text-slate-500 dark:text-nord-secondary mt-1">Verify contrast ratios on OLED displays</p>
+<div class="flex items-center gap-3 mt-4 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="flex items-center gap-1.5 text-xs font-semibold text-primary uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">edit</span> Edit
+                                    </button>
+<button class="flex items-center gap-1.5 text-xs font-semibold text-nord-danger uppercase tracking-wider">
+<span class="material-symbols-outlined text-base">delete</span> Delete
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Completed Column -->
+<section class="flex flex-col gap-6">
+<div class="flex items-center justify-between px-2">
+<h3 class="text-[22px] font-semibold text-slate-900 dark:text-nord-text flex items-center gap-2">
+                        Completed
+                        <span class="text-sm font-medium bg-slate-200 dark:bg-nord-surface px-2.5 py-0.5 rounded-full text-slate-600 dark:text-nord-secondary">2</span>
+</h3>
+</div>
+<div class="flex flex-col gap-4">
+<!-- Completed Card 1 -->
+<div class="bg-white/50 dark:bg-nord-surface/40 p-5 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700/50 opacity-60">
+<div class="flex items-start gap-4">
+<div class="mt-1 w-6 h-6 rounded-full bg-nord-success flex items-center justify-center">
+<span class="material-symbols-outlined text-nord-dark text-sm font-bold">check</span>
+</div>
+<div class="flex-1">
+<h4 class="text-lg font-semibold text-slate-900 dark:text-nord-text line-through">Setup Project Boilerplate</h4>
+<p class="text-slate-500 dark:text-nord-secondary mt-1">Initial environment setup and Tailwind configuration</p>
+</div>
+</div>
+</div>
+<!-- Completed Card 2 -->
+<div class="bg-white/50 dark:bg-nord-surface/40 p-5 rounded-2xl border border-dashed border-slate-200 dark:border-slate-700/50 opacity-60">
+<div class="flex items-start gap-4">
+<div class="mt-1 w-6 h-6 rounded-full bg-nord-success flex items-center justify-center">
+<span class="material-symbols-outlined text-nord-dark text-sm font-bold">check</span>
+</div>
+<div class="flex-1">
+<h4 class="text-lg font-semibold text-slate-900 dark:text-nord-text line-through">Initial Commit</h4>
+<p class="text-slate-500 dark:text-nord-secondary mt-1">Pushed skeleton to GitHub repository</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-10 right-10 bg-primary text-nord-dark flex items-center gap-3 px-6 py-4 rounded-full shadow-2xl hover:scale-105 transition-transform font-bold text-lg border-2 border-white/10">
+<span class="material-symbols-outlined font-bold">add</span>
+        Add Todo
+    </button>
+</body></html>
