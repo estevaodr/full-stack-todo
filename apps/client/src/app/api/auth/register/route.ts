@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
   } catch (err) {
     console.error('[auth/register]', err);
     return NextResponse.json(
-      { message: 'Registration failed. Please check your details.' },
+      { message: err instanceof Error ? err.message : 'Registration failed' },
       { status: 400 }
     );
   }

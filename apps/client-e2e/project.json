@@ -8,24 +8,10 @@
   ],
   "targets": {
     "e2e": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/playwright:playwright",
+      "outputs": ["{workspaceRoot}/dist/.playwright/apps/client-e2e", "{workspaceRoot}/apps/client-e2e/playwright-report"],
       "options": {
-        "command": "npx playwright test",
-        "cwd": "apps/client-e2e"
-      }
-    },
-    "e2e:ui": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npx playwright test --ui",
-        "cwd": "apps/client-e2e"
-      }
-    },
-    "e2e:report": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npx playwright show-report playwright-report",
-        "cwd": "apps/client-e2e"
+        "config": "apps/client-e2e/playwright.config.ts"
       }
     }
   }

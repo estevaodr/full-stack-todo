@@ -25,7 +25,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
 
   if (todo.completed) {
     return (
-      <div className="bg-card/60 dark:bg-slate-800/60 p-4 rounded-lg border border-border opacity-75">
+      <div role="listitem" className="bg-card/60 dark:bg-slate-800/60 p-4 rounded-lg border border-border opacity-75">
         <div className="flex gap-4">
           <button
             type="button"
@@ -62,7 +62,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
   }
 
   return (
-    <div className="bg-card dark:bg-slate-800 p-4 rounded-lg shadow-sm border border-border hover:shadow-md transition-shadow group">
+    <div role="listitem" className="bg-card dark:bg-slate-800 p-4 rounded-lg shadow-sm border border-border hover:shadow-md transition-shadow group">
       <div className="flex gap-4">
         <button
           type="button"
@@ -88,22 +88,22 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
               <button
                 type="button"
                 onClick={() => onEdit(todo)}
-                className="flex items-center gap-1 text-xs font-semibold text-primary uppercase tracking-wider"
+                className="flex items-center gap-1 text-xs font-semibold text-primary tracking-wider"
                 aria-label="Edit"
               >
-                <span className="material-symbols-outlined text-sm">edit</span>{' '}
-                Edit
+                <span className="material-symbols-outlined text-sm">edit</span>
+                <span className="uppercase">Edit</span>
               </button>
             ) : null}
             <button
               type="button"
               onClick={handleDelete}
               disabled={deleteTodo.isPending}
-              className="flex items-center gap-1 text-xs font-semibold text-nord-danger uppercase tracking-wider"
+              className="flex items-center gap-1 text-xs font-semibold text-nord-danger tracking-wider"
               aria-label="Delete"
             >
-              <span className="material-symbols-outlined text-sm">delete</span>{' '}
-              Delete
+              <span className="material-symbols-outlined text-sm">delete</span>
+              <span className="uppercase">Delete</span>
             </button>
           </div>
         </div>

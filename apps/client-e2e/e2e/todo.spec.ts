@@ -30,7 +30,7 @@ test.describe('Todo', () => {
       await dashboard.toggleTodo(title);
 
       await expect(dashboard.todoCard(title)).toBeVisible();
-      await expect(dashboard.todoCheckbox(title)).toBeChecked();
+      await expect(dashboard.todoCheckbox(title)).toHaveAttribute('aria-label', 'Mark as incomplete');
     });
   });
 

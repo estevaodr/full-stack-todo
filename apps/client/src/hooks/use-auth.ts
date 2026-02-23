@@ -1,12 +1,14 @@
 'use client';
 
 import { useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import { useAuthContext } from '@/providers/auth-provider';
 
 const GENERIC_LOGIN_ERROR = 'Invalid email or password.';
 const GENERIC_REGISTER_ERROR = 'Registration failed. Please check your details.';
 
 export function useAuth() {
+  const router = useRouter();
   const { user, isLoading, error, setError, refresh } = useAuthContext();
 
   const login = useCallback(
@@ -24,8 +26,9 @@ export function useAuth() {
         return;
       }
       await refresh();
+      router.push('/dashboard');
     },
-    [refresh, setError]
+    [refresh, setError, router]
   );
 
   const logout = useCallback(async () => {
@@ -35,7 +38,8 @@ export function useAuth() {
       credentials: 'include',
     });
     await refresh();
-  }, [refresh, setError]);
+    router.push('/login');
+  }, [refresh, setError, router]);
 
   const register = useCallback(
     async (email: string, password: string) => {
@@ -52,8 +56,9 @@ export function useAuth() {
         return;
       }
       await refresh();
+      router.push('/dashboard');
     },
-    [refresh, setError]
+    [refresh, setError, router]
   );
 
   return {

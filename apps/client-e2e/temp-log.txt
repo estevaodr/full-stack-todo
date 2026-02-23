@@ -1,0 +1,37 @@
+
+
+Running 1 test using 1 worker
+
+[1A[2K[1/1] [chromium] › e2e/auth.spec.ts:57:9 › Auth › Logout › logout redirects to login
+[1A[2K  1) [chromium] › e2e/auth.spec.ts:57:9 › Auth › Logout › logout redirects to login ────────────────
+
+    Error: [2mexpect([22m[31mlocator[39m[2m).[22mtoBeVisible[2m([22m[2m)[22m failed
+
+    Locator: getByRole('main', { name: 'Todo items' })
+    Expected: visible
+    Timeout: 5000ms
+    Error: element(s) not found
+
+    Call log:
+    [2m  - Expect "toBeVisible" with timeout 5000ms[22m
+    [2m  - waiting for getByRole('main', { name: 'Todo items' })[22m
+
+
+      58 |       const dashboard = new DashboardPage(authenticated);
+      59 |       await dashboard.goto();
+    > 60 |       await expect(dashboard.mainSection).toBeVisible();
+         |                                           ^
+      61 |
+      62 |       await dashboard.logout();
+      63 |
+        at /Users/estevao/src/brenz-io/full-stack-todo/apps/client-e2e/e2e/auth.spec.ts:60:43
+
+    attachment #1: screenshot (image/png) ──────────────────────────────────────────────────────────
+    ../../test-results/auth-Auth-Logout-logout-redirects-to-login-chromium/test-failed-1.png
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+    Error Context: ../../test-results/auth-Auth-Logout-logout-redirects-to-login-chromium/error-context.md
+
+
+[1A[2K  1 failed
+    [chromium] › e2e/auth.spec.ts:57:9 › Auth › Logout › logout redirects to login ─────────────────

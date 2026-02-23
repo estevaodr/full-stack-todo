@@ -13,7 +13,7 @@ export class DashboardPage {
   }
 
   get mainSection() {
-    return this.page.getByRole('main', { name: 'Todo items' });
+    return this.page.getByLabel('Todo items');
   }
 
   get loadingMessage() {
@@ -33,10 +33,10 @@ export class DashboardPage {
     return this.page.getByRole('listitem').filter({ hasText: title });
   }
 
-  /** Checkbox to toggle completion for the todo with the given title. */
+  /** Button to toggle completion for the todo with the given title. */
   todoCheckbox(title: string): Locator {
-    return this.todoCard(title).getByRole('checkbox', {
-      name: 'Toggle completion',
+    return this.todoCard(title).getByRole('button', {
+      name: /mark as (in)?complete/i,
     });
   }
 

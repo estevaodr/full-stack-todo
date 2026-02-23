@@ -5,14 +5,20 @@ import { useTheme } from 'next-themes';
 
 export function ThemeToggle() {
   const [mounted, setMounted] = React.useState(false);
-  const { setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
 
   React.useEffect(() => {
     setMounted(true);
   }, []);
 
   function toggleTheme() {
-    setTheme(resolvedTheme === 'dark' ? 'light' : 'dark');
+    if (theme === 'light') {
+      setTheme('dark');
+    } else if (theme === 'dark') {
+      setTheme('system');
+    } else {
+      setTheme('light');
+    }
   }
 
   if (!mounted) {
@@ -29,15 +35,22 @@ export function ThemeToggle() {
     );
   }
 
+  const getIcon = () => {
+    if (theme === 'dark') return 'dark_mode';
+    if (theme === 'light') return 'light_mode';
+    return 'auto';
+  };
+
   return (
     <button
       type="button"
       className="p-2 rounded-lg bg-white/50 dark:bg-slate-700 hover:bg-white dark:hover:bg-slate-600 transition-colors"
       onClick={toggleTheme}
-      aria-label={`Theme: ${resolvedTheme}. Switch theme.`}
+      aria-label={`Theme: ${theme}. Switch theme.`}
+      title={`Current: ${theme}`}
     >
       <span className="material-symbols-outlined text-slate-700 dark:text-slate-200">
-        {resolvedTheme === 'dark' ? 'dark_mode' : 'light_mode'}
+        {getIcon()}
       </span>
     </button>
   );

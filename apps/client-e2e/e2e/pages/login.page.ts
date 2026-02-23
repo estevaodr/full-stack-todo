@@ -21,7 +21,7 @@ export class LoginPage {
   }
 
   get signInButton() {
-    return this.page.getByRole('button', { name: /sign in/i });
+    return this.page.getByRole('button', { name: /log in/i });
   }
 
   get errorMessage() {

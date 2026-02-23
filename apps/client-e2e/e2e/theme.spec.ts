@@ -14,12 +14,12 @@ test.describe('Theme', () => {
     });
     await expect(themeButton).toBeVisible();
 
-    const textBefore = await themeButton.textContent();
+    const textBefore = await themeButton.getAttribute('title');
     await themeButton.click();
-    const textAfter = await themeButton.textContent();
+    const textAfter = await themeButton.getAttribute('title');
 
     expect(textAfter).not.toBe(textBefore);
-    expect(['Light', 'Dark', 'System']).toContain(textAfter?.trim());
+    expect(['Current: light', 'Current: dark', 'Current: system']).toContain(textAfter);
   });
 
   test('when theme is Dark, html has class "dark"', async ({ authenticated }) => {
@@ -30,13 +30,13 @@ test.describe('Theme', () => {
       name: /switch theme/i,
     });
     for (let i = 0; i < 3; i++) {
-      const text = await themeButton.textContent();
-      if (text?.trim() === 'Dark') break;
+      const text = await themeButton.getAttribute('title');
+      if (text === 'Current: dark') break;
       await themeButton.click();
     }
 
-    const isDark = await themeButton.textContent();
-    if (isDark?.trim() === 'Dark') {
+    const isDark = await themeButton.getAttribute('title');
+    if (isDark === 'Current: dark') {
       const htmlHasDark = await authenticated.evaluate(
         () => document.documentElement.classList.contains('dark')
       );
