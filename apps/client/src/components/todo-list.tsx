@@ -61,7 +61,7 @@ export function TodoList() {
               className="text-[22px] font-semibold flex items-center gap-2"
             >
               Incomplete
-              <span className="text-sm font-medium bg-slate-200 dark:bg-slate-700 px-2 py-0.5 rounded-full">
+              <span className="text-sm font-medium bg-muted text-muted-foreground px-2 py-0.5 rounded-full">
                 {incomplete.length}
               </span>
             </h2>

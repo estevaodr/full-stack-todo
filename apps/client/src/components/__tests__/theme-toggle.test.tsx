@@ -27,7 +27,7 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />);
 
     expect(screen.getByRole('button', { name: /theme: dark/i })).toBeInTheDocument();
-    expect(screen.getByText('dark_mode')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /theme: dark/i }).querySelector('svg')).toBeInTheDocument();
   });
 
   it('renders light_mode icon when resolved theme is light', () => {
@@ -42,7 +42,7 @@ describe('ThemeToggle', () => {
     render(<ThemeToggle />);
 
     expect(screen.getByRole('button', { name: /theme: light/i })).toBeInTheDocument();
-    expect(screen.getByText('light_mode')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /theme: light/i }).querySelector('svg')).toBeInTheDocument();
   });
 
   it('calls setTheme("light") when clicked and current theme is dark', async () => {

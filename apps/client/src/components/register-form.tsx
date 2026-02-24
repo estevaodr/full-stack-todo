@@ -48,7 +48,7 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
-              <FormLabel className="text-[14px] font-medium text-muted-foreground ml-1">
+              <FormLabel className="text-[14px] font-bold text-slate-500 ml-1">
                 Email
               </FormLabel>
               <FormControl>
@@ -69,7 +69,7 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
-              <FormLabel className="text-[14px] font-medium text-muted-foreground ml-1">
+              <FormLabel className="text-[14px] font-bold text-slate-500 ml-1">
                 Password
               </FormLabel>
               <FormControl>
@@ -90,7 +90,7 @@ export function RegisterForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
-              <FormLabel className="text-[14px] font-medium text-muted-foreground ml-1">
+              <FormLabel className="text-[14px] font-bold text-slate-500 ml-1">
                 Confirm password
               </FormLabel>
               <FormControl>
@@ -108,7 +108,7 @@ export function RegisterForm() {
         />
         <button
           type="submit"
-          className="w-full h-[40px] bg-primary hover:bg-[#4C7099] active:scale-[0.98] text-primary-foreground font-bold rounded-lg transition-all flex items-center justify-center"
+          className="w-full h-[48px] bg-[#6686B3] hover:bg-[#5775A0] active:scale-[0.98] text-white font-bold rounded-xl transition-all flex items-center justify-center text-[15px]"
         >
           Register
         </button>

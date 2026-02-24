@@ -6,12 +6,16 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { createElement, type ReactNode } from 'react';
 import { http, HttpResponse } from 'msw';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import { AuthProvider } from '@/providers/auth-provider';
 import { LoginForm } from '@/components/login-form';
 import { RegisterForm } from '@/components/register-form';
 import { useAuth } from '@/hooks/use-auth';
 import { server } from '@/mocks/server';
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), prefetch: vi.fn() }),
+}));
 
 function pathname(path: string) {
   const segment = path.replace(/^\//, '');

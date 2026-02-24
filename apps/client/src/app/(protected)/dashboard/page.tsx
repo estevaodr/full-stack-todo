@@ -11,14 +11,16 @@ export default function DashboardPage() {
     <>
       <TodoList />
 
-      {/* Floating Action Button — from Stitch dashboard-light.html */}
+      {/* Floating Action Button — matches login/register button pattern */}
       <button
         type="button"
         onClick={() => setAddOpen(true)}
-        className="fixed bottom-8 right-8 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2 px-6 py-4 rounded-full shadow-lg shadow-primary/40 transition-all hover:scale-105 active:scale-95 z-50"
+        className="fixed bottom-8 right-8 bg-[#6686B3] hover:bg-[#5775A0] active:scale-[0.98] text-white font-bold rounded-xl shadow-lg shadow-[#6686B3]/40 transition-all flex items-center gap-2 px-6 h-[48px] z-50 text-[15px]"
       >
-        <span className="material-symbols-outlined text-2xl">add</span>
-        <span className="font-bold tracking-wide">Add Todo</span>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z" fill="currentColor" />
+        </svg>
+        <span>Add Todo</span>
       </button>
 
       <AddTodoDialog open={addOpen} onOpenChange={setAddOpen} />

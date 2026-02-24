@@ -1,0 +1,17 @@
+<svg width="256" height="256" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g clip-path="url(#clip0)">
+    <rect width="256" height="256" rx="64" fill="#6686B3"/>
+    
+    <!-- Shadow -->
+    <path d="M74.5 89 L256 270.5 L256 160 L212 79.5 Z" fill="#516E98"/>
+    <path d="M108 174 L190 256 L40 256 Z" fill="#516E98"/>
+    
+    <!-- White Checkmark -->
+    <path d="M108 174C102 174 96 171.5 92 167.5L44 119.5C35.5 111 35.5 97.5 44 89C52.5 80.5 66 80.5 74.5 89L108 122.5L181.5 49C190 40.5 203.5 40.5 212 49C220.5 57.5 220.5 71 212 79.5L123.5 168C119.5 172 113.5 174 108 174Z" fill="#FFFFFF"/>
+  </g>
+  <defs>
+    <clipPath id="clip0">
+      <rect width="256" height="256" rx="64" fill="white"/>
+    </clipPath>
+  </defs>
+</svg>

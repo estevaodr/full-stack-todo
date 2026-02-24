@@ -4,6 +4,10 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { AuthProvider } from '@/providers/auth-provider';
 import { useAuth } from '../use-auth';
 
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({ push: vi.fn(), replace: vi.fn(), prefetch: vi.fn() }),
+}));
+
 const mockFetch = vi.fn();
 
 function wrapper({ children }: { children: ReactNode }) {
