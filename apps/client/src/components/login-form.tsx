@@ -49,7 +49,7 @@ export function LoginForm() {
           name="email"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
-              <FormLabel className="text-[14px] font-bold text-slate-500 ml-1">
+              <FormLabel className="text-[14px] font-bold text-[hsl(var(--foreground))] ml-1">
                 Email
               </FormLabel>
               <FormControl>
@@ -57,7 +57,7 @@ export function LoginForm() {
                   type="email"
                   autoComplete="email"
                   placeholder="Enter your email"
-                  className="w-full h-12 px-4 bg-white dark:bg-slate-900 border border-border dark:border-slate-700 rounded-[10px] text-foreground placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  className="w-full h-12 px-4 bg-background border border-border rounded-[10px] text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   {...field}
                 />
               </FormControl>
@@ -71,12 +71,12 @@ export function LoginForm() {
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
               <div className="flex items-center justify-between ml-1">
-                <FormLabel className="text-[14px] font-bold text-slate-500">
+                <FormLabel className="text-[14px] font-bold text-[hsl(var(--foreground))]">
                   Password
                 </FormLabel>
                 <Link
                   href="/forgot-password"
-                  className="text-[13px] font-medium text-slate-500 hover:text-slate-700 transition-colors"
+                  className="text-[13px] font-medium text-primary hover:text-primary/80 transition-colors"
                 >
                   Forgot?
                 </Link>
@@ -86,7 +86,7 @@ export function LoginForm() {
                   type="password"
                   autoComplete="current-password"
                   placeholder="••••••••"
-                  className="w-full h-12 px-4 bg-white dark:bg-slate-900 border border-border dark:border-slate-700 rounded-[10px] text-foreground placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  className="w-full h-12 px-4 bg-background border border-border rounded-[10px] text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   {...field}
                 />
               </FormControl>
@@ -102,7 +102,7 @@ export function LoginForm() {
           />
           <label
             htmlFor="keep-logged"
-            className="text-[13px] font-medium text-slate-500 cursor-pointer"
+            className="text-[13px] font-medium text-[hsl(var(--foreground))] cursor-pointer"
           >
             Keep me logged in
           </label>

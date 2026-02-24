@@ -4,7 +4,7 @@ import { RegisterForm } from '@/components/register-form';
 
 export default function RegisterPage() {
   return (
-    <main className="w-full max-w-[400px] bg-[#F2F4F7] dark:bg-slate-800 rounded-3xl p-10 flex flex-col items-center">
+    <main className="w-full max-w-[400px] bg-card rounded-3xl p-10 flex flex-col items-center shadow-nord">
       {/* App Logo & Title */}
       <div className="flex flex-col items-center mb-8">
         <Image 
@@ -15,10 +15,10 @@ export default function RegisterPage() {
           className="mb-4 drop-shadow-sm transition-transform hover:scale-105" 
           priority
         />
-        <h1 className="text-[28px] font-bold text-[#6686B3] tracking-tight">
-          Todo App
+        <h1 className="text-[28px] font-bold text-primary tracking-tight">
+          TodoApp
         </h1>
-        <p className="text-[15px] text-slate-500 font-medium mt-1">
+        <p className="text-[15px] text-muted-foreground font-medium mt-1">
           Create your account
         </p>
       </div>
@@ -28,11 +28,11 @@ export default function RegisterPage() {
 
       {/* Footer */}
       <div className="mt-8 text-center w-full">
-        <p className="text-[14px] font-medium text-slate-500">
+        <p className="text-[14px] font-medium text-muted-foreground">
           Already have an account?{' '}
           <Link
             href="/login"
-            className="text-[#6686B3] font-bold hover:underline"
+            className="text-primary font-bold hover:underline"
           >
             Sign in
           </Link>
