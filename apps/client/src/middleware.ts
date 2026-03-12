@@ -9,17 +9,63 @@ export default async function middleware(req: NextRequest) {
   const isProtectedRoute = protectedRoutes.some((route) => path.startsWith(route));
   const isPublicRoute = publicRoutes.includes(path);
 
+  // Generate Request ID and trace ID
+  const requestId = req.headers.get('x-request-id') ?? crypto.randomUUID();
+  const traceId = req.headers.get('x-trace-id') ?? crypto.randomUUID();
+
+  // Create start time for duration measurement
+  const startTime = Date.now();
+
   const session = await getSession();
 
+  let response = NextResponse.next();
+
   if (isProtectedRoute && !session?.userId) {
-    return NextResponse.redirect(new URL('/login', req.nextUrl));
+    response = NextResponse.redirect(new URL('/login', req.nextUrl));
+  } else if (isPublicRoute && session?.userId && !path.startsWith('/dashboard')) {
+    response = NextResponse.redirect(new URL('/dashboard', req.nextUrl));
   }
 
-  if (isPublicRoute && session?.userId && !path.startsWith('/dashboard')) {
-    return NextResponse.redirect(new URL('/dashboard', req.nextUrl));
-  }
+  // Inject IDs to response headers
+  response.headers.set('x-request-id', requestId);
+  response.headers.set('x-trace-id', traceId);
 
-  return NextResponse.next();
+  // Measure and log duration (using console.log as middleware runs in Edge runtime, wait... pino might have issues in Edge)
+  // NEXT_PUBLIC_... environment variables are the only ones available here
+  const duration = Date.now() - startTime;
+  
+  // Create log payload
+  const logPayload = {
+    level: 'info',
+    message: `HTTP ${req.method} ${path}`,
+    bindings: {
+      url: path,
+      method: req.method,
+      status: response.status,
+      durationMs: duration,
+      requestId,
+      traceId,
+      userId: session?.userId,
+      ip: req.ip,
+      userAgent: req.headers.get('user-agent'),
+    },
+    timestamp: Date.now(),
+  };
+
+  // We send the log to our log ingestion API since this runs on the Edge
+  req.waitUntil(
+    fetch(new URL('/api/logs', req.url), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(logPayload),
+    }).catch((err) => {
+      console.error('Failed to transmit middleware logs', err);
+    })
+  );
+
+  return response;
 }
 
 export const config = {
