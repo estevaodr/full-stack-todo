@@ -32,7 +32,15 @@ const nextConfig = {
       },
     ];
   },
+  webpack: (config, { isServer }) => {
+    if (!isServer) {
+      // Don't bundle the server logger on the client
+      config.resolve.alias['@/lib/logger/server'] = false;
+    }
+    return config;
+  },
 };
+
 
 const plugins = [
   // Add more Next.js plugins to this list if needed.
