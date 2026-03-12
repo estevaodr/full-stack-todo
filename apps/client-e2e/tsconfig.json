@@ -14,10 +14,10 @@
   "include": [
     "**/*.ts",
     "**/*.js",
-    "src/**/*.spec.ts",
-    "src/**/*.spec.js",
-    "src/**/*.test.ts",
-    "src/**/*.test.js",
-    "src/**/*.d.ts"
+    "e2e/**/*.spec.ts",
+    "e2e/**/*.spec.js",
+    "e2e/**/*.test.ts",
+    "e2e/**/*.test.js",
+    "e2e/**/*.d.ts"
   ]
 }

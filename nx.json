@@ -5,10 +5,7 @@
     "libsDir": "libs"
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals"
-    ],
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
     "production": [
       "default",
       "!{projectRoot}/.eslintrc.json",
@@ -56,21 +53,20 @@
       "options": {
         "targetName": "test"
       },
-      "exclude": [
-        "apps/server-e2e/**/*"
-      ]
+      "exclude": ["apps/server-e2e/**/*"]
+    },
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
     }
   ],
   "targetDefaults": {
     "@nx/js:tsc": {
       "cache": true,
-      "dependsOn": [
-        "^build"
-      ],
-      "inputs": [
-        "production",
-        "^production"
-      ]
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
     }
   },
   "generators": {}

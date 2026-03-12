@@ -17,7 +17,7 @@ export class RegisterPage {
   }
 
   get passwordInput() {
-    return this.page.getByLabel('Password');
+    return this.page.getByLabel('Password', { exact: true });
   }
 
   get confirmPasswordInput() {
