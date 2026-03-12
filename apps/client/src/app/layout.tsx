@@ -1,6 +1,7 @@
 import { AuthProvider } from '@/providers/auth-provider';
 import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
+import { LogProvider } from '@/providers/LogProvider';
 import './globals.css';
 
 export default function RootLayout({
@@ -11,11 +12,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body>
-        <QueryProvider>
-          <ThemeProvider>
-            <AuthProvider>{children}</AuthProvider>
-          </ThemeProvider>
-        </QueryProvider>
+        <LogProvider>
+          <QueryProvider>
+            <ThemeProvider>
+              <AuthProvider>{children}</AuthProvider>
+            </ThemeProvider>
+          </QueryProvider>
+        </LogProvider>
       </body>
     </html>
   );

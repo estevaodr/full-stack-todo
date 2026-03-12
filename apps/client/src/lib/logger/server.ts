@@ -1,5 +1,6 @@
 import 'server-only';
 import pino from 'pino';
+import { getRequestContext } from './context';
 
 // RFC5424 Syslog severity levels: 
 // 0: Emergency, 1: Alert, 2: Critical, 3: Error, 4: Warning, 5: Notice, 6: Informational, 7: Debug
@@ -14,6 +15,9 @@ const sysLogSeverityMap: Record<number, number> = {
 
 export const logger = pino({
   level: process.env.LOG_LEVEL || 'info',
+  mixin() {
+    return getRequestContext();
+  },
   formatters: {
     level: (_label, number) => ({
       level: number,
