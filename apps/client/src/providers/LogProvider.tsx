@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { logger } from '@/lib/logger/client';
+import { setClientBindings } from '@/lib/logger/client';
 
 type LogContextType = {
   sessionId: string;
@@ -36,7 +36,7 @@ export function LogProvider({
 
   useEffect(() => {
     // Inject context into the client logger
-    logger.setBindings({
+    setClientBindings({
       sessionId,
       traceId,
     });

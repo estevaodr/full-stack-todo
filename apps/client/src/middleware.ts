@@ -46,24 +46,22 @@ export default async function middleware(req: NextRequest) {
       requestId,
       traceId,
       userId: session?.userId,
-      ip: req.ip,
+      ip: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim(),
       userAgent: req.headers.get('user-agent'),
     },
     timestamp: Date.now(),
   };
 
-  // We send the log to our log ingestion API since this runs on the Edge
-  req.waitUntil(
-    fetch(new URL('/api/logs', req.url), {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(logPayload),
-    }).catch((err) => {
-      console.error('Failed to transmit middleware logs', err);
-    })
-  );
+  // Fire-and-forget log shipping to our ingestion API (Edge runtime: no waitUntil on NextRequest)
+  fetch(new URL('/api/logs', req.url), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(logPayload),
+  }).catch((err) => {
+    console.error('Failed to transmit middleware logs', err);
+  });
 
   return response;
 }

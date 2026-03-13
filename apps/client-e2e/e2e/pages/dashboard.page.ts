@@ -55,10 +55,12 @@ export class DashboardPage {
   }
 
   async clickEditTodo(title: string) {
+    await this.todoCard(title).hover();
     await this.todoEditButton(title).click();
   }
 
   async clickDeleteTodo(title: string) {
+    await this.todoCard(title).hover();
     await this.todoDeleteButton(title).click();
   }
 

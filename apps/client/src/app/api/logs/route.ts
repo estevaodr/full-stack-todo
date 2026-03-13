@@ -1,11 +1,12 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
+
 import { logger } from '@/lib/logger/server';
 
 const browserLogSchema = z.object({
   level: z.enum(['trace', 'debug', 'info', 'warn', 'error', 'fatal'] as const),
   message: z.string(),
-  bindings: z.record(z.any()).optional(),
+  bindings: z.record(z.string(), z.any()).optional(),
   timestamp: z.number().optional(),
   url: z.string().optional(),
 });
@@ -30,13 +31,20 @@ export async function POST(req: Request) {
       source: 'client-browser',
     };
 
-    // Re-emit the log on the server Pino instance
-    // Use the severity level from the payload, fallback to info if unknown level somehow
-    if (level in logger && typeof logger[level] === 'function') {
-      logger[level](logContext, message);
-    } else {
-      logger.info({ ...logContext, originalLevel: level }, message);
-    }
+    // Re-emit the log on the server Pino instance using a child logger for context.
+    // child() bakes logContext in as persistent bindings on every emitted line.
+    // A level → method map avoids LogFn overload issues and any unsafe casts.
+    const childLogger = logger.child(logContext);
+    const logMethods = {
+      trace: (msg: string) => childLogger.trace(msg),
+      debug: (msg: string) => childLogger.debug(msg),
+      info: (msg: string) => childLogger.info(msg),
+      warn: (msg: string) => childLogger.warn(msg),
+      error: (msg: string) => childLogger.error(msg),
+      fatal: (msg: string) => childLogger.fatal(msg),
+    } as const;
+
+    logMethods[level](message);
 
     return NextResponse.json({ success: true });
   } catch (error) {

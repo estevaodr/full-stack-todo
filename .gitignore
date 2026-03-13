@@ -54,3 +54,7 @@ storybook-static
 postgres-data
 
 test-results
+
+tasks
+
+docs/handoffs/*

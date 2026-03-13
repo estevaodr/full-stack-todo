@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { logger } from '@/lib/logger/client';
 
 export default function GlobalError({
@@ -11,10 +12,12 @@ export default function GlobalError({
 }) {
   // Catch fatal errors. GlobalError is a special boundary that wraps the entire application
   // Note: it runs in the browser during CSR, but conceptually serves as the "app crashed completely" fallback
-  logger.fatal(
-    { err: error, digest: error.digest },
-    'Fatal global-error crash trapped'
-  );
+  useEffect(() => {
+    logger.error(
+      { err: error, digest: error.digest },
+      'Fatal global-error crash trapped'
+    );
+  }, [error]);
 
   return (
     <html lang="en">
