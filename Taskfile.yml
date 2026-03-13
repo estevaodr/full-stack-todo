@@ -128,7 +128,7 @@ tasks:
         silent: true
 
   e2e-server:
-    desc: Run server e2e tests
+    desc: Run server e2e tests (starts server if not already running)
     silent: true
     cmds:
       - echo "Running server e2e tests..."
