@@ -16,9 +16,18 @@ export default async function middleware(req: NextRequest) {
   // Create start time for duration measurement
   const startTime = Date.now();
 
+  // Pass IDs to downstream request headers for Server Components to read
+  const requestHeaders = new Headers(req.headers);
+  requestHeaders.set('x-request-id', requestId);
+  requestHeaders.set('x-trace-id', traceId);
+
   const session = await getSession();
 
-  let response = NextResponse.next();
+  let response = NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  });
 
   if (isProtectedRoute && !session?.userId) {
     response = NextResponse.redirect(new URL('/login', req.nextUrl));
@@ -26,7 +35,7 @@ export default async function middleware(req: NextRequest) {
     response = NextResponse.redirect(new URL('/dashboard', req.nextUrl));
   }
 
-  // Inject IDs to response headers
+  // Inject IDs to response headers for the browser
   response.headers.set('x-request-id', requestId);
   response.headers.set('x-trace-id', traceId);
 
