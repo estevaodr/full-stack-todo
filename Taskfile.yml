@@ -111,30 +111,6 @@ tasks:
       - cmd: npx nx test client
         silent: true
 
-  e2e:
-    desc: Run all e2e tests
-    silent: true
-    cmds:
-      - echo "Running all e2e tests..."
-      - cmd: npx nx run-many --target=e2e --all
-        silent: true
-
-  e2e-client:
-    desc: Run client e2e tests
-    silent: true
-    cmds:
-      - echo "Running client e2e tests..."
-      - cmd: npx nx e2e client-e2e
-        silent: true
-
-  e2e-server:
-    desc: Run server e2e tests (starts server if not already running)
-    silent: true
-    cmds:
-      - echo "Running server e2e tests..."
-      - cmd: npx nx e2e server-e2e
-        silent: true
-
   build:
     desc: Build all projects
     silent: true
