@@ -56,6 +56,7 @@ async function bootstrap() {
   SwaggerModule.setup('api/v1', app, document);
 
   const port = process.env.PORT || 3000;
+  app.enableShutdownHooks();
   await app.listen(port);
   Logger.log(
     `🚀 Application is running on: http://localhost:${port}/${globalPrefix}/v1`,

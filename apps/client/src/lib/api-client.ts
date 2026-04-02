@@ -17,7 +17,11 @@ export async function fetchApi<T>(path: string, init?: RequestInit): Promise<T> 
     let message = `Request failed: ${res.status} ${res.statusText}`;
     try {
       const body = await res.json();
-      if (body?.error && typeof body.error === 'string') message = body.error;
+      if (body?.message && typeof body.message === 'string') {
+        message = body.message;
+      } else if (body?.error && typeof body.error === 'string') {
+        message = body.error;
+      }
     } catch {
       // ignore non-JSON body
     }

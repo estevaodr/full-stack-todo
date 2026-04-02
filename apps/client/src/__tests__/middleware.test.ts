@@ -13,12 +13,19 @@ vi.mock('@/lib/session', () => ({
 const middleware = (await import('../middleware')).default;
 
 function request(pathname: string, origin = 'http://localhost:3000') {
-  return new NextRequest(new URL(pathname, origin));
+  const req = new NextRequest(new URL(pathname, origin));
+  // @ts-expect-error - NextRequest in test environment is missing waitUntil
+  req.waitUntil = vi.fn();
+  return req;
 }
 
 describe('middleware', () => {
   beforeEach(() => {
     mockGetSession.mockReset();
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ success: true })
+    } as Response);
   });
 
   afterEach(() => {
