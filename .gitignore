@@ -58,3 +58,5 @@ test-results
 tasks
 
 docs/handoffs/*
+
+playwright-report

@@ -1,16 +1,17 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 1.0.1 → 1.1.0 (MINOR — new principle added)
-Modified principles: none
-Added principles:
-  - VI. Code Simplicity (DRY, KISS & YAGNI)
-Modified sections: none
+Version change: 1.1.0 → 1.2.0 (MINOR — new testing constraint added)
+Modified principles: 
+  - IV. Test Coverage as a Quality Gate (Added E2E constraints)
+Added principles: none
+Modified sections: 
+  - Technology Stack (Added Playwright explicit row)
 Removed sections: none
 Templates requiring updates:
-  - .specify/templates/plan-template.md ⚠ pending (verify alignment with principles)
-  - .specify/templates/spec-template.md ⚠ pending (verify scope/requirements alignment)
-  - .specify/templates/tasks-template.md ⚠ pending (verify task categories match principles)
+  - .specify/templates/plan-template.md ✅ updated
+  - .specify/templates/spec-template.md ✅ updated
+  - .specify/templates/tasks-template.md ✅ updated
 Deferred TODOs: none
 -->
 
@@ -84,8 +85,7 @@ via Husky pre-commit hook running `nx run-many --target=test --all`).
   belong in a `__tests__/` helper sub-directory of the library.
 - `passWithNoTests: true` is permitted only on the server app shell
   (`apps/server`); library projects MUST have tests.
-- E2E tests for the client use Playwright and require the backend API to be running.
-  E2E is gated separately from unit tests in CI.
+- E2E tests for the client use Playwright (`@nx/playwright`) and require the backend API to be running. E2E is gated separately from unit tests in CI. E2E tests MUST use user-facing locators (e.g., `getByRole`, `getByLabel`) and enforce test-level semantic data isolation (each test scaffolds its own state via the API).
 
 ### V. Explicit Configuration & Observability
 
@@ -142,6 +142,7 @@ The following stack is canonical. Deviations require a constitution amendment.
 | UI components | Radix UI + Tailwind CSS v4 | ^1-2.x / ^4.x |
 | Client testing | Vitest + React Testing Library | ^4.x / ^16.x |
 | Server testing | Jest + @nestjs/testing | ^30.x / ^11.x |
+| E2E testing | Playwright | ^1.36.x |
 | API mocking (client) | MSW | ^2.x |
 | Code style | Prettier + ESLint (typescript-eslint) | ~3.6 / ^9.x |
 | Task runner | Taskfile + Nx | latest |
@@ -193,4 +194,4 @@ It is the authoritative source of architectural and engineering constraints.
   description or a linked spec document under `.specify/`.
 - Use `.specify/memory/` for runtime AI-agent development guidance and spec artifacts.
 
-**Version**: 1.1.0 | **Ratified**: 2026-04-01 | **Last Amended**: 2026-04-01
+**Version**: 1.2.0 | **Ratified**: 2026-04-01 | **Last Amended**: 2026-04-02

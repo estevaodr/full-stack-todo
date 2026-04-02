@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
@@ -62,6 +62,12 @@ export class ServerFeatureUserService {
    * @returns Promise that resolves to the newly created user with generated UUID
    */
   async create(user: ICreateUser): Promise<IUser> {
+    // Check if user already exists to prevent duplicate key constraint violations
+    const existingUser = await this.getOneByEmail(user.email);
+    if (existingUser) {
+      throw new ConflictException('Email is already in use');
+    }
+
     // Hash the password using bcrypt with 10 rounds
     const hashedPassword = await bcrypt.hash(user.password, 10);
     
