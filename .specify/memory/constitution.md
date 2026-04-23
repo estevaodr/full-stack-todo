@@ -1,17 +1,17 @@
 <!--
 Sync Impact Report
 ==================
-Version change: 1.1.0 → 1.2.0 (MINOR — new testing constraint added)
+Version change: 1.2.0 → 1.2.1 (PATCH — added explicit testing requirements)
 Modified principles: 
-  - IV. Test Coverage as a Quality Gate (Added E2E constraints)
-Added principles: none
+  - IV. Test Coverage as a Quality Gate (Added explicit testing requirements)
 Modified sections: 
-  - Technology Stack (Added Playwright explicit row)
+  - Development Workflow & Quality Gates (Added E2E test requirement to quality gate sequence)
+Added sections: none
 Removed sections: none
 Templates requiring updates:
-  - .specify/templates/plan-template.md ✅ updated
-  - .specify/templates/spec-template.md ✅ updated
-  - .specify/templates/tasks-template.md ✅ updated
+  - .specify/templates/plan-template.md ⚠ pending
+  - .specify/templates/spec-template.md ⚠ pending
+  - .specify/templates/tasks-template.md ⚠ pending
 Deferred TODOs: none
 -->
 
@@ -86,6 +86,10 @@ via Husky pre-commit hook running `nx run-many --target=test --all`).
 - `passWithNoTests: true` is permitted only on the server app shell
   (`apps/server`); library projects MUST have tests.
 - E2E tests for the client use Playwright (`@nx/playwright`) and require the backend API to be running. E2E is gated separately from unit tests in CI. E2E tests MUST use user-facing locators (e.g., `getByRole`, `getByLabel`) and enforce test-level semantic data isolation (each test scaffolds its own state via the API).
+- Before considering any task completed, the following tests MUST pass:
+  - `nx test server` for backend tests
+  - `nx test client` for frontend tests
+  - `nx e2e client-e2e` for end-to-end tests (always run)
 
 ### V. Explicit Configuration & Observability
 
@@ -156,7 +160,8 @@ The following stack is canonical. Deviations require a constitution amendment.
 ### Quality Gate Sequence (enforced by Husky)
 1. `nx run-many --target=lint --all` — zero warnings-as-errors.
 2. `nx run-many --target=test --all` — all unit/integration tests green.
-3. Build MUST succeed (`nx run-many --target=build --all`) before release.
+3. `nx e2e client-e2e` — all end-to-end tests pass.
+4. Build MUST succeed (`nx run-many --target=build --all`) before release.
 
 ### Database Migrations
 - Development: `synchronize: true` is acceptable.
@@ -194,4 +199,4 @@ It is the authoritative source of architectural and engineering constraints.
   description or a linked spec document under `.specify/`.
 - Use `.specify/memory/` for runtime AI-agent development guidance and spec artifacts.
 
-**Version**: 1.2.0 | **Ratified**: 2026-04-01 | **Last Amended**: 2026-04-02
+**Version**: 1.2.1 | **Ratified**: 2026-04-01 | **Last Amended**: 2026-04-23
