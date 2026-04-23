@@ -20,7 +20,7 @@ tasks:
     silent: true
     cmds:
       - echo "Starting server..."
-      - cmd: npx nx serve server
+      - cmd: nx serve server
         silent: true
 
   client:
@@ -28,7 +28,7 @@ tasks:
     silent: true
     cmds:
       - echo "Starting client..."
-      - cmd: npx nx serve client
+      - cmd: nx serve client
         silent: true
 
   run:
@@ -37,7 +37,7 @@ tasks:
     cmds:
       - echo "Starting server and client..."
       - echo "Note - PostgreSQL will be started automatically if not running"
-      - cmd: npx nx run-many --target=serve --projects=server,client --parallel=2
+      - cmd: nx run-many --target=serve --projects=server,client --parallel=2
         silent: true
 
   all:
@@ -80,10 +80,10 @@ tasks:
         fi
         if [ -z "{{.PROJECTS}}" ]; then
           echo "Running target {{.TARGET}} on all projects..."
-          npx nx run-many --target={{.TARGET}} --all
+          nx run-many --target={{.TARGET}} --all
         else
           echo "Running target {{.TARGET}} on projects: {{.PROJECTS}}..."
-          npx nx run-many --target={{.TARGET}} --projects={{.PROJECTS}}
+          nx run-many --target={{.TARGET}} --projects={{.PROJECTS}}
         fi
     silent: true
 
@@ -92,7 +92,7 @@ tasks:
     silent: true
     cmds:
       - echo "Running all tests..."
-      - cmd: npx nx run-many --target=test --all
+      - cmd: nx run-many --target=test --all
         silent: true
 
   test-server:
@@ -100,7 +100,7 @@ tasks:
     silent: true
     cmds:
       - echo "Running server tests..."
-      - cmd: npx nx test server
+      - cmd: nx test server
         silent: true
 
   test-client:
@@ -108,7 +108,23 @@ tasks:
     silent: true
     cmds:
       - echo "Running client tests..."
-      - cmd: npx nx test client
+      - cmd: nx test client
+        silent: true
+
+  test:e2e:
+    desc: Run end-to-end tests
+    silent: true
+    cmds:
+      - echo "Running end-to-end tests..."
+      - cmd: nx e2e client-e2e
+        silent: true
+
+  playwright-install:
+    desc: Install Playwright browser binaries (run once after install)
+    silent: true
+    cmds:
+      - echo "Installing Playwright browsers..."
+      - cmd: playwright install chromium
         silent: true
 
   build:
@@ -116,7 +132,7 @@ tasks:
     silent: true
     cmds:
       - echo "Building all projects..."
-      - cmd: npx nx run-many --target=build --all
+      - cmd: nx run-many --target=build --all
         silent: true
 
   build-server:
@@ -124,7 +140,7 @@ tasks:
     silent: true
     cmds:
       - echo "Building server..."
-      - cmd: npx nx build server
+      - cmd: nx build server
         silent: true
 
   build-client:
@@ -132,7 +148,7 @@ tasks:
     silent: true
     cmds:
       - echo "Building client..."
-      - cmd: npx nx build client
+      - cmd: nx build client
         silent: true
 
   lint:
@@ -140,7 +156,7 @@ tasks:
     silent: true
     cmds:
       - echo "Linting all projects..."
-      - cmd: npx nx run-many --target=lint --all
+      - cmd: nx run-many --target=lint --all
         silent: true
 
   lint-server:
@@ -148,7 +164,7 @@ tasks:
     silent: true
     cmds:
       - echo "Linting server..."
-      - cmd: npx nx lint server
+      - cmd: nx lint server
         silent: true
 
   lint-client:
@@ -156,7 +172,7 @@ tasks:
     silent: true
     cmds:
       - echo "Linting client..."
-      - cmd: npx nx lint client
+      - cmd: nx lint client
         silent: true
 
   clean:
@@ -168,5 +184,5 @@ tasks:
         silent: true
       - cmd: rm -rf node_modules/.cache
         silent: true
-      - cmd: npx nx reset
+      - cmd: nx reset
         silent: true

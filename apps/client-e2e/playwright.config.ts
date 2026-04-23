@@ -1,12 +1,6 @@
 import { defineConfig, devices } from '@playwright/test';
 import * as path from 'path';
 
-// Ensure asdf-managed Node is found in child processes spawned by Playwright.
-// Playwright does not load shell profiles, so PATH must be set explicitly.
-const asdfShims = path.join(process.env.HOME ?? '', '.asdf', 'shims');
-const asdfBin = path.join(process.env.HOME ?? '', '.asdf', 'bin');
-const resolvedPath = [asdfShims, asdfBin, process.env.PATH].filter(Boolean).join(':');
-
 export default defineConfig({
   testDir: './src/e2e',
   fullyParallel: true,
@@ -38,7 +32,6 @@ export default defineConfig({
     timeout: 120 * 1000,
     env: {
       ...process.env,
-      PATH: resolvedPath,
     } as Record<string, string>,
   },
 });
