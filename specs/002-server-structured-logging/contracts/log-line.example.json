@@ -1,0 +1,9 @@
+{
+  "level": 30,
+  "time": 1713974400123,
+  "pid": 12345,
+  "hostname": "api-7f9c",
+  "reqId": "550e8400-e29b-41d4-a716-446655440000",
+  "context": "TodoService",
+  "msg": "listTodos completed"
+}
