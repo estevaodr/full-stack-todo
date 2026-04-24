@@ -1,0 +1,38 @@
+---
+description: Project Development Guidelines
+globs: ["**/*"]
+alwaysApply: true
+---
+
+# full-stack-todo Development Guidelines
+
+Auto-generated from all feature plans. Last updated: 2026-04-24
+
+## Active Technologies
+- TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation (server-logging)
+- N/A (stdout logging only; log shipping out of scope) (server-logging)
+
+- TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation (server-logging)
+
+## Project Structure
+
+```text
+src/
+tests/
+```
+
+## Commands
+
+npm test && npm run lint
+
+## Code Style
+
+TypeScript ~5.9 (workspace), Node LTS (Nx `server` target): Follow standard conventions
+
+## Recent Changes
+- server-logging: Added TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation
+
+- server-logging: Added TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation
+
+<!-- MANUAL ADDITIONS START -->
+<!-- MANUAL ADDITIONS END -->

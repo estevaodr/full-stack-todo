@@ -44,6 +44,8 @@ import { JwtAuthGuard } from '@full-stack-todo/server/util';
 // Import local modules, controllers, and services from the same app
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { LoggingModule } from './logging/logging.module';
+import { loggingEnvSchemaFragment } from './logging/config/logging-env.schema';
 
 /**
  * @Module decorator marks this class as a NestJS module
@@ -81,6 +83,7 @@ import { AppService } from './app.service';
        * Better to fail at startup than crash later when trying to connect to DB or authenticate users.
        */
       validationSchema: Joi.object({
+        ...loggingEnvSchemaFragment,
         DATABASE_URL: Joi.string()
           .pattern(/^postgresql:\/\/[^:]+:[^@]+@[^:]+:\d+\/[^/]+$/)
           .required()
@@ -89,8 +92,6 @@ import { AppService } from './app.service';
   // checkov:skip=CKV_SECRET_4: ADD REASON
             'any.required': 'DATABASE_URL is required. Please set it in your .env file (e.g., postgresql://user:password@host:port/database)',
           }),
-        // Logging configuration
-        LOG_LEVEL: Joi.string().valid('INFO', 'DEBUG').default('INFO'), // Optional: Logging level (INFO=clean logs, DEBUG=includes SQL queries)
         // JWT configuration
         JWT_SECRET: Joi.string().required(), // Required: Secret key for signing JWT tokens
         JWT_ACCESS_TOKEN_EXPIRES_IN: Joi.string().default('600s'), // Optional: Token expiration time (defaults to 10 minutes)
@@ -98,6 +99,8 @@ import { AppService } from './app.service';
         // Example: PORT: Joi.number().default(3000),
       }),
     }),
+
+    LoggingModule,
 
     /**
      * TypeORM Database Configuration
@@ -144,7 +147,10 @@ import { AppService } from './app.service';
          * Set LOG_LEVEL=DEBUG in .env to see all SQL queries being executed.
          * Useful for debugging database issues.
          */
-        logging: config.get('LOG_LEVEL') === 'DEBUG',
+        logging: (() => {
+          const lv = (config.get<string>('LOG_LEVEL') ?? 'info').toLowerCase();
+          return lv === 'debug' || lv === 'trace';
+        })(),
         
         /**
          * autoLoadEntities: true

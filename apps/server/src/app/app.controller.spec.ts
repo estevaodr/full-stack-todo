@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { getLoggerToken } from 'nestjs-pino';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -8,7 +9,13 @@ describe('AppController', () => {
   beforeAll(async () => {
     app = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService],
+      providers: [
+        AppService,
+        {
+          provide: getLoggerToken(AppService.name),
+          useValue: { debug: jest.fn(), info: jest.fn() },
+        },
+      ],
     }).compile();
   });
 
