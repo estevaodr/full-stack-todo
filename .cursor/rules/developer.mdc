@@ -1,0 +1,26 @@
+---
+alwaysApply: true
+---
+
+# Task completion gate (use Nx, not Taskfile)
+
+Do **not** mark an implementation task **finished** or report work **complete** until these commands have been run from the **repository root**, each exits **0**, in this **order**:
+
+**Sandbox:** Run **all three** gate commands **outside the tool sandbox** when the environment uses one (full permissions / disable sandbox). Nx, Jest, and Playwright need unrestricted process, network, and browser access; sandboxed runs can fail or misreport. When using an integrated agent terminal, request the permission that runs the command unsandboxed (e.g. disable sandbox / “all” permissions).
+
+**Playwright / e2e:** Some sandboxes set `PLAYWRIGHT_BROWSERS_PATH` to an isolated directory (paths often contain `sandbox-cache`) where browsers are not installed. **Full permissions alone may not clear that variable**, so Playwright can still fail with “Executable doesn’t exist”. Fix: **unset** `PLAYWRIGHT_BROWSERS_PATH`, or **set** it to your normal Playwright cache (e.g. macOS `~/Library/Caches/ms-playwright`) so e2e uses the same binaries as `npx playwright install` from a regular shell. 
+
+1. **All automated tests (apps + libraries)**  
+   `npx nx run-many -t test --all`
+
+2. **Lint (all projects)**  
+   `npx nx run-many -t lint --all`
+
+3. **End-to-end (Playwright)**  
+   `npx nx e2e client-e2e`
+
+Use **`npx nx …`** as above. Do **not** substitute `task test`, `task lint`, or `task test:e2e` for this completion check (Taskfile wraps similar Nx targets but the agent must run Nx directly).
+
+**Scope note:** This workspace does not define a separate Nx target named `integration`. The full **`test`** graph (`run-many -t test --all`) is the monorepo test gate; **e2e** is additionally required as listed.
+
+**Optional** if the Nx daemon misbehaves: prefix with `NX_DAEMON=false` (same Nx commands).
