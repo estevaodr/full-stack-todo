@@ -1,6 +1,6 @@
 "use client";
 
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/logger/client';
 
 export function ClientLogButton() {
   const handleClick = () => {

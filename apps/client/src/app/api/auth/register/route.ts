@@ -1,11 +1,14 @@
 import { decodeJwt } from 'jose/jwt/decode';
 import { NextRequest, NextResponse } from 'next/server';
+import { getLogger, withLogging } from '@full-stack-todo/client/logging';
 import { fetchApi } from '@/lib/api-client';
 import { createSession } from '@/lib/session';
 import { registerBodySchema } from '@/lib/validations';
 import type { IPublicUserData, ITokenResponse } from '@full-stack-todo/shared/domain';
 
-export async function POST(request: NextRequest) {
+export const runtime = 'nodejs';
+
+async function postRegister(request: NextRequest) {
   let body: unknown;
   try {
     body = await request.json();
@@ -47,10 +50,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true }, { status: 201 });
   } catch (err) {
-    console.error('[auth/register]', err);
+    getLogger('auth/register').error({ err }, 'register failed');
     return NextResponse.json(
       { message: err instanceof Error ? err.message : 'Registration failed' },
       { status: 400 }
     );
   }
 }
+
+export const POST = withLogging(postRegister);

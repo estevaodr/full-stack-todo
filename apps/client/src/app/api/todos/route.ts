@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getLogger, withLogging } from '@full-stack-todo/client/logging';
 import { fetchApiWithAuth } from '@/lib/api-client';
 import { getSession } from '@/lib/session';
 import type { ITodo } from '@full-stack-todo/shared/domain';
 
-export async function GET() {
+export const runtime = 'nodejs';
+
+async function getTodos(req: NextRequest) {
+  void req;
   const session = await getSession();
   if (!session?.accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
+  getLogger('TodosRoute').info('fetching todos list');
   try {
     const todos = await fetchApiWithAuth<ITodo[]>(
       '/api/v1/todos',
@@ -22,7 +27,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: NextRequest) {
+async function postTodo(request: NextRequest) {
   const session = await getSession();
   if (!session?.accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
@@ -54,3 +59,6 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export const GET = withLogging(getTodos);
+export const POST = withLogging(postTodo);

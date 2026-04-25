@@ -39,4 +39,19 @@ export default [
     // Override or add rules here
     rules: {},
   },
+  {
+    files: [
+      'apps/client/src/middleware.ts',
+      'apps/client/src/app/api/**/*.{ts,tsx}',
+      'libs/client/logging/**/*.ts',
+    ],
+    ignores: [
+      'libs/client/logging/**/*.spec.ts',
+      'libs/client/logging/**/__tests__/**',
+      'libs/client/logging/**/test-shims/**',
+    ],
+    rules: {
+      'no-console': 'error',
+    },
+  },
 ];

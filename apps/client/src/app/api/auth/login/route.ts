@@ -1,11 +1,14 @@
 import { decodeJwt } from 'jose/jwt/decode';
 import { NextRequest, NextResponse } from 'next/server';
+import { getLogger, withLogging } from '@full-stack-todo/client/logging';
 import { fetchApi } from '@/lib/api-client';
 import { createSession } from '@/lib/session';
 import { loginSchema } from '@/lib/validations';
 import type { ITokenResponse } from '@full-stack-todo/shared/domain';
 
-export async function POST(request: NextRequest) {
+export const runtime = 'nodejs';
+
+async function postLogin(request: NextRequest) {
   let body: unknown;
   try {
     body = await request.json();
@@ -39,10 +42,12 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({ ok: true }, { status: 200 });
   } catch (err) {
-    console.error('[auth/login]', err);
+    getLogger('auth/login').error({ err }, 'login failed');
     return NextResponse.json(
       { message: 'Invalid email or password.' },
       { status: 401 }
     );
   }
 }
+
+export const POST = withLogging(postLogin);

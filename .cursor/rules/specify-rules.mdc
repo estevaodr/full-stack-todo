@@ -11,6 +11,8 @@ Auto-generated from all feature plans. Last updated: 2026-04-24
 ## Active Technologies
 - TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation (server-logging)
 - N/A (stdout logging only; log shipping out of scope) (server-logging)
+- TypeScript ~5.9 (workspace), Node LTS (Nx `client` / Next server runtime) + `pino`, `pino-pretty`, `uuid` (new); Next.js App Router; `server-only` package for build guard (003-nextjs-structured-logging)
+- N/A (stdout only; shipping/rotation out of scope) (003-nextjs-structured-logging)
 
 - TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation (server-logging)
 
@@ -30,6 +32,7 @@ npm test && npm run lint
 TypeScript ~5.9 (workspace), Node LTS (Nx `server` target): Follow standard conventions
 
 ## Recent Changes
+- 003-nextjs-structured-logging: Added TypeScript ~5.9 (workspace), Node LTS (Nx `client` / Next server runtime) + `pino`, `pino-pretty`, `uuid` (new); Next.js App Router; `server-only` package for build guard
 - server-logging: Added TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation
 
 - server-logging: Added TypeScript ~5.9 (workspace), Node LTS (Nx `server` target) + NestJS ^11, `nestjs-pino`, `pino`, `pino-http`, `pino-pretty`, `uuid` (new); existing `@nestjs/config` + **Joi** for startup validation

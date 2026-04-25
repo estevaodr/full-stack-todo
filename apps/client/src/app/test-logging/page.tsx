@@ -1,4 +1,4 @@
-import { logger } from '@/lib/logger';
+import { logger } from '@/lib/logger/server';
 import { ClientLogButton } from './ClientLogButton';
 
 export default async function TestLoggingPage() {
