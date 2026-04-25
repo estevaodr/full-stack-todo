@@ -21,7 +21,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@full-stack-todo/shared/domain": ["../../libs/shared/domain/src/index.ts"]
+      "@full-stack-todo/shared/domain": ["../../libs/shared/domain/src/index.ts"],
+      "@full-stack-todo/client/logging": [
+        "../../libs/client/logging/src/index.ts"
+      ]
     },
     "plugins": [
       {

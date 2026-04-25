@@ -1,0 +1,12 @@
+{
+  "level": 30,
+  "syslogSeverity": 6,
+  "time": 1713974400123,
+  "msg": "request completed",
+  "requestId": "550e8400-e29b-41d4-a716-446655440000",
+  "context": "api.todos",
+  "method": "GET",
+  "url": "/api/todos",
+  "statusCode": 200,
+  "responseTimeMs": 12
+}

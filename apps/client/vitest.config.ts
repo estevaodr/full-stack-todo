@@ -25,6 +25,14 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
+      'server-only': path.resolve(
+        __dirname,
+        '../../libs/client/logging/src/test-shims/server-only.ts'
+      ),
+      '@full-stack-todo/client/logging': path.resolve(
+        __dirname,
+        '../../libs/client/logging/src/index.ts'
+      ),
       '@full-stack-todo/shared/domain': path.resolve(
         __dirname,
         '../../libs/shared/domain/src/index.ts'

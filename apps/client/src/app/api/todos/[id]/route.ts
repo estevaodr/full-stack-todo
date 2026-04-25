@@ -1,17 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { withLogging } from '@full-stack-todo/client/logging';
 import { fetchApiWithAuth } from '@/lib/api-client';
 import { getSession } from '@/lib/session';
 import type { ITodo } from '@full-stack-todo/shared/domain';
 
-export async function PATCH(
+export const runtime = 'nodejs';
+
+async function patchTodo(
   request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  ctx: { params: Promise<{ id: string }> }
 ) {
   const session = await getSession();
   if (!session?.accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
-  const { id } = await params;
+  const { id } = await ctx.params;
   let body: unknown;
   try {
     body = await request.json();
@@ -40,15 +43,15 @@ export async function PATCH(
   }
 }
 
-export async function DELETE(
+async function deleteTodo(
   _request: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
+  ctx: { params: Promise<{ id: string }> }
 ) {
   const session = await getSession();
   if (!session?.accessToken) {
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
-  const { id } = await params;
+  const { id } = await ctx.params;
   try {
     const url = `${process.env.API_URL?.replace(/\/$/, '') ?? ''}/api/v1/todos/${id}`;
     const res = await fetch(url, {
@@ -64,3 +67,6 @@ export async function DELETE(
     );
   }
 }
+
+export const PATCH = withLogging(patchTodo);
+export const DELETE = withLogging(deleteTodo);

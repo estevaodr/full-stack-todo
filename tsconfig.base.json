@@ -38,6 +38,9 @@
       ],
       "@full-stack-todo/server/feature-auth": [
         "libs/server/feature-auth/src/index.ts"
+      ],
+      "@full-stack-todo/client/logging": [
+        "libs/client/logging/src/index.ts"
       ]
     }
   },

@@ -1,7 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { withLogging } from '@full-stack-todo/client/logging';
 import { getSession } from '@/lib/session';
 
-export async function GET() {
+export const runtime = 'nodejs';
+
+async function getSessionHandler(req: NextRequest) {
+  void req;
   const session = await getSession();
 
   if (!session) {
@@ -17,3 +21,5 @@ export async function GET() {
     expiresAt: session.expiresAt,
   });
 }
+
+export const GET = withLogging(getSessionHandler);
