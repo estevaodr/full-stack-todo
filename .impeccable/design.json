@@ -1,0 +1,168 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-12T15:50:00.000Z",
+  "title": "Design System: Full Stack Todo",
+  "extensions": {
+    "colorMeta": {
+      "nord-snow": {
+        "role": "neutral",
+        "displayName": "Snow Field",
+        "canonical": "oklch(96.5% 0.008 250)",
+        "tonalRamp": ["#2E3440", "#3B4252", "#434C5E", "#4C566A", "#616E88", "#8F9AAF", "#B8C0D0", "#ECEFF4"]
+      },
+      "nord-frost": {
+        "role": "neutral",
+        "displayName": "Frost Surface",
+        "canonical": "oklch(93.5% 0.012 250)",
+        "tonalRamp": ["#2E3440", "#3B4252", "#4C566A", "#697285", "#8B95A8", "#A8B0C0", "#D0D6E0", "#E5E9F0"]
+      },
+      "nord-ink": {
+        "role": "neutral",
+        "displayName": "Polar Ink",
+        "canonical": "oklch(28% 0.02 250)",
+        "tonalRamp": ["#0F1115", "#1A1F28", "#2E3440", "#3B4252", "#4C566A", "#616E88", "#8F9AAF", "#D8DEE9"]
+      },
+      "nord-frost-blue": {
+        "role": "primary",
+        "displayName": "Frost Blue",
+        "canonical": "oklch(58% 0.08 245)",
+        "tonalRamp": ["#2E4460", "#3D5A7A", "#4E6F94", "#5E81AC", "#6F93BC", "#81A1C1", "#9BB5D0", "#B8CCE0"]
+      },
+      "nord-frost-action": {
+        "role": "primary",
+        "displayName": "Frost Action",
+        "canonical": "oklch(62% 0.07 245)",
+        "tonalRamp": ["#3A4F6E", "#4A6080", "#5775A0", "#6686B3", "#7595C0", "#88A5CC", "#A0B8D8", "#B8CBE4"]
+      },
+      "nord-aurora-red": {
+        "role": "semantic",
+        "displayName": "Arctic Red",
+        "canonical": "oklch(58% 0.12 20)",
+        "tonalRamp": ["#5C2A30", "#7A3840", "#9A4850", "#BF616A", "#D07A82", "#E0949A", "#E8B0B4", "#F0CCCE"]
+      },
+      "nord-aurora-green": {
+        "role": "semantic",
+        "displayName": "Arctic Green",
+        "canonical": "oklch(72% 0.08 135)",
+        "tonalRamp": ["#4A5E3A", "#5E7848", "#7A9458", "#A3BE8C", "#B5CEA0", "#C8DEB4", "#DBEEC8", "#EDF6E0"]
+      }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Auth page app title only (28px bold)." },
+      "headline": { "displayName": "Headline", "purpose": "Section headings, empty states (22px semibold)." },
+      "title": { "displayName": "Title", "purpose": "Todo card titles, list item primary text (18px semibold)." },
+      "body": { "displayName": "Body", "purpose": "Descriptions, form subcopy, general content (15–16px medium)." },
+      "label": { "displayName": "Label", "purpose": "Form field labels (14px bold)." }
+    },
+    "shadows": [
+      { "name": "card-rest", "value": "0 1px 2px 0 rgba(0, 0, 0, 0.05)", "purpose": "Default card elevation (shadow-sm)." },
+      { "name": "card-hover", "value": "0 4px 6px -1px rgba(0, 0, 0, 0.1)", "purpose": "Interactive todo row hover lift." },
+      { "name": "modal-lift", "value": "0 8px 30px rgba(0, 0, 0, 0.12)", "purpose": "Add/Edit dialog elevation (.modal-shadow)." },
+      { "name": "fab-tinted", "value": "0 10px 15px -3px rgba(102, 134, 179, 0.4)", "purpose": "Dashboard FAB — tinted, not neutral gray." }
+    ],
+    "motion": [
+      { "name": "ease-standard", "value": "cubic-bezier(0.4, 0, 0.2, 1)", "purpose": "Default color and shadow transitions (150–250ms)." },
+      { "name": "ease-press", "value": "transform 0.1s ease-out", "purpose": "CTA active:scale-[0.98] press feedback." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "shadcn default — token-based primary for general actions.",
+      "html": "<button class=\"ds-btn-primary\">Save</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; height: 40px; padding: 8px 16px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; color: #ECEFF4; background: #5E81AC; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-primary:hover { background: rgba(94, 129, 172, 0.9); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 2px #ECEFF4, 0 0 0 4px #5E81AC; }"
+    },
+    {
+      "name": "Frost Action Button",
+      "kind": "button",
+      "refersTo": "button-frost-action",
+      "description": "Auth/login CTA and dashboard FAB — legacy hardcoded accent.",
+      "html": "<button class=\"ds-btn-frost\">Log In</button>",
+      "css": ".ds-btn-frost { display: inline-flex; align-items: center; justify-content: center; width: 100%; height: 48px; font-family: Inter, system-ui, sans-serif; font-size: 15px; font-weight: 700; color: #FFFFFF; background: #6686B3; border: none; border-radius: 12px; cursor: pointer; transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s ease-out; } .ds-btn-frost:hover { background: #5775A0; } .ds-btn-frost:active { transform: scale(0.98); } .ds-btn-frost:focus-visible { outline: none; box-shadow: 0 0 0 2px #ECEFF4, 0 0 0 4px #6686B3; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Secondary actions — header Log out.",
+      "html": "<button class=\"ds-btn-outline\">Log out</button>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 12px; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 500; color: #2E3440; background: #ECEFF4; border: 1px solid #C5CDD8; border-radius: 8px; cursor: pointer; transition: background 0.2s cubic-bezier(0.4, 0, 0.2, 1); } .ds-btn-outline:hover { background: #E5E9F0; } .ds-btn-outline:focus-visible { outline: none; box-shadow: 0 0 0 2px #ECEFF4, 0 0 0 4px #5E81AC; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input-default",
+      "description": "Auth form fields — 48px tall with frost focus ring.",
+      "html": "<input class=\"ds-input\" type=\"email\" placeholder=\"Enter your email\" />",
+      "css": ".ds-input { width: 100%; height: 48px; padding: 0 16px; font-family: Inter, system-ui, sans-serif; font-size: 15px; color: #2E3440; background: #ECEFF4; border: 1px solid #C5CDD8; border-radius: 10px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; } .ds-input::placeholder { color: rgba(76, 86, 106, 0.6); } .ds-input:focus { border-color: #5E81AC; box-shadow: 0 0 0 2px rgba(94, 129, 172, 0.2); }"
+    },
+    {
+      "name": "Todo Card",
+      "kind": "card",
+      "refersTo": "card-surface",
+      "description": "Active todo list item with hover-revealed actions.",
+      "html": "<div class=\"ds-todo-card\"><button class=\"ds-todo-check\" aria-label=\"Mark complete\"></button><div class=\"ds-todo-body\"><p class=\"ds-todo-title\">Review pull request</p><p class=\"ds-todo-desc\">Check logging changes in server lib</p></div></div>",
+      "css": ".ds-todo-card { display: flex; gap: 16px; padding: 16px; background: #E5E9F0; border: 1px solid #C5CDD8; border-radius: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); transition: box-shadow 0.2s; } .ds-todo-card:hover { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); } .ds-todo-check { width: 24px; height: 24px; margin-top: 4px; border: 2px solid #C5CDD8; border-radius: 50%; background: transparent; cursor: pointer; flex-shrink: 0; } .ds-todo-check:hover { border-color: #5E81AC; background: rgba(94,129,172,0.1); } .ds-todo-title { font-size: 18px; font-weight: 600; color: #2E3440; margin: 0 0 4px; } .ds-todo-desc { font-size: 16px; color: rgba(46,52,64,0.6); margin: 0; line-height: 1.4; }"
+    },
+    {
+      "name": "App Header",
+      "kind": "nav",
+      "refersTo": "card-surface",
+      "description": "Fixed top bar on protected routes.",
+      "html": "<header class=\"ds-header\"><div class=\"ds-header-brand\"><span class=\"ds-header-logo\"></span><span class=\"ds-header-title\">TodoApp</span></div><button class=\"ds-btn-outline\">Log out</button></header>",
+      "css": ".ds-header { display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 32px; background: #E5E9F0; border-bottom: 1px solid #C5CDD8; position: fixed; top: 0; width: 100%; z-index: 50; } .ds-header-brand { display: flex; align-items: center; gap: 8px; } .ds-header-logo { width: 32px; height: 32px; border-radius: 8px; background: #5E81AC; } .ds-header-title { font-family: Inter, system-ui, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #2E3440; }"
+    },
+    {
+      "name": "Empty State",
+      "kind": "custom",
+      "refersTo": "card-surface",
+      "description": "Dashboard zero-state with CTA to add first todo.",
+      "html": "<div class=\"ds-empty\"><div class=\"ds-empty-icon\"><svg width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" fill=\"currentColor\"><path d=\"M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2z\"/></svg></div><h2 class=\"ds-empty-title\">No todos yet</h2><p class=\"ds-empty-desc\">Create your first todo to get started</p><button class=\"ds-btn-primary\">Add Todo</button></div>",
+      "css": ".ds-empty { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; padding: 80px 0; } .ds-empty-icon { color: rgba(76,86,106,0.5); } .ds-empty-title { font-size: 22px; font-weight: 600; color: #2E3440; margin: 0; } .ds-empty-desc { font-size: 16px; color: #4C566A; margin: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Nordic Workbench",
+    "overview": "A cool, low-noise product surface built for engineers evaluating craft. The interface behaves like a well-organized bench: every control has a place, color signals state rather than mood, and nothing competes with the task list. Depth comes from tonal layering with shadows reserved for elevation changes.",
+    "keyCharacteristics": [
+      "Single sans family (Inter) across all UI",
+      "Nord palette via CSS custom properties",
+      "shadcn/Radix primitives as component backbone",
+      "Light + dark themes via ThemeProvider",
+      "Fixed rem type scale (14–28px)"
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Frost blue appears on primary actions, links, focus, and selection — never as decorative fill across large surfaces. Accent ≤10% of any screen.", "section": "colors" },
+      { "name": "The Token-First Rule", "body": "New UI must use hsl(var(--*)) or Tailwind semantic utilities. Hardcoded hex (#6686B3) is legacy drift — do not extend.", "section": "colors" },
+      { "name": "The Fixed Scale Rule", "body": "Product headings use fixed px/rem sizes, not clamp().", "section": "typography" },
+      { "name": "The No-Eyebrow Rule", "body": "No uppercase tracked kickers above section headings.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Shadows signal interaction or modal elevation only.", "section": "elevation" },
+      { "name": "The No-Glass-Default Rule", "body": "Backdrop blur appears on modal overlays only.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use Nord CSS variables and Tailwind semantic colors (primary, card, muted-foreground, border).",
+      "Do keep Inter as the sole UI typeface at fixed product sizes (14–28px).",
+      "Do provide focus rings (focus-visible:ring-2) on every interactive control.",
+      "Do support dark mode with AA contrast in both themes.",
+      "Do use skeleton/empty/loading states that teach the interface.",
+      "Do respect prefers-reduced-motion — instant state changes, no choreographed page load."
+    ],
+    "donts": [
+      "Don't use generic AI SaaS aesthetics: cream/sand body backgrounds, gradient text, identical icon+heading+text card grids, hero-metric blocks, uppercase tracked eyebrows on every section.",
+      "Don't apply decorative motion (uniform staggered reveals, bounce/elastic easing).",
+      "Don't use over-rounded cards (32px+ radii) outside the existing auth shell.",
+      "Don't pair 1px borders with wide soft shadows (ghost-card pattern).",
+      "Don't introduce playful consumer-app cute (emoji UI, bouncy interactions).",
+      "Don't add hardcoded hex colors for new components — consolidate #6686B3 to --primary instead.",
+      "Don't use side-stripe borders on cards or alerts.",
+      "Don't use glassmorphism as a default card treatment."
+    ]
+  }
+}

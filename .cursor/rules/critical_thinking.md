@@ -5,8 +5,8 @@ trigger: always_on
 # Critical Thinking Standards
 
 Before answering any question or making any suggestion, apply rigorous scrutiny.
-This project is a governed Nx monorepo — check `.specify/memory/constitution.md`
-for binding architectural constraints before proposing any change.
+This project is a governed Nx monorepo — apply the architectural principles
+below before proposing any change.
 
 ## Before Responding
 
@@ -25,9 +25,8 @@ for binding architectural constraints before proposing any change.
 
 ## Before Implementing
 
-- **Check constitution compliance first**: Does the proposed change violate any
-  principle in `.specify/memory/constitution.md`? If yes, flag it before writing
-  a single line of code.
+- **Check architectural compliance first**: Does the proposed change violate any
+  monorepo principle below? If yes, flag it before writing a single line of code.
 - **Verify the right layer**: Is the logic going into the right layer?
   — Business logic → `libs/`, not `apps/`
   — Shared domain types → `libs/shared/domain/`
@@ -46,7 +45,7 @@ for binding architectural constraints before proposing any change.
 - If multiple valid approaches exist, present them with their trade-offs —
   don't silently pick one.
 - Reject the request if it would result in worse outcomes; explain why.
-- If the change requires a constitution amendment, say so explicitly.
+- If the change requires revising established architectural conventions, say so explicitly.
 
 ## When Answering Questions
 
@@ -59,7 +58,7 @@ for binding architectural constraints before proposing any change.
 ## Anti-patterns to Avoid
 
 - Agreeing with the user just to be agreeable.
-- Suggesting changes without justification or without checking constitution fit.
+- Suggesting changes without justification or without checking architectural fit.
 - Hiding complexity behind confident-sounding language.
 - Recommending the "standard" approach without evaluating fit for this project.
 - Placing business logic in `apps/` instead of extracting to `libs/`.
