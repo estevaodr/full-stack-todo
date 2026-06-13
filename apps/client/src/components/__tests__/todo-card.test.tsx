@@ -4,24 +4,27 @@ import { createElement, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ITodo } from '@full-stack-todo/shared/domain';
+import { MutationFeedbackProvider } from '@/components/mutation-feedback';
 import { TodoCard } from '../todo-card';
 
 const mockUpdateTodo = vi.fn();
 const mockDeleteTodo = vi.fn();
+const mockUpdateState = vi.hoisted(() => ({ isPending: false }));
+const mockDeleteState = vi.hoisted(() => ({ isPending: false }));
 
 vi.mock('@/hooks/use-todos', () => ({
   useTodos: () => ({ data: [], isLoading: false, error: null, refetch: vi.fn() }),
   useUpdateTodo: () => ({
     mutate: (...args: unknown[]) => mockUpdateTodo(...args),
     mutateAsync: vi.fn(),
-    isPending: false,
+    isPending: mockUpdateState.isPending,
     isSuccess: false,
     isError: false,
   }),
   useDeleteTodo: () => ({
     mutate: (...args: unknown[]) => mockDeleteTodo(...args),
     mutateAsync: vi.fn(),
-    isPending: false,
+    isPending: mockDeleteState.isPending,
     isSuccess: false,
     isError: false,
   }),
@@ -43,7 +46,7 @@ function createWrapper() {
     return createElement(
       QueryClientProvider,
       { client: queryClient },
-      children
+      createElement(MutationFeedbackProvider, null, children)
     );
   };
 }
@@ -52,6 +55,8 @@ describe('TodoCard', () => {
   beforeEach(() => {
     mockUpdateTodo.mockReset();
     mockDeleteTodo.mockReset();
+    mockUpdateState.isPending = false;
+    mockDeleteState.isPending = false;
   });
 
   it('renders todo title and description', () => {
@@ -75,10 +80,13 @@ describe('TodoCard', () => {
     await user.click(screen.getByRole('button', { name: /mark as complete/i }));
 
     expect(mockUpdateTodo).toHaveBeenCalledTimes(1);
-    expect(mockUpdateTodo).toHaveBeenCalledWith({
-      id: 'todo-1',
-      data: { completed: true },
-    });
+    expect(mockUpdateTodo).toHaveBeenCalledWith(
+      {
+        id: 'todo-1',
+        data: { completed: true },
+      },
+      expect.any(Object)
+    );
   });
 
   it('when todo is completed, toggle calls useUpdateTodo with completed false', async () => {
@@ -90,27 +98,55 @@ describe('TodoCard', () => {
 
     await user.click(screen.getByRole('button', { name: /mark as incomplete/i }));
 
-    expect(mockUpdateTodo).toHaveBeenCalledWith({
-      id: 'todo-1',
-      data: { completed: false },
-    });
+    expect(mockUpdateTodo).toHaveBeenCalledWith(
+      {
+        id: 'todo-1',
+        data: { completed: false },
+      },
+      expect.any(Object)
+    );
   });
 
-  it('edit button is present when onEdit is provided', () => {
+  it('edit and delete buttons are always visible when onEdit is provided', () => {
     render(<TodoCard todo={todo} onEdit={vi.fn()} />, { wrapper: createWrapper() });
 
-    expect(
-      screen.getByRole('button', { name: /edit/i })
-    ).toBeInTheDocument();
+    const editButton = screen.getByRole('button', { name: /edit/i });
+    const deleteButton = screen.getByRole('button', { name: /^delete$/i });
+
+    expect(editButton).toBeVisible();
+    expect(deleteButton).toBeVisible();
   });
 
-  it('delete button calls useDeleteTodo with todo id', async () => {
+  it('disables actions while update is pending', () => {
+    mockUpdateState.isPending = true;
+
+    render(<TodoCard todo={todo} onEdit={vi.fn()} />, { wrapper: createWrapper() });
+
+    expect(screen.getByRole('button', { name: /mark as complete/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /edit/i })).toBeDisabled();
+    expect(screen.getByRole('button', { name: /^delete$/i })).toBeDisabled();
+  });
+
+  it('renders long titles with truncation-friendly layout', () => {
+    const longTitle = 'Review pull request with a very long unbroken title '.repeat(4).trim();
+    render(
+      <TodoCard todo={{ ...todo, title: longTitle }} />,
+      { wrapper: createWrapper() }
+    );
+
+    expect(screen.getByTitle(longTitle)).toBeInTheDocument();
+  });
+
+  it('delete button opens confirm dialog and calls useDeleteTodo on confirm', async () => {
     const user = userEvent.setup();
     render(<TodoCard todo={todo} />, { wrapper: createWrapper() });
 
-    await user.click(screen.getByRole('button', { name: /delete/i }));
+    await user.click(screen.getByRole('button', { name: /^delete$/i }));
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /delete todo/i }));
 
     expect(mockDeleteTodo).toHaveBeenCalledTimes(1);
-    expect(mockDeleteTodo).toHaveBeenCalledWith('todo-1');
+    expect(mockDeleteTodo).toHaveBeenCalledWith('todo-1', expect.any(Object));
   });
 });

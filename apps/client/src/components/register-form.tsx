@@ -12,6 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
 
 export function RegisterForm() {
   const { register: registerUser, error } = useAuth();
@@ -48,7 +49,7 @@ export function RegisterForm() {
           name="email"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
-              <FormLabel className="text-[14px] font-bold text-slate-500 ml-1">
+              <FormLabel className="text-[14px] font-bold text-muted-foreground ml-1">
                 Email
               </FormLabel>
               <FormControl>
@@ -56,7 +57,7 @@ export function RegisterForm() {
                   type="email"
                   autoComplete="email"
                   placeholder="Enter your email"
-                  className="w-full h-12 px-4 bg-white dark:bg-slate-900 border border-border dark:border-slate-700 rounded-[10px] text-foreground placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  className="w-full h-12 px-4 bg-background border border-border rounded-[10px] text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   {...field}
                 />
               </FormControl>
@@ -69,7 +70,7 @@ export function RegisterForm() {
           name="password"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
-              <FormLabel className="text-[14px] font-bold text-slate-500 ml-1">
+              <FormLabel className="text-[14px] font-bold text-muted-foreground ml-1">
                 Password
               </FormLabel>
               <FormControl>
@@ -77,7 +78,7 @@ export function RegisterForm() {
                   type="password"
                   autoComplete="new-password"
                   placeholder="••••••••"
-                  className="w-full h-12 px-4 bg-white dark:bg-slate-900 border border-border dark:border-slate-700 rounded-[10px] text-foreground placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  className="w-full h-12 px-4 bg-background border border-border rounded-[10px] text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   {...field}
                 />
               </FormControl>
@@ -90,7 +91,7 @@ export function RegisterForm() {
           name="confirmPassword"
           render={({ field }) => (
             <FormItem className="flex flex-col gap-1.5">
-              <FormLabel className="text-[14px] font-bold text-slate-500 ml-1">
+              <FormLabel className="text-[14px] font-bold text-muted-foreground ml-1">
                 Confirm password
               </FormLabel>
               <FormControl>
@@ -98,7 +99,7 @@ export function RegisterForm() {
                   type="password"
                   autoComplete="new-password"
                   placeholder="••••••••"
-                  className="w-full h-12 px-4 bg-white dark:bg-slate-900 border border-border dark:border-slate-700 rounded-[10px] text-foreground placeholder:text-slate-400 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
+                  className="w-full h-12 px-4 bg-background border border-border rounded-[10px] text-foreground placeholder:text-muted-foreground/60 focus:ring-2 focus:ring-primary/20 focus:border-primary outline-none transition-all"
                   {...field}
                 />
               </FormControl>
@@ -106,12 +107,9 @@ export function RegisterForm() {
             </FormItem>
           )}
         />
-        <button
-          type="submit"
-          className="w-full h-[48px] bg-[#6686B3] hover:bg-[#5775A0] active:scale-[0.98] text-white font-bold rounded-xl transition-all flex items-center justify-center text-[15px]"
-        >
+        <Button type="submit" className="w-full h-12 rounded-xl text-[15px] font-bold">
           Register
-        </button>
+        </Button>
       </form>
     </Form>
   );

@@ -13,6 +13,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Button } from '@/components/ui/button';
 
 export function LoginForm() {
   const { login, error } = useAuth();
@@ -98,21 +99,18 @@ export function LoginForm() {
           <input
             type="checkbox"
             id="keep-logged"
-            className="w-4 h-4 rounded-full border-2 border-slate-200 text-slate-500 focus:ring-slate-500 appearance-none bg-white checked:bg-slate-500 transition-colors"
+            className="size-4 rounded border-2 border-border bg-background text-primary focus-visible:ring-2 focus-visible:ring-ring checked:bg-primary checked:border-primary transition-colors"
           />
           <label
             htmlFor="keep-logged"
-            className="text-[13px] font-medium text-[hsl(var(--foreground))] cursor-pointer"
+            className="text-[13px] font-medium text-foreground cursor-pointer"
           >
             Keep me logged in
           </label>
         </div>
-        <button
-          type="submit"
-          className="w-full h-[48px] bg-[#6686B3] hover:bg-[#5775A0] active:scale-[0.98] text-white font-bold rounded-xl transition-all flex items-center justify-center text-[15px]"
-        >
+        <Button type="submit" className="w-full h-12 rounded-xl text-[15px] font-bold">
           Log In
-        </button>
+        </Button>
       </form>
     </Form>
   );

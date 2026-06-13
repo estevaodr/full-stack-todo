@@ -1,0 +1,41 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e27] [cursor=pointer]:
+    - img [ref=e28]
+  - alert [ref=e35]: Impeccable Critique Preflight
+  - generic [ref=e36]:
+    - banner [ref=e37]:
+      - generic [ref=e38]:
+        - img "TodoApp logo" [ref=e39]
+        - heading "TodoApp" [level=1] [ref=e40]
+      - generic [ref=e41]:
+        - 'button "Theme: dark. Switch theme." [ref=e42]':
+          - img [ref=e43]
+        - button "Log out" [ref=e45]
+    - main [ref=e46]:
+      - generic [ref=e47]:
+        - region "Todo items" [ref=e78]:
+          - region "Incomplete 1" [ref=e79]:
+            - heading "Incomplete 1" [level=2] [ref=e81]:
+              - text: Incomplete
+              - generic [ref=e82]: "1"
+            - listitem [ref=e84]:
+              - generic [ref=e85]:
+                - button "Mark as complete" [ref=e86]:
+                  - img [ref=e88]
+                - generic [ref=e90]:
+                  - paragraph [ref=e91]: Review pull request
+                  - paragraph [ref=e92]: Check CI and merge when green
+                  - generic [ref=e93]:
+                    - button "Edit" [ref=e94]:
+                      - img [ref=e95]
+                      - generic [ref=e97]: Edit
+                    - button "Delete" [ref=e98]:
+                      - img [ref=e99]
+                      - generic [ref=e101]: Delete
+          - region "Completed 0" [ref=e102]:
+            - heading "Completed 0" [level=2] [ref=e104]:
+              - text: Completed
+              - generic [ref=e105]: "0"
+        - button "Add Todo" [ref=e55]:
+          - img [ref=e56]
+          - generic [ref=e58]: Add Todo

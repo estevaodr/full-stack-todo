@@ -1,0 +1,23 @@
+- generic [active] [ref=e1]:
+  - button "Open Next.js Dev Tools" [ref=e27] [cursor=pointer]:
+    - img [ref=e28]
+  - alert [ref=e35]: Impeccable Critique Preflight
+  - generic [ref=e36]:
+    - banner [ref=e37]:
+      - generic [ref=e38]:
+        - img "TodoApp logo" [ref=e39]
+        - heading "TodoApp" [level=1] [ref=e40]
+      - generic [ref=e41]:
+        - 'button "Theme: dark. Switch theme." [ref=e42]':
+          - img [ref=e43]
+        - button "Log out" [ref=e45]
+    - main [ref=e46]:
+      - generic [ref=e47]:
+        - generic [ref=e48]:
+          - img [ref=e50]
+          - generic [ref=e52]:
+            - heading "No todos yet" [level=2] [ref=e53]
+            - paragraph [ref=e54]: Create your first todo to get started
+        - button "Add Todo" [ref=e55]:
+          - img [ref=e56]
+          - generic [ref=e58]: Add Todo

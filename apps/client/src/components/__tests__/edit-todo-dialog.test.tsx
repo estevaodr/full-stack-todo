@@ -4,6 +4,7 @@ import { createElement, type ReactNode } from 'react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import type { ITodo } from '@full-stack-todo/shared/domain';
+import { MutationFeedbackProvider } from '@/components/mutation-feedback';
 import { EditTodoDialog } from '../edit-todo-dialog';
 
 const mockUpdateTodo = vi.fn();
@@ -42,7 +43,7 @@ function createWrapper() {
     return createElement(
       QueryClientProvider,
       { client: queryClient },
-      children
+      createElement(MutationFeedbackProvider, null, children)
     );
   };
 }

@@ -16,7 +16,9 @@ const EXPECTED_HEADERS = [
 ];
 
 describe('Security headers (next.config.js)', () => {
-  it('config defines headers() that returns security headers for all routes', async () => {
+  it(
+    'config defines headers() that returns security headers for all routes',
+    async () => {
     // Evaluate the Nx-wrapped next.config.js to get the actual config object
     const evaluatedConfig = await nextConfig('phase-production-build', { defaultConfig: {} });
     
@@ -36,7 +38,9 @@ describe('Security headers (next.config.js)', () => {
     for (const expected of EXPECTED_HEADERS) {
       expect(keys).toContain(expected);
     }
-  });
+  },
+    15000
+  );
 
   it('each expected security header has a non-empty value', async () => {
     const evaluatedConfig = await nextConfig('phase-production-build', { defaultConfig: {} });

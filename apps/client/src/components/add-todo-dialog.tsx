@@ -3,11 +3,17 @@
 import { useForm } from 'react-hook-form';
 import { useCreateTodo } from '@/hooks/use-todos';
 import {
+  mutationErrorMessage,
+  useMutationFeedback,
+} from '@/components/mutation-feedback';
+import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -29,6 +35,7 @@ interface AddTodoFormValues {
 
 export function AddTodoDialog({ open, onOpenChange }: AddTodoDialogProps) {
   const createTodo = useCreateTodo();
+  const { showFeedback } = useMutationFeedback();
   const form = useForm<AddTodoFormValues>({
     defaultValues: { title: '', description: '' },
   });
@@ -38,8 +45,12 @@ export function AddTodoDialog({ open, onOpenChange }: AddTodoDialogProps) {
       { title: values.title, description: values.description || undefined },
       {
         onSuccess: () => {
+          showFeedback('Todo added');
           form.reset();
           onOpenChange(false);
+        },
+        onError: (error) => {
+          showFeedback(mutationErrorMessage(error), 'error');
         },
       }
     );
@@ -75,7 +86,7 @@ export function AddTodoDialog({ open, onOpenChange }: AddTodoDialogProps) {
                     <input
                       {...field}
                       placeholder="e.g., Weekly Sync"
-                      className="w-full h-12 px-4 rounded-lg bg-white dark:bg-slate-900 border border-border text-foreground placeholder:text-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
+                      className="w-full h-12 px-4 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none"
                       aria-label="Title"
                     />
                   </FormControl>
@@ -96,7 +107,7 @@ export function AddTodoDialog({ open, onOpenChange }: AddTodoDialogProps) {
                       {...field}
                       rows={4}
                       placeholder="Enter task details..."
-                      className="w-full p-4 rounded-lg bg-white dark:bg-slate-900 border border-border text-foreground placeholder:text-gray-400 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none resize-none"
+                      className="w-full p-4 rounded-lg bg-background border border-border text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all outline-none resize-none"
                       aria-label="Description"
                     />
                   </FormControl>
@@ -104,22 +115,14 @@ export function AddTodoDialog({ open, onOpenChange }: AddTodoDialogProps) {
                 </FormItem>
               )}
             />
-            <div className="flex items-center justify-end gap-3 pt-2">
-              <button
-                type="button"
-                onClick={() => onOpenChange(false)}
-                className="h-10 px-5 rounded-lg border border-border font-medium text-sm hover:bg-white dark:hover:bg-slate-800 transition-colors"
-              >
+            <DialogFooter className="gap-2 pt-2 sm:gap-0">
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 Cancel
-              </button>
-              <button
-                type="submit"
-                disabled={createTodo.isPending}
-                className="h-10 px-8 rounded-lg bg-primary text-primary-foreground font-semibold text-sm hover:bg-primary/90 transition-colors shadow-sm disabled:opacity-50"
-              >
-                Save Task
-              </button>
-            </div>
+              </Button>
+              <Button type="submit" disabled={createTodo.isPending}>
+                {createTodo.isPending ? 'Saving…' : 'Save Task'}
+              </Button>
+            </DialogFooter>
           </form>
         </Form>
       </DialogContent>

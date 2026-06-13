@@ -1,0 +1,41 @@
+- generic:
+  - button "Open Next.js Dev Tools" [ref=e27] [cursor=pointer]:
+    - img [ref=e28]
+  - alert: Impeccable Critique Preflight
+  - generic:
+    - banner:
+      - generic:
+        - img
+        - heading [level=1]: TodoApp
+      - generic:
+        - button:
+          - img
+        - button: Log out
+    - main:
+      - generic:
+        - generic:
+          - generic:
+            - img
+          - generic:
+            - heading [level=2]: No todos yet
+            - paragraph: Create your first todo to get started
+        - button:
+          - img
+          - generic: Add Todo
+  - dialog "Add New Todo" [ref=e60]:
+    - heading "Add New Todo" [level=2] [ref=e62]
+    - generic [ref=e63]:
+      - generic [ref=e64]:
+        - generic [ref=e65]: Title
+        - textbox "Title" [active] [ref=e66]:
+          - /placeholder: e.g., Weekly Sync
+      - generic [ref=e67]:
+        - generic [ref=e68]: Description
+        - textbox "Description" [ref=e69]:
+          - /placeholder: Enter task details...
+      - generic [ref=e70]:
+        - button "Cancel" [ref=e71]
+        - button "Save Task" [ref=e72]
+    - button "Close" [ref=e73]:
+      - img [ref=e74]
+      - generic [ref=e77]: Close

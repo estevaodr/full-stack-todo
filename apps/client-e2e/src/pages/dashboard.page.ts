@@ -38,7 +38,7 @@ export class DashboardPage {
   }
 
   getTaskItem(title: string) {
-    return this.page.locator('[role="listitem"]').filter({ hasText: title });
+    return this.page.getByRole('listitem').filter({ hasText: title });
   }
 
   async toggleTaskStatus(title: string, toComplete: boolean) {
@@ -54,12 +54,10 @@ export class DashboardPage {
   async deleteTask(title: string) {
     const task = this.getTaskItem(title);
     const deleteBtn = task.getByRole('button', { name: 'Delete' });
-    
-    // Some buttons only appear on hover, Playwright `.click()` handles hover automatically if it's css-based,
-    // but just in case we can hover first.
+
     await task.hover();
     await deleteBtn.click();
-    // Wait for the task to be removed from the DOM
+    await this.page.getByRole('button', { name: 'Delete todo' }).click();
     await expect(task).toBeHidden();
   }
 }

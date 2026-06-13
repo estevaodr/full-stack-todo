@@ -1,0 +1,15 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - generic [ref=e4]:
+      - img "TodoApp logo" [ref=e5]
+      - heading "TodoApp" [level=1] [ref=e6]
+    - generic [ref=e7]:
+      - button "Toggle theme" [ref=e8]:
+        - img [ref=e9]
+      - button "Log out" [ref=e11]
+  - main [ref=e12]:
+    - generic [ref=e13]:
+      - status "Loading todos" [ref=e14]
+      - button "Add Todo" [ref=e24]:
+        - img [ref=e25]
+        - generic [ref=e27]: Add Todo

@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { http, HttpResponse } from 'msw';
 import { describe, expect, it, beforeEach } from 'vitest';
 import type { ITodo } from '@full-stack-todo/shared/domain';
+import { MutationFeedbackProvider } from '@/components/mutation-feedback';
 import { TodoList } from '@/components/todo-list';
 import { server } from '@/mocks/server';
 
@@ -42,7 +43,11 @@ function createWrapper() {
     },
   });
   return function Wrapper({ children }: { children: ReactNode }) {
-    return createElement(QueryClientProvider, { client: queryClient }, children);
+    return createElement(
+      QueryClientProvider,
+      { client: queryClient },
+      createElement(MutationFeedbackProvider, null, children)
+    );
   };
 }
 
@@ -94,7 +99,6 @@ describe('Todo CRUD integration', () => {
       expect(screen.getByText('First todo')).toBeInTheDocument();
     });
 
-    // Click the "Mark as complete" button for the first (incomplete) todo
     const completeButton = screen.getByRole('button', { name: /mark as complete/i });
     await user.click(completeButton);
 
@@ -111,7 +115,6 @@ describe('Todo CRUD integration', () => {
       expect(screen.getByText('First todo')).toBeInTheDocument();
     });
 
-    // The edit button is hidden behind a hover group, but still in the DOM
     const editButtons = screen.getAllByRole('button', { name: /edit/i });
     await user.click(editButtons[0]);
 
@@ -132,6 +135,19 @@ describe('Todo CRUD integration', () => {
     });
   });
 
+  it('shows all-caught-up status when every todo is complete', async () => {
+    todos = todos.map((todo) => ({ ...todo, completed: true }));
+
+    render(createElement(createWrapper(), null, createElement(TodoList)));
+
+    await waitFor(() => {
+      expect(screen.getByText(/all caught up/i)).toBeInTheDocument();
+    });
+
+    expect(screen.queryByRole('heading', { name: /incomplete/i })).not.toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /completed/i })).toBeInTheDocument();
+  });
+
   it('delete todo removes it from list', async () => {
     const user = userEvent.setup();
     render(createElement(createWrapper(), null, createElement(TodoList)));
@@ -140,8 +156,9 @@ describe('Todo CRUD integration', () => {
       expect(screen.getByText('First todo')).toBeInTheDocument();
     });
 
-    const deleteButtons = screen.getAllByRole('button', { name: /delete/i });
+    const deleteButtons = screen.getAllByRole('button', { name: /^delete$/i });
     await user.click(deleteButtons[0]);
+    await user.click(screen.getByRole('button', { name: /delete todo/i }));
 
     await waitFor(() => {
       expect(screen.queryByText('First todo')).not.toBeInTheDocument();
