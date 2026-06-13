@@ -46,6 +46,49 @@ const focusRingClasses =
 
 const actionButtonClasses = `flex items-center gap-1 text-xs font-semibold tracking-wider rounded-sm disabled:opacity-50 disabled:pointer-events-none ${focusRingClasses}`;
 
+/** 24px visual circle inside a 44px hit area — touch-first without changing card layout. */
+function CompletionToggle({
+  completed,
+  disabled,
+  onToggle,
+}: {
+  completed: boolean;
+  disabled?: boolean;
+  onToggle: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      disabled={disabled}
+      className={`group/toggle relative -m-2.5 flex size-11 shrink-0 items-center justify-center self-start rounded-full disabled:opacity-50 disabled:pointer-events-none ${focusRingClasses}`}
+      aria-label={completed ? 'Mark as incomplete' : 'Mark as complete'}
+    >
+      <span
+        aria-hidden="true"
+        className={`flex size-6 items-center justify-center rounded-full transition-colors duration-150 ${
+          completed
+            ? 'bg-success'
+            : 'border-2 border-border bg-transparent group-hover/toggle:border-primary group-hover/toggle:bg-primary/10 group-active/toggle:border-primary group-active/toggle:bg-primary/15'
+        }`}
+      >
+        {completed ? (
+          <CheckIcon />
+        ) : (
+          <span className="text-primary opacity-60">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path
+                d="M9.5 16.17L5.33 12l-1.42 1.41L9.5 19 21 7.41 19.59 6 9.5 16.17z"
+                fill="currentColor"
+              />
+            </svg>
+          </span>
+        )}
+      </span>
+    </button>
+  );
+}
+
 export interface TodoCardProps {
   todo: ITodo;
   onEdit?: (todo: ITodo) => void;
@@ -95,15 +138,11 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
           aria-busy={isBusy || undefined}
         >
           <div className="flex gap-4">
-            <button
-              type="button"
-              onClick={handleToggle}
+            <CompletionToggle
+              completed
               disabled={isBusy}
-              className={`mt-1 size-6 rounded-full bg-success flex items-center justify-center shrink-0 disabled:opacity-50 ${focusRingClasses}`}
-              aria-label="Mark as incomplete"
-            >
-              <CheckIcon />
-            </button>
+              onToggle={handleToggle}
+            />
             <div className="flex-1 min-w-0">
               <p
                 className="text-[18px] font-semibold text-muted-foreground line-through truncate mb-1 break-words"
@@ -147,19 +186,11 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
         aria-busy={isBusy || undefined}
       >
         <div className="flex gap-4">
-          <button
-            type="button"
-            onClick={handleToggle}
+          <CompletionToggle
+            completed={false}
             disabled={isBusy}
-            className={`mt-1 size-6 rounded-full border-2 border-border hover:border-primary transition-colors flex items-center justify-center shrink-0 hover:bg-primary/10 disabled:opacity-50 ${focusRingClasses}`}
-            aria-label="Mark as complete"
-          >
-            <span className="text-primary opacity-60">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M9.5 16.17L5.33 12l-1.42 1.41L9.5 19 21 7.41 19.59 6 9.5 16.17z" fill="currentColor" />
-              </svg>
-            </span>
-          </button>
+            onToggle={handleToggle}
+          />
           <div className="flex-1 min-w-0">
             <p
               className="text-[18px] font-semibold text-card-foreground truncate mb-1 break-words"

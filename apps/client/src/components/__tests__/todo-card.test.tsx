@@ -71,6 +71,7 @@ describe('TodoCard', () => {
 
     const btn = screen.getByRole('button', { name: /mark as complete/i });
     expect(btn).toBeInTheDocument();
+    expect(btn).toHaveClass('size-11');
   });
 
   it('toggle completion calls useUpdateTodo with inverted completed', async () => {
