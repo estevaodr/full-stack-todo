@@ -1,6 +1,11 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
+import {
+  ADD_TODO_SHORTCUT_CONTEXT,
+  ADD_TODO_SHORTCUT_KEY,
+  ADD_TODO_SHORTCUT_TITLE,
+} from '@/lib/keyboard-hints';
 
 interface EmptyStateProps {
   onAddTodo?: () => void;
@@ -32,17 +37,24 @@ export function EmptyState({ onAddTodo }: EmptyStateProps) {
       <div className="w-12 h-12 flex items-center justify-center text-muted-foreground/50">
         <ClipboardIcon />
       </div>
-      <div className="flex flex-col gap-2">
-        <h2 className="text-[22px] font-semibold">No todos yet</h2>
-        <p className="text-base text-muted-foreground">
-          Create your first todo to get started
+      <div className="flex flex-col gap-2 max-w-md">
+        <h2 className="text-[22px] font-semibold text-balance">No todos yet</h2>
+        <p className="text-base text-muted-foreground text-pretty">
+          Create your first todo below, or press{' '}
+          <kbd className="rounded border border-border bg-muted px-1.5 py-0.5 font-mono text-xs font-medium text-foreground">
+            {ADD_TODO_SHORTCUT_KEY}
+          </kbd>{' '}
+          for a quick add.
         </p>
+        <p className="text-sm text-muted-foreground text-pretty">{ADD_TODO_SHORTCUT_CONTEXT}</p>
       </div>
       {onAddTodo ? (
         <Button
           type="button"
           onClick={onAddTodo}
           className="h-10 px-6 rounded-[6px]"
+          title={ADD_TODO_SHORTCUT_TITLE}
+          aria-keyshortcuts={ADD_TODO_SHORTCUT_KEY}
         >
           <AddIcon />
           <span>Add Todo</span>

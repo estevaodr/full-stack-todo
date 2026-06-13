@@ -5,6 +5,10 @@ import { TodoList } from '@/components/todo-list';
 import { AddTodoDialog } from '@/components/add-todo-dialog';
 import { Button } from '@/components/ui/button';
 import { useTodos } from '@/hooks/use-todos';
+import {
+  ADD_TODO_SHORTCUT_KEY,
+  ADD_TODO_SHORTCUT_TITLE,
+} from '@/lib/keyboard-hints';
 
 function AddIcon() {
   return (
@@ -53,7 +57,8 @@ export default function DashboardPage() {
         <Button
           type="button"
           onClick={openAddDialog}
-          title="Add todo (N)"
+          title={ADD_TODO_SHORTCUT_TITLE}
+          aria-keyshortcuts={ADD_TODO_SHORTCUT_KEY}
           className="fixed bottom-8 right-8 z-50 h-12 gap-2 rounded-xl px-6 text-[15px] font-bold shadow-lg shadow-primary/30 motion-safe:active:scale-[0.98]"
         >
           <AddIcon />
