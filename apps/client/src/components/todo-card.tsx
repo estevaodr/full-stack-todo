@@ -112,7 +112,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
                 {todo.title}
               </p>
               {todo.description ? (
-                <p className="text-[16px] text-muted-foreground italic line-clamp-2 break-words">
+                <p className="text-[16px] text-description-completed italic leading-snug line-clamp-2 break-words">
                   {todo.description}
                 </p>
               ) : null}
@@ -168,7 +168,7 @@ export function TodoCard({ todo, onEdit }: TodoCardProps) {
               {todo.title}
             </p>
             {todo.description ? (
-              <p className="text-[16px] text-foreground/60 leading-snug line-clamp-2 break-words">
+              <p className="text-[16px] text-description leading-snug line-clamp-2 break-words">
                 {todo.description}
               </p>
             ) : null}
