@@ -15,7 +15,7 @@ describe('ThemeToggle', () => {
     mockSetTheme.mockClear();
   });
 
-  it('renders dark_mode icon when resolved theme is dark', () => {
+  it('renders moon icon and switch label when resolved theme is dark', () => {
     vi.mocked(useTheme).mockReturnValue({
       theme: 'dark',
       setTheme: mockSetTheme,
@@ -26,13 +26,14 @@ describe('ThemeToggle', () => {
 
     render(<ThemeToggle />);
 
-    const button = screen.getByRole('button', { name: /theme: dark/i });
+    const button = screen.getByRole('button', { name: /switch to light mode/i });
     expect(button).toBeInTheDocument();
     expect(button).toHaveClass('size-11');
+    expect(button).toHaveAttribute('aria-pressed', 'true');
     expect(button.querySelector('svg')).toBeInTheDocument();
   });
 
-  it('renders light_mode icon when resolved theme is light', () => {
+  it('renders sun icon and switch label when resolved theme is light', () => {
     vi.mocked(useTheme).mockReturnValue({
       theme: 'light',
       setTheme: mockSetTheme,
@@ -43,8 +44,10 @@ describe('ThemeToggle', () => {
 
     render(<ThemeToggle />);
 
-    expect(screen.getByRole('button', { name: /theme: light/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /theme: light/i }).querySelector('svg')).toBeInTheDocument();
+    const button = screen.getByRole('button', { name: /switch to dark mode/i });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveAttribute('aria-pressed', 'false');
+    expect(button.querySelector('svg')).toBeInTheDocument();
   });
 
   it('calls setTheme("light") when clicked and current theme is dark', async () => {
@@ -57,7 +60,7 @@ describe('ThemeToggle', () => {
     } as unknown as ReturnType<typeof useTheme>);
 
     render(<ThemeToggle />);
-    await userEvent.click(screen.getByRole('button', { name: /theme/i }));
+    await userEvent.click(screen.getByRole('button', { name: /switch to light mode/i }));
 
     expect(mockSetTheme).toHaveBeenCalledWith('light');
   });
@@ -72,7 +75,7 @@ describe('ThemeToggle', () => {
     } as unknown as ReturnType<typeof useTheme>);
 
     render(<ThemeToggle />);
-    await userEvent.click(screen.getByRole('button', { name: /theme/i }));
+    await userEvent.click(screen.getByRole('button', { name: /switch to dark mode/i }));
 
     expect(mockSetTheme).toHaveBeenCalledWith('dark');
   });
