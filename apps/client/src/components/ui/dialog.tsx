@@ -40,7 +40,7 @@ const DialogClose = DialogPrimitive.Close;
 
 /**
  * Dialog overlay backdrop.
- * Darkens the background when dialog is open.
+ * Frost-tinted scrim with optional blur; solid fallback when blur is unsupported.
  */
 const DialogOverlay = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Overlay>,
@@ -48,10 +48,7 @@ const DialogOverlay = React.forwardRef<
 >(({ className, ...props }, ref) => (
   <DialogPrimitive.Overlay
     ref={ref}
-    className={cn(
-      'dialog-overlay fixed inset-0 z-50 backdrop-blur-nord',
-      className
-    )}
+    className={cn('dialog-overlay fixed inset-0 z-50', className)}
     {...props}
   />
 ));
@@ -70,7 +67,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        'dialog-content fixed left-1/2 top-1/2 z-50 grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg sm:rounded-lg',
+        'dialog-content fixed left-1/2 top-1/2 z-[51] grid w-full max-w-lg gap-4 border bg-background p-6 shadow-lg sm:rounded-lg',
         className
       )}
       {...props}

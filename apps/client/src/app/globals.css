@@ -100,6 +100,12 @@
     --dialog-overlay-exit: 150ms;
     --dialog-content-enter: 220ms;
     --dialog-content-exit: 165ms;
+
+    /* Dialog scrim — polar ink tint, not flat gray */
+    --dialog-scrim: 220 13% 18%;
+    --dialog-scrim-opacity: 0.55;
+    --dialog-scrim-opacity-solid: 0.72;
+    --dialog-scrim-blur: 4px;
   }
 
   .dark {
@@ -139,6 +145,9 @@
 
     --description: 210 14% 68%; /* frost slate on dark card */
     --description-completed: 95 12% 62%; /* muted aurora green-gray */
+
+    --dialog-scrim-opacity: 0.7;
+    --dialog-scrim-opacity-solid: 0.84;
   }
 }
 
@@ -166,11 +175,25 @@
   font-variation-settings: 'FILL' 1;
 }
 
-/* Stitch Modal */
+/* Dialog scrim — tokenized frost overlay; blur optional with solid fallback */
+.dialog-overlay,
 .backdrop-blur-nord {
-  backdrop-filter: blur(4px);
-  background-color: rgba(46, 52, 64, 0.6);
+  background-color: hsl(var(--dialog-scrim) / var(--dialog-scrim-opacity));
+  -webkit-backdrop-filter: blur(var(--dialog-scrim-blur));
+  backdrop-filter: blur(var(--dialog-scrim-blur));
 }
+
+@supports not (
+  (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))
+) {
+  .dialog-overlay,
+  .backdrop-blur-nord {
+    background-color: hsl(var(--dialog-scrim) / var(--dialog-scrim-opacity-solid));
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
 .modal-shadow {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
 }
@@ -178,6 +201,13 @@
 /* Dialog — overlay fade + content lift (state-driven, not decorative) */
 .dialog-content {
   transform: translate(-50%, -50%);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dialog-overlay[data-state='open'],
+  .dialog-overlay[data-state='closed'] {
+    animation: none;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
