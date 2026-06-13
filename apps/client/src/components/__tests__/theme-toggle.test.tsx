@@ -26,8 +26,10 @@ describe('ThemeToggle', () => {
 
     render(<ThemeToggle />);
 
-    expect(screen.getByRole('button', { name: /theme: dark/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /theme: dark/i }).querySelector('svg')).toBeInTheDocument();
+    const button = screen.getByRole('button', { name: /theme: dark/i });
+    expect(button).toBeInTheDocument();
+    expect(button).toHaveClass('size-11');
+    expect(button.querySelector('svg')).toBeInTheDocument();
   });
 
   it('renders light_mode icon when resolved theme is light', () => {

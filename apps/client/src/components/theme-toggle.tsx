@@ -3,6 +3,8 @@
 import * as React from 'react';
 import { useTheme } from 'next-themes';
 
+import { cn } from '@/lib/utils';
+
 function SunIcon() {
   return (
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -20,6 +22,17 @@ function MoonIcon() {
 }
 
 
+const themeToggleClasses = cn(
+  'inline-flex size-11 shrink-0 touch-manipulation items-center justify-center rounded-lg',
+  'bg-muted/80 text-foreground',
+  'transition-[color,background-color,transform] duration-150',
+  'hover:bg-accent hover:text-accent-foreground',
+  'active:bg-accent active:text-accent-foreground',
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
+  'disabled:pointer-events-none disabled:opacity-50',
+  'motion-safe:active:scale-95'
+);
+
 export function ThemeToggle() {
   const [mounted, setMounted] = React.useState(false);
   const { theme, resolvedTheme, setTheme } = useTheme();
@@ -36,8 +49,9 @@ export function ThemeToggle() {
     return (
       <button
         type="button"
-        className="p-2 rounded-lg bg-white/50 dark:bg-slate-700 transition-colors text-slate-700 dark:text-slate-200"
+        className={themeToggleClasses}
         aria-label="Toggle theme"
+        disabled
       >
         <SunIcon />
       </button>
@@ -52,7 +66,7 @@ export function ThemeToggle() {
   return (
     <button
       type="button"
-      className="p-2 rounded-lg bg-white/50 dark:bg-slate-700 hover:bg-white dark:hover:bg-slate-600 transition-colors text-slate-700 dark:text-slate-200"
+      className={themeToggleClasses}
       onClick={toggleTheme}
       aria-label={`Theme: ${theme}. Switch theme.`}
       title={`Current: ${theme}`}

@@ -3,9 +3,16 @@ import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { LogProvider } from '@/providers/LogProvider';
 import { headers } from 'next/headers';
+import type { Viewport } from 'next';
 import { getSession } from '@/lib/session';
 import { runWithContext } from '@/lib/logger/context';
 import './globals.css';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 
 export default async function RootLayout({
   children,
