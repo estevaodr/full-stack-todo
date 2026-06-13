@@ -105,8 +105,8 @@
     --destructive: 354 42% 56%; /* nord11 */
     --destructive-foreground: 220 16% 88%; /* nord4 */
 
-    --muted: 220 13% 28%; /* nord2 */
-    --muted-foreground: 220 9% 46%; /* nord3 */
+    --muted: 220 16% 31%; /* nord2 lift, frost-tinted inactive surfaces */
+    --muted-foreground: 220 14% 67%; /* frost slate — AA secondary on dark bg/card */
 
     --accent: 220 14% 25%; /* nord1 */
     --accent-foreground: 220 16% 88%; /* nord4 */
