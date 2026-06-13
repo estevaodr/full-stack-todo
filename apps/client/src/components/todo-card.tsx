@@ -20,11 +20,21 @@ import {
   mutationErrorMessage,
   useMutationFeedback,
 } from '@/components/mutation-feedback';
+import { cn } from '@/lib/utils';
 
-function CheckIcon() {
+function CompletionCheckIcon({ className }: { className?: string }) {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-      <path d="M9.5 16.17L5.33 12l-1.42 1.41L9.5 19 21 7.41 19.59 6 9.5 16.17z" fill="#FFFFFF" />
+    <svg
+      className={cn('size-3.5 shrink-0', className)}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M20 6 9 17l-5-5" />
     </svg>
   );
 }
@@ -70,24 +80,21 @@ function CompletionToggle({
     >
       <span
         aria-hidden="true"
-        className={`flex size-6 items-center justify-center rounded-full transition-colors duration-150 ${
+        className={cn(
+          'flex size-6 items-center justify-center rounded-full',
+          'motion-safe:transition-[background-color,border-color,transform] motion-safe:duration-150 motion-safe:ease-[cubic-bezier(0.25,1,0.5,1)]',
+          'motion-safe:group-active/toggle:scale-95',
           completed
-            ? 'bg-success'
-            : 'border-2 border-border bg-transparent group-hover/toggle:border-primary group-hover/toggle:bg-primary/10 group-active/toggle:border-primary group-active/toggle:bg-primary/15'
-        }`}
-      >
-        {completed ? (
-          <CheckIcon />
-        ) : (
-          <span className="text-primary opacity-60">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-              <path
-                d="M9.5 16.17L5.33 12l-1.42 1.41L9.5 19 21 7.41 19.59 6 9.5 16.17z"
-                fill="currentColor"
-              />
-            </svg>
-          </span>
+            ? 'bg-success text-success-foreground'
+            : 'border-2 border-border bg-transparent text-primary/60 group-hover/toggle:border-primary group-hover/toggle:bg-primary/10 group-hover/toggle:text-primary group-active/toggle:border-primary group-active/toggle:bg-primary/15 group-active/toggle:text-primary'
         )}
+      >
+        <CompletionCheckIcon
+          className={cn(
+            'motion-safe:transition-opacity motion-safe:duration-150',
+            completed ? 'opacity-100' : 'opacity-70 group-hover/toggle:opacity-100'
+          )}
+        />
       </span>
     </button>
   );
