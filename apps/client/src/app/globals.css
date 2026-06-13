@@ -93,6 +93,13 @@
     --description-completed: 95 14% 46%; /* muted aurora green-gray */
 
     --radius: 0.5rem;
+
+    /* Motion — product transitions (150–250ms) */
+    --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    --dialog-overlay-enter: 200ms;
+    --dialog-overlay-exit: 150ms;
+    --dialog-content-enter: 220ms;
+    --dialog-content-exit: 165ms;
   }
 
   .dark {
@@ -166,4 +173,71 @@
 }
 .modal-shadow {
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+/* Dialog — overlay fade + content lift (state-driven, not decorative) */
+.dialog-content {
+  transform: translate(-50%, -50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dialog-overlay[data-state='open'] {
+    animation: dialog-overlay-in var(--dialog-overlay-enter) var(--ease-out-quart)
+      forwards;
+  }
+
+  .dialog-overlay[data-state='closed'] {
+    animation: dialog-overlay-out var(--dialog-overlay-exit) var(--ease-out-quart)
+      forwards;
+  }
+
+  .dialog-content[data-state='open'] {
+    animation: dialog-content-in var(--dialog-content-enter) var(--ease-out-quart)
+      forwards;
+  }
+
+  .dialog-content[data-state='closed'] {
+    animation: dialog-content-out var(--dialog-content-exit) var(--ease-out-quart)
+      forwards;
+  }
+}
+
+@keyframes dialog-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes dialog-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes dialog-content-in {
+  from {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 8px)) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+@keyframes dialog-content-out {
+  from {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 4px)) scale(0.98);
+  }
 }
