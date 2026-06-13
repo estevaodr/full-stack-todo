@@ -73,7 +73,7 @@ describe('EditTodoDialog', () => {
       screen.getByRole('textbox', { name: /title/i })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('textbox', { name: /description/i })
+      screen.getByRole('button', { name: /save todo/i })
     ).toBeInTheDocument();
   });
 

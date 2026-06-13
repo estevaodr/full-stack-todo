@@ -4,6 +4,10 @@ import { useState } from 'react';
 import type { ITodo } from '@full-stack-todo/shared/domain';
 import { useUpdateTodo, useDeleteTodo } from '@/hooks/use-todos';
 import {
+  DELETE_TODO_DIALOG_SUBMIT_LABEL,
+  DELETE_TODO_DIALOG_SUBMIT_PENDING_LABEL,
+} from '@/lib/dialog-labels';
+import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -288,7 +292,9 @@ function DeleteTodoDialog({
             onClick={onConfirm}
             disabled={isPending}
           >
-            {isPending ? 'Deleting…' : 'Delete todo'}
+            {isPending
+              ? DELETE_TODO_DIALOG_SUBMIT_PENDING_LABEL
+              : DELETE_TODO_DIALOG_SUBMIT_LABEL}
           </Button>
         </DialogFooter>
       </DialogContent>

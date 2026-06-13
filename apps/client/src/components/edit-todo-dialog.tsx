@@ -24,6 +24,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  EDIT_TODO_DIALOG_SUBMIT_LABEL,
+  EDIT_TODO_DIALOG_SUBMIT_PENDING_LABEL,
+} from '@/lib/dialog-labels';
 
 export interface EditTodoDialogProps {
   todo: ITodo;
@@ -134,7 +138,9 @@ export function EditTodoDialog({
                 Cancel
               </Button>
               <Button type="submit" disabled={updateTodo.isPending}>
-                {updateTodo.isPending ? 'Saving…' : 'Save changes'}
+                {updateTodo.isPending
+                  ? EDIT_TODO_DIALOG_SUBMIT_PENDING_LABEL
+                  : EDIT_TODO_DIALOG_SUBMIT_LABEL}
               </Button>
             </DialogFooter>
           </form>

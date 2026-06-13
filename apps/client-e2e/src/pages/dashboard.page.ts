@@ -12,7 +12,7 @@ export class DashboardPage {
     this.floatAddButton = page.getByRole('button', { name: 'Add Todo' });
     this.dialogTitleInput = page.getByLabel('Title');
     this.dialogDescriptionInput = page.getByLabel('Description');
-    this.dialogSaveButton = page.getByRole('button', { name: 'Save Task' });
+    this.dialogSaveButton = page.getByRole('button', { name: 'Add todo' });
   }
 
   async goto() {

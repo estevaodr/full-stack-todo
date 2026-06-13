@@ -22,6 +22,10 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  ADD_TODO_DIALOG_SUBMIT_LABEL,
+  ADD_TODO_DIALOG_SUBMIT_PENDING_LABEL,
+} from '@/lib/dialog-labels';
 
 export interface AddTodoDialogProps {
   open: boolean;
@@ -120,7 +124,9 @@ export function AddTodoDialog({ open, onOpenChange }: AddTodoDialogProps) {
                 Cancel
               </Button>
               <Button type="submit" disabled={createTodo.isPending}>
-                {createTodo.isPending ? 'Saving…' : 'Save Task'}
+                {createTodo.isPending
+                  ? ADD_TODO_DIALOG_SUBMIT_PENDING_LABEL
+                  : ADD_TODO_DIALOG_SUBMIT_LABEL}
               </Button>
             </DialogFooter>
           </form>
