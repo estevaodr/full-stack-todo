@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="drawio" version="30.2.4">
+  <diagram name="Page-1">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ==================== TIER: BROWSER ==================== -->
+        <mxCell id="10" value="Browser" style="swimlane;startSize=30;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=14;rounded=1;swimlaneLine=1;swimlaneLine=0;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="520" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="11" value="React Client Components" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="10">
+          <mxGeometry x="20" y="40" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="12" value="React Query&#xa;(TanStack)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="10">
+          <mxGeometry x="200" y="40" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="13" value="Zod Validation" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="10">
+          <mxGeometry x="200" y="110" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="14" value="AuthProvider&#xa;(Session Context)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="10">
+          <mxGeometry x="20" y="110" width="150" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="15" value="UI Library&#xa;(shadcn / Radix)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="10">
+          <mxGeometry x="370" y="40" width="130" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="16" value="Logging&#xa;(Pino)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="10">
+          <mxGeometry x="370" y="110" width="130" height="50" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TIER: NEXT.JS BFF ==================== -->
+        <mxCell id="20" value="Next.js (BFF Proxy)" style="swimlane;startSize=30;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=14;rounded=1;swimlaneLine=1;swimlaneLine=0;" vertex="1" parent="1">
+          <mxGeometry x="620" y="40" width="360" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="21" value="Middleware&#xa;(Auth Redirect +&#xa;Correlation IDs)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="20">
+          <mxGeometry x="20" y="40" width="160" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="22" value="API Routes&#xa;/api/auth&#xa;/api/todos&#xa;/api/logs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;" vertex="1" parent="20">
+          <mxGeometry x="20" y="130" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="23" value="Session Manager&#xa;(jose / HTTP-only&#xa;Secure Cookies)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="20">
+          <mxGeometry x="200" y="40" width="140" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="24" value="fetchApiWithAuth()&#xa;(Server-Side HTTP)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="20">
+          <mxGeometry x="200" y="130" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TIER: NESTJS BACKEND ==================== -->
+        <mxCell id="30" value="NestJS Backend" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;rounded=1;swimlaneLine=1;swimlaneLine=0;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="40" width="500" height="340" as="geometry" />
+        </mxCell>
+        <mxCell id="31" value="Auth Module&#xa;(Passport + JWT)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="30">
+          <mxGeometry x="20" y="40" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="32" value="Todo Module&#xa;(CRUD Controller)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="30">
+          <mxGeometry x="180" y="40" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="33" value="User Module&#xa;(Register / Profile)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="30">
+          <mxGeometry x="340" y="40" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="34" value="Global JWT Guard&#xa;(APP_GUARD)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="30">
+          <mxGeometry x="20" y="130" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="35" value="Data Access Layer&#xa;(TypeORM Schemas)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="30">
+          <mxGeometry x="180" y="130" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="36" value="Logging Module&#xa;(Pino + Interceptor)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="30">
+          <mxGeometry x="340" y="130" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="37" value="Validation Pipe&#xa;(class-validator&#xa;+ class-transformer)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="30">
+          <mxGeometry x="20" y="210" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="38" value="Swagger / OpenAPI&#xa;/api/v1/docs" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="30">
+          <mxGeometry x="180" y="210" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="39" value="Shared DTOs&#xa;(libs/shared)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="30">
+          <mxGeometry x="340" y="210" width="140" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== TIER: DATABASE ==================== -->
+        <mxCell id="40" value="PostgreSQL 16" style="swimlane;startSize=30;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=14;rounded=1;swimlaneLine=1;swimlaneLine=0;" vertex="1" parent="1">
+          <mxGeometry x="1060" y="440" width="500" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="41" value="user" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="40">
+          <mxGeometry x="40" y="50" width="100" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="42" value="todo" style="shape=cylinder3;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="40">
+          <mxGeometry x="180" y="50" width="100" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="43" value="Docker Volume&#xa;(persistent data)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;dashed=1;" vertex="1" parent="40">
+          <mxGeometry x="340" y="50" width="120" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== EDGES: Browser -> Next.js ==================== -->
+        <mxCell id="100" value="fetch('/api/*')" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="12" target="21">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="101" value="Session Check&#xa;(HTTP-only Cookie)" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;dashed=1;strokeColor=#999999;" edge="1" parent="1" source="14" target="23">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="135" y="260" />
+              <mxPoint x="980" y="260" />
+              <mxPoint x="980" y="115" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== EDGES: Next.js -> NestJS ==================== -->
+        <mxCell id="110" value="JWT Bearer Token" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="24" target="34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== EDGES: NestJS internal ==================== -->
+        <mxCell id="120" value="Validates" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;dashed=1;" edge="1" parent="30" source="31" target="34">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="121" value="Queries" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="30" source="32" target="35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="122" value="Queries" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="30" source="33" target="35">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ==================== EDGES: NestJS -> DB ==================== -->
+        <mxCell id="130" value="TypeORM" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="35" target="42">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1390" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ==================== EDGES: DB internal ==================== -->
+        <mxCell id="131" value="1:N" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="40" source="41" target="42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
